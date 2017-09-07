@@ -15,7 +15,7 @@ var htmlreplace = require('gulp-html-replace');
 
 var paths = {
   pug: './source/pug/*.pug',
-  sass: './source/sass/*.sass',
+  sass: './source/sass/*.scss',
   coffee: './source/coffee/*.coffee',
 }
 

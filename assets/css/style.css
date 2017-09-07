@@ -1,9 +1,34 @@
 html, body {
   width: 100%;
-  height: 100%; }
-  html #map, body #map {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: Helvetica; }
+  html main, body main {
     width: 100%;
     height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0; }
+    display: flex;
+    flex-direction: row; }
+    html main #filters, body main #filters {
+      width: 20%;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow-y: scroll;
+      z-index: 9999; }
+      html main #filters ul, body main #filters ul {
+        margin: 0;
+        padding: 1em; }
+        html main #filters ul li, body main #filters ul li {
+          list-style: none;
+          padding: 0 0 .5em 0;
+          transition: transform 100ms ease-in-out;
+          transform-origin: left center; }
+          html main #filters ul li:hover, body main #filters ul li:hover {
+            transform: scale(1.1);
+            cursor: pointer; }
+    html main #map, body main #map {
+      width: 80%;
+      height: 100%;
+      padding-left: 20%; }

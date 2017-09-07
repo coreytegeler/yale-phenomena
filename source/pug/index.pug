@@ -3,11 +3,13 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 	head
 		meta(charset='utf-8')
 		meta(name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no')
-		script(src='/assets/js/jquery-3.2.1.min.js')
+		script(src='./assets/js/jquery-3.2.1.min.js')
 		script(src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js')
-		script(src='/assets/js/scripts.js')
+		script(src='./assets/js/scripts.js')
 		link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet')
-		link(href='/assets/css/style.css' rel='stylesheet')
+		link(href='./assets/css/style.css' rel='stylesheet')
 	body
-		#map
-		.empty
+		main
+			#filters
+				ul.phenomena
+			#map
