@@ -142,21 +142,38 @@ $ ->
 	$('body').on 'click', 'aside ul li', () ->
 		$li = $(this)
 		$ul = $li.parents('ul')
+		$side = $ul.parents('aside')
 		prop = $ul.attr('data-prop')
 		val = $li.attr('data-val')
 		cond = '=='
 
-		$li.toggleClass('selected')
 		if $li.is('.selected')
-			$ul.find('.selected:not([data-val="'+val+'"])').removeClass('selected')
-		else
+			$li.removeClass('selected')
 			val = ''
+		else
+			$ul.find('.selected:not([data-val="'+val+'"])').removeClass('selected')
+			$li.addClass('selected')
+			
 
+		vals = {}
+		$selected = $side.find('li.selected')
+		$selected.each (i, li) ->
+			_val = $(li).attr('data-val')
+			_prop = $(li).parents('ul').attr('data-prop')
+			if !vals[_prop]
+				vals[_prop] = [_val]
+			else
+				vals[_prop].push(_val)
+		
 		if prop == 'phenomena'
 			return updatePaintProperty(val)
-		if val.length
-			filter = ['==', prop, val]
-		else
-			filter = ['has', prop]
+		
+		filter = ['all']
+		for _prop in Object.keys(vals)
+			_vals = vals[_prop]
+			for __val in _vals
+				console.log _prop, __val
+				filter.push(['==', _prop, __val])
+
 		map.setFilter('data', filter)
 		

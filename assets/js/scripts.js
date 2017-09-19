@@ -63,17 +63,17 @@ $(function() {
         access_token: accessToken
       },
       success: function(response) {
-        var allowedProps, feature, filters, i, j, k, keys, len, len1, len2, prop, props, ref, ref1, results, value;
+        var allowedProps, feature, filters, j, k, keys, l, len, len1, len2, prop, props, ref, ref1, results, value;
         window.keys = Object.keys(response.features[0].properties);
         window.dataset = response;
         filters = {};
         ref = dataset.features;
-        for (i = 0, len = ref.length; i < len; i++) {
-          feature = ref[i];
+        for (j = 0, len = ref.length; j < len; j++) {
+          feature = ref[j];
           props = feature.properties;
           keys = Object.keys(props);
-          for (j = 0, len1 = keys.length; j < len1; j++) {
-            prop = keys[j];
+          for (k = 0, len1 = keys.length; k < len1; k++) {
+            prop = keys[k];
             value = props[prop];
             if (!filters[prop]) {
               filters[prop] = [value];
@@ -84,8 +84,8 @@ $(function() {
         }
         ref1 = Object.keys(filters);
         results = [];
-        for (k = 0, len2 = ref1.length; k < len2; k++) {
-          prop = ref1[k];
+        for (l = 0, len2 = ref1.length; l < len2; l++) {
+          prop = ref1[l];
           allowedProps = ['Gender', 'Education', 'Income', 'Race', 'Languages', 'Age'];
           if (allowedProps.indexOf(prop) > 0) {
             results.push(addFilters(filters, prop));
@@ -100,7 +100,7 @@ $(function() {
     });
   };
   addFilters = function(filters, prop) {
-    var $filterItem, $filterList, i, len, results, val, vals;
+    var $filterItem, $filterList, j, len, results, val, vals;
     vals = filters[prop];
     $filterList = $('#filters ul[data-prop="' + prop + '"]');
     if (!$filterList.length) {
@@ -110,8 +110,8 @@ $(function() {
       $('#filters').append($filterList);
     }
     results = [];
-    for (i = 0, len = vals.length; i < len; i++) {
-      val = vals[i];
+    for (j = 0, len = vals.length; j < len; j++) {
+      val = vals[j];
       $filterItem = $filterList.find('li[data-value="' + val + '"]');
       if (!$filterItem.length) {
         $filterItem = $('<li></li>');
@@ -155,25 +155,45 @@ $(function() {
   createMap();
   loadDataset();
   return $('body').on('click', 'aside ul li', function() {
-    var $li, $ul, cond, filter, prop, val;
+    var $li, $selected, $side, $ul, __val, _prop, _vals, cond, filter, j, k, len, len1, prop, ref, val, vals;
     $li = $(this);
     $ul = $li.parents('ul');
+    $side = $ul.parents('aside');
     prop = $ul.attr('data-prop');
     val = $li.attr('data-val');
     cond = '==';
-    $li.toggleClass('selected');
     if ($li.is('.selected')) {
-      $ul.find('.selected:not([data-val="' + val + '"])').removeClass('selected');
-    } else {
+      $li.removeClass('selected');
       val = '';
+    } else {
+      $ul.find('.selected:not([data-val="' + val + '"])').removeClass('selected');
+      $li.addClass('selected');
     }
+    vals = {};
+    $selected = $side.find('li.selected');
+    $selected.each(function(i, li) {
+      var _prop, _val;
+      _val = $(li).attr('data-val');
+      _prop = $(li).parents('ul').attr('data-prop');
+      if (!vals[_prop]) {
+        return vals[_prop] = [_val];
+      } else {
+        return vals[_prop].push(_val);
+      }
+    });
     if (prop === 'phenomena') {
       return updatePaintProperty(val);
     }
-    if (val.length) {
-      filter = ['==', prop, val];
-    } else {
-      filter = ['has', prop];
+    filter = ['all'];
+    ref = Object.keys(vals);
+    for (j = 0, len = ref.length; j < len; j++) {
+      _prop = ref[j];
+      _vals = vals[_prop];
+      for (k = 0, len1 = _vals.length; k < len1; k++) {
+        __val = _vals[k];
+        console.log(_prop, __val);
+        filter.push(['==', _prop, __val]);
+      }
     }
     return map.setFilter('data', filter);
   });
