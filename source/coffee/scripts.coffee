@@ -15,7 +15,6 @@ $ ->
 			zoom: 3,
 			center: [-95.7129, 37.0902]
 
-		property = 'CU_1060.1'
 		map.on 'load', () ->
 			map.addLayer
 				'id': 'data',
@@ -51,10 +50,9 @@ $ ->
 			# for point in dataPoints
 				# console.log point
 
-	updatePaintProperty = (property) ->
-		console.log property
+	updatePaintProperty = (prop) ->
 		styles = 
-			property: property,
+			property: prop,
 			type: 'categorical',
 			stops: [
 				['0', 'rgba(0,0,0,.1)'],
@@ -64,7 +62,6 @@ $ ->
 				['4', 'rgba(0,0,0,.8)']
 				['5', 'rgba(0,0,0,1)']
 			]
-		console.log styles
 		map.setPaintProperty('data', 'circle-color', styles);
 
 	
@@ -76,11 +73,51 @@ $ ->
 			success: (response) ->
 				window.keys = Object.keys(response.features[0].properties)
 				window.dataset = response
-				phenomena = keys.filter (key) ->
-					return key.match(/\d+/g)
-				for phenomenon in phenomena
-					$('#filters ul.phenomena').append('<li>'+phenomenon+'</li>')
-				
+				filters = {}
+				for feature in dataset.features
+					props = feature.properties
+					keys = Object.keys(props)
+					for prop in keys
+						value = props[prop]
+						if !filters[prop]
+							filters[prop] = [value]
+						else if filters[prop].indexOf(value) < 0
+							filters[prop].push(value)
+
+				for prop in Object.keys(filters)
+					allowedProps = ['Gender', 'Education', 'Income', 'Race', 'Languages', 'Age']
+					if allowedProps.indexOf(prop) > 0
+						addFilters(filters, prop)
+					else if prop.match(/\d+/g)
+						addPhenomena(prop)
+
+	addFilters = (filters, prop) ->
+		vals = filters[prop]
+		$filterList = $('#filters ul[data-prop="'+prop+'"]')
+		if !$filterList.length
+			$filterList = $('<ul></ul>')
+			$filterList.attr('data-prop', prop)
+			$('#filters').append('<h3>'+prop+'</h3>')
+			$('#filters').append($filterList)
+		for val in vals
+			$filterItem = $filterList.find('li[data-value="'+val+'"]')
+			if !$filterItem.length
+				$filterItem = $('<li></li>')
+				$filterItem.attr('data-val', val).html(val)
+				$filterList.append($filterItem)
+
+	addPhenomena = (val) ->
+		$phenList = $('#phenomena ul[data-prop="phenomena"]')
+		if !$phenList.length
+			$phenList = $('<ul></ul>')
+			$phenList.attr('data-prop', 'phenomena')
+			$('#phenomena').append('<h3>Phenomena</h3>')
+			$('#phenomena').append($phenList)
+		$phenItem = $phenList.find('li[data-value="'+val+'"]')
+		if !$phenItem.length
+			$phenItem = $('<li></li>')
+			$phenItem.attr('data-val', val).html(val)
+			$phenList.append($phenItem)				
 
 	getUniqueFeatures = (array, comparatorProperty) ->
 		existingFeatureKeys = {}
@@ -95,9 +132,17 @@ $ ->
 	createMap()
 	loadDataset()
 
-	$('body').on 'click', '#filters ul li', () ->
-		value = $(this).text()
-		updatePaintProperty(value)
+	$('body').on 'click', 'aside ul li', () ->
+		prop = $(this).parents('ul').attr('data-prop')
+		val = $(this).attr('data-val')
+		cond = '=='
+		if prop == 'phenomena'
+			return updatePaintProperty(val)
+		if val.length
+			filter = ['==', prop, val]
+		else
+			filter = ['has', prop]
+		map.setFilter('data', filter)
 		
 # Compare two maps with different filters
 # https://www.mapbox.com/mapbox-gl-js/example/mapbox-gl-compare/
