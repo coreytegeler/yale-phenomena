@@ -12,7 +12,7 @@ html, body {
 		display: flex;
 		flex-direction: row;
 		h3 {
-			margin: 0 .5em; 
+			margin: 0; 
 		}
 		aside {
 			width: 20%;
@@ -20,16 +20,20 @@ html, body {
 			position: fixed;
 			left: 0;
 			top: 0;
+			padding: 1em;
 			overflow-y: scroll;
 			z-index: 9999;
 			ul {
 				margin: 0;
-				padding: 1em;
+				padding: 1em 0;
 				li {
 					list-style: none;
 					padding: 0 0 .5em 0;
 					transition: transform 100ms ease-in-out;
 					transform-origin: left center;
+					&.selected {
+						color: blue;
+					}
 					&:hover {
 						transform: scale(1.1);
 						cursor: pointer;
@@ -46,8 +50,14 @@ html, body {
 		#map {
 			width: 60%;
 			height: 100%;
-			padding-left: 40%;
+			margin-left: 40%;
 			overflow: hidden;
+			position: relative;
+			.mapboxgl-canvas-container {
+				canvas {
+					width: 100% !important;
+				}
+			}
 		}
 	}
 }

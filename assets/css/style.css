@@ -10,23 +10,26 @@ html, body {
     display: flex;
     flex-direction: row; }
     html main h3, body main h3 {
-      margin: 0 .5em; }
+      margin: 0; }
     html main aside, body main aside {
       width: 20%;
       height: 100%;
       position: fixed;
       left: 0;
       top: 0;
+      padding: 1em;
       overflow-y: scroll;
       z-index: 9999; }
       html main aside ul, body main aside ul {
         margin: 0;
-        padding: 1em; }
+        padding: 1em 0; }
         html main aside ul li, body main aside ul li {
           list-style: none;
           padding: 0 0 .5em 0;
           transition: transform 100ms ease-in-out;
           transform-origin: left center; }
+          html main aside ul li.selected, body main aside ul li.selected {
+            color: blue; }
           html main aside ul li:hover, body main aside ul li:hover {
             transform: scale(1.1);
             cursor: pointer; }
@@ -35,5 +38,8 @@ html, body {
     html main #map, body main #map {
       width: 60%;
       height: 100%;
-      padding-left: 40%;
-      overflow: hidden; }
+      margin-left: 40%;
+      overflow: hidden;
+      position: relative; }
+      html main #map .mapboxgl-canvas-container canvas, body main #map .mapboxgl-canvas-container canvas {
+        width: 100% !important; }

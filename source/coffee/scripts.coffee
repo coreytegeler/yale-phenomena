@@ -27,21 +27,28 @@ $ ->
 					'circle-radius':
 						'base': 1.75,
 						'stops': [[12, 5], [22, 10]]
-					'circle-color':
-						property: 'Gender',
-						type: 'categorical',
-						stops: [
-							['Male', 'blue'],
-							['Female', 'pink'],
-							['Transgender (MTF)', 'green'],
-							['Transgender (FTM)', 'green']
-						]
+					# 'circle-color':
+					# 	property: 'Gender',
+					# 	type: 'categorical',
+					# 	stops: [
+					# 		['Male', 'blue'],
+					# 		['Female', 'pink'],
+					# 		['Transgender (MTF)', 'green'],
+					# 		['Transgender (FTM)', 'green']
+					# 	]
 
 			dataLayer = map.getLayer('data')
 			dataBounds = map.getBounds(dataLayer).toArray()
 			map.fitBounds dataBounds,
-				padding: 100
+				padding:
+					top: 200
+					bottom: 200
+					left: 200
+					right: 200
 				animate: false
+
+			paddedBounds = map.getBounds()
+			map.setMaxBounds(paddedBounds)
 
 	# map.on 'sourcedata', (e) ->
 	# 	if e.sourceId == 'data'
@@ -133,9 +140,18 @@ $ ->
 	loadDataset()
 
 	$('body').on 'click', 'aside ul li', () ->
-		prop = $(this).parents('ul').attr('data-prop')
-		val = $(this).attr('data-val')
+		$li = $(this)
+		$ul = $li.parents('ul')
+		prop = $ul.attr('data-prop')
+		val = $li.attr('data-val')
 		cond = '=='
+
+		$li.toggleClass('selected')
+		if $li.is('.selected')
+			$ul.find('.selected:not([data-val="'+val+'"])').removeClass('selected')
+		else
+			val = ''
+
 		if prop == 'phenomena'
 			return updatePaintProperty(val)
 		if val.length
@@ -144,5 +160,3 @@ $ ->
 			filter = ['has', prop]
 		map.setFilter('data', filter)
 		
-# Compare two maps with different filters
-# https://www.mapbox.com/mapbox-gl-js/example/mapbox-gl-compare/

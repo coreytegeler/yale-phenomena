@@ -16,7 +16,7 @@ $(function() {
       center: [-95.7129, 37.0902]
     });
     return map.on('load', function() {
-      var dataBounds, dataLayer;
+      var dataBounds, dataLayer, paddedBounds;
       map.addLayer({
         'id': 'data',
         'type': 'circle',
@@ -29,20 +29,22 @@ $(function() {
           'circle-radius': {
             'base': 1.75,
             'stops': [[12, 5], [22, 10]]
-          },
-          'circle-color': {
-            property: 'Gender',
-            type: 'categorical',
-            stops: [['Male', 'blue'], ['Female', 'pink'], ['Transgender (MTF)', 'green'], ['Transgender (FTM)', 'green']]
           }
         }
       });
       dataLayer = map.getLayer('data');
       dataBounds = map.getBounds(dataLayer).toArray();
-      return map.fitBounds(dataBounds, {
-        padding: 100,
+      map.fitBounds(dataBounds, {
+        padding: {
+          top: 200,
+          bottom: 200,
+          left: 200,
+          right: 200
+        },
         animate: false
       });
+      paddedBounds = map.getBounds();
+      return map.setMaxBounds(paddedBounds);
     });
   };
   updatePaintProperty = function(prop) {
@@ -153,10 +155,18 @@ $(function() {
   createMap();
   loadDataset();
   return $('body').on('click', 'aside ul li', function() {
-    var cond, filter, prop, val;
-    prop = $(this).parents('ul').attr('data-prop');
-    val = $(this).attr('data-val');
+    var $li, $ul, cond, filter, prop, val;
+    $li = $(this);
+    $ul = $li.parents('ul');
+    prop = $ul.attr('data-prop');
+    val = $li.attr('data-val');
     cond = '==';
+    $li.toggleClass('selected');
+    if ($li.is('.selected')) {
+      $ul.find('.selected:not([data-val="' + val + '"])').removeClass('selected');
+    } else {
+      val = '';
+    }
     if (prop === 'phenomena') {
       return updatePaintProperty(val);
     }
