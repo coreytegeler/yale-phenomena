@@ -9,36 +9,104 @@ html, body {
     height: 100%;
     display: flex;
     flex-direction: row; }
-    html main h3, body main h3 {
-      margin: 0; }
+    html main .label, body main .label {
+      font-weight: normal;
+      padding: 0 0 .5em 0; }
     html main aside, body main aside {
-      width: 20%;
-      height: 100%;
+      width: calc(20% - 2em);
       position: fixed;
-      left: 0;
       top: 0;
       padding: 1em;
       overflow-y: scroll;
       z-index: 9999; }
       html main aside ul, body main aside ul {
-        margin: 0;
-        padding: 1em 0; }
+        margin: 0; }
         html main aside ul li, body main aside ul li {
           list-style: none;
-          padding: 0 0 .5em 0;
+          position: relative; }
+      html main aside .slider, body main aside .slider {
+        width: 100%;
+        height: 2px;
+        margin: 1em 0;
+        position: relative;
+        background: black;
+        border: 1px solid #f9f9f9; }
+        html main aside .slider .ui-slider-handle, body main aside .slider .ui-slider-handle {
+          height: 10px;
+          position: absolute;
+          top: -5px;
+          background: black;
+          border: 1px solid #f9f9f9;
           transition: transform 100ms ease-in-out;
-          transform-origin: left center; }
-          html main aside ul li.selected, body main aside ul li.selected {
-            color: blue; }
-          html main aside ul li:hover, body main aside ul li:hover {
-            transform: scale(1.1);
-            cursor: pointer; }
+          transform-origin: center; }
+          html main aside .slider .ui-slider-handle.ui-state-hover, html main aside .slider .ui-slider-handle.ui-state-active, body main aside .slider .ui-slider-handle.ui-state-hover, body main aside .slider .ui-slider-handle.ui-state-active {
+            cursor: ew-resize;
+            transform: scale(1.5); }
+          html main aside .slider .ui-slider-handle.ui-state-focus, body main aside .slider .ui-slider-handle.ui-state-focus {
+            background: blue;
+            outline: none; }
+        html main aside .slider[data-type='scale'] .ui-slider-handle, body main aside .slider[data-type='scale'] .ui-slider-handle {
+          width: 10px;
+          left: -5px;
+          border-radius: 50%; }
+        html main aside .slider[data-type='range'] .ui-slider-range, body main aside .slider[data-type='range'] .ui-slider-range {
+          height: 2px;
+          position: absolute;
+          top: -1px;
+          background: blue;
+          border: 1px solid #f9f9f9; }
+        html main aside .slider[data-type='range'] .ui-slider-handle, body main aside .slider[data-type='range'] .ui-slider-handle {
+          width: 5px;
+          left: 0px; }
+      html main aside#phenomena, body main aside#phenomena {
+        height: calc(100% - 2em);
+        left: 0;
+        background: #a0a0a0;
+        color: #f9f9f9; }
+        html main aside#phenomena ul, body main aside#phenomena ul {
+          padding: 2em 0 0 1em; }
+          html main aside#phenomena ul li, body main aside#phenomena ul li {
+            padding: 0 0 1em 0;
+            transition: transform 100ms ease-in-out,  padding 100ms ease-in-out;
+            transform-origin: left center; }
+            html main aside#phenomena ul li:hover, body main aside#phenomena ul li:hover {
+              transform: scale(1.1);
+              cursor: pointer; }
       html main aside#filters, body main aside#filters {
-        left: 20%; }
+        height: auto;
+        max-height: calc(100% - 2em);
+        right: 0;
+        background: #f9f9f9; }
+        html main aside#filters ul, body main aside#filters ul {
+          padding: 0 0 0 1em; }
+          html main aside#filters ul li, body main aside#filters ul li {
+            padding: 0 0 .25em 1.25em; }
+            html main aside#filters ul li::before, html main aside#filters ul li::after, body main aside#filters ul li::before, body main aside#filters ul li::after {
+              position: absolute;
+              border-radius: 50%;
+              content: ''; }
+            html main aside#filters ul li::before, body main aside#filters ul li::before {
+              width: .8em;
+              height: .8em;
+              left: 0;
+              top: 0;
+              border: 1px solid black; }
+            html main aside#filters ul li::after, body main aside#filters ul li::after {
+              width: calc(.8em - 2px);
+              height: calc(.8em - 2px);
+              left: 2px;
+              top: 2px;
+              content: '';
+              background: transparent; }
+            html main aside#filters ul li:hover, body main aside#filters ul li:hover {
+              cursor: pointer; }
+              html main aside#filters ul li:hover::after, body main aside#filters ul li:hover::after {
+                background: #a0a0a0; }
+            html main aside#filters ul li.selected::after, html main aside#filters ul li.selected:hover::after, body main aside#filters ul li.selected::after, body main aside#filters ul li.selected:hover::after {
+              background: black !important; }
     html main #map, body main #map {
-      width: 60%;
+      width: 100%;
       height: 100%;
-      margin-left: 40%;
       overflow: hidden;
       position: relative; }
       html main #map .mapboxgl-canvas-container canvas, body main #map .mapboxgl-canvas-container canvas {

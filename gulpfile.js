@@ -14,9 +14,9 @@ var replace = require('gulp-replace');
 var htmlreplace = require('gulp-html-replace');
 
 var paths = {
-  pug: './source/pug/*.pug',
-  sass: './source/sass/*.scss',
-  coffee: './source/coffee/*.coffee',
+  pug: './*.pug',
+  sass: './assets/sass/*.scss',
+  coffee: './assets/coffee/*.coffee',
 }
 
 var dest = {
@@ -47,7 +47,7 @@ gulp.task('compile-sass', function() {
     compress: argv.prod ? true : false
   };
 
-  return gulp.src('./source/sass/style.scss')
+  return gulp.src('./assets/sass/style.scss')
     .pipe(plumber())
     .pipe(sass(options))
     .pipe(gulpif(argv.prod, rename('style.min.css')))
@@ -60,7 +60,7 @@ gulp.task('compile-sass', function() {
 });
 
 gulp.task('compile-coffee', function() {
-  return gulp.src('./source/coffee/scripts.coffee')
+  return gulp.src('./assets/coffee/scripts.coffee')
     .pipe(coffee({bare: true}))
     .pipe(gulpif(argv.prod, rename('scripts.min.js')))
     .pipe(gulp.dest(dest.js))
