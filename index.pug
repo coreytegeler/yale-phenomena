@@ -11,51 +11,66 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 		link(href='./assets/css/style.css' rel='stylesheet')
 	body
 		main
+			#sentence
+				h1
 			aside#phenomena
-				ul(data-prop='phenomena')
-					li(data-val='PR_1125') The car needs washed
-					li(data-val='CG_1025.1') I was afraid you might couldn’t find it'
-					li(data-val='PI_1160') John plays guitar, but so don’t I'
-					li(data-val='PI_1171') Here’s you a piece of pizza'
-					li(data-val='CG_1026.1') This seat reclines hella'
-					li(data-val='PI_1161') When I don't have hockey and I'm done my homework, I go there and skate'
-					li(data-val='PI_1172') I’m SO not going to study tonight'
-					li(data-val='PR_1116') Every time you ask me not to hum, I’ll hum more louder'
+				.hamburger
+				.filter(data-prop='phenomena')
+					ul.open
+						li.option(data-val='PR_1125')
+							span The car needs washed
+						li.option(data-val='CG_1025.1')
+							span I was afraid you might couldn’t find it
+						li.option(data-val='PI_1160')
+							span John plays guitar, but so don’t I
+						li.option(data-val='PI_1171')
+							span Here’s you a piece of pizza
+						li.option(data-val='CG_1026.1')
+							span This seat reclines hella
+						li.option(data-val='PI_1161')
+							span When I don't have hockey and I'm done my homework, I go there and skate
+						li.option(data-val='PI_1172')
+							span I’m SO not going to study tonight
+						li.option(data-val='PR_1116')
+							span Every time you ask me not to hum, I’ll hum more louder
 			aside#filters
-				.filter
-					.label Race
-					ul(data-prop='Race')
-						li(data-val=null) All Race
-						li(data-val='Amerindian') Amerindian
-						li(data-val='Asian') Asian
-						li(data-val='Black') Black
-						li(data-val='Hispanic') Hispanic
-						li(data-val='White') White
-						li(data-val='Other') Other
-				.filter
-					.label Income
+				.label(data-prop='Race') Race
+				.filter(data-prop='Race').open
+					ul
+						li.option.selected(data-val=null) All Race
+						li.option(data-val='Amerindian') Amerindian
+						li.option(data-val='Asian') Asian
+						li.option(data-val='Black') Black
+						li.option(data-val='Hispanic') Hispanic
+						li.option(data-val='White') White
+						li.option(data-val='Other') Other
+				
+				.label(data-prop='Income') Income
+				.filter(data-prop='Income').open
 					//- .slider(data-prop='Income' data-type='range' data-min='0' data-max='500000')
-					ul(data-prop='Income')
-						li(data-val=null) All Income
-						li(data-val='12500') 12500
-						li(data-val='37500') 37500
-						li(data-val='62500') 62500
-						li(data-val='75000') 75000
-						li(data-val='100000') 100000
-				.filter
-					.label Age
-					ul(data-prop='Age_Bin')
-						li(data-val=null) All Ages
-						li(data-val='18-30') 18-30
-						li(data-val='31-40') 31-40
-						li(data-val='41-50') 41-50
-						li(data-val='51-60') 51-60
-						li(data-val='61_up') 61 &amp; Up
-				.filter
-					.label Acceptance Level
-					ul(data-prop='Age_Bin')
-						li(data-val=null) Show All
-						li(data-val=true) 'Acceptable' Only
-						li(data-val=false) 'Unacceptable' Only
+					ul
+						li.option.selected(data-val=null) All Income
+						li.option(data-val='12500') 12500
+						li.option(data-val='37500') 37500
+						li.option(data-val='62500') 62500
+						li.option(data-val='75000') 75000
+						li.option(data-val='100000') 100000
+				
+				.label(data-prop='Age_Bin') Age
+				.filter(data-prop='Age_Bin').open
+					ul
+						li.option.selected(data-val=null) All Ages
+						li.option(data-val='18-30') 18-30
+						li.option(data-val='31-40') 31-40
+						li.option(data-val='41-50') 41-50
+						li.option(data-val='51-60') 51-60
+						li.option(data-val='61_up') 61 &amp; Up
+
+				.label(data-prop='Acceptance_Level') Acceptance Level
+				.filter(data-prop='Acceptance_Level').open
 					//- .slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
+					ul
+						li.option.selected(data-val=null) Show All
+						li.option(data-val='true') 'Acceptable' Only
+						li.option(data-val='false') 'Unacceptable' Only
 			#map

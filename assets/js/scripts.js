@@ -1,5 +1,5 @@
 $(function() {
-  var accessToken, addFilters, addPhenomena, apiBase, clearFilter, createMap, datasetId, getUniqueFeatures, loadDataset, style, tilesetId, translator, updatePaintProperty, username, whiteList;
+  var $filters, $phenomena, accessToken, addFilters, addPhenomena, apiBase, changeSlider, clearFilter, createMap, datasetId, filterMarkers, getUniqueFeatures, loadDataset, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilters, togglePhenomena, translator, updatePaintProperty, username, whiteList;
   tilesetId = 'Yale_GDP';
   datasetId = 'cj5acubfx065v32mmdelcwb71';
   username = 'coreytegeler';
@@ -8,6 +8,8 @@ $(function() {
   mapboxgl.accessToken = accessToken;
   style = 'mapbox://styles/coreytegeler/cj5adbyws0g7l2sqnl74tvzoa';
   style = 'mapbox://styles/mapbox/light-v9';
+  $filters = $('#filters');
+  $phenomena = $('#phenomena');
   createMap = function() {
     window.map = new mapboxgl.Map({
       container: 'map',
@@ -63,47 +65,25 @@ $(function() {
         access_token: accessToken
       },
       success: function(response) {
-        var allowedProps, feature, filters, j, k, keys, l, len, len1, len2, prop, props, ref, ref1, results, value;
+        var filters;
         window.keys = Object.keys(response.features[0].properties);
         window.dataset = response;
-        filters = {};
-        ref = dataset.features;
-        for (j = 0, len = ref.length; j < len; j++) {
-          feature = ref[j];
-          feature.properties['Age'] = parseInt(feature.properties['Age']);
-          feature.properties['Income'] = parseInt(feature.properties['Income']);
-          props = feature.properties;
-          keys = Object.keys(props);
-          for (k = 0, len1 = keys.length; k < len1; k++) {
-            prop = keys[k];
-            value = props[prop];
-            if (!filters[prop]) {
-              filters[prop] = [value];
-            } else if (filters[prop].indexOf(value) < 0) {
-              filters[prop].push(value);
-            }
-          }
-        }
-        ref1 = Object.keys(filters);
-        results = [];
-        for (l = 0, len2 = ref1.length; l < len2; l++) {
-          prop = ref1[l];
-          results.push(allowedProps = ['Income', 'Race', 'Age']);
-        }
-        return results;
+        return filters = {};
       }
     });
   };
   whiteList = ['Income', 'Race', 'Age'];
   addFilters = function(filters, prop) {
-    var $filterItem, $filterList, j, len, results, val, vals;
+    var $filter, $filterItem, $filterList, j, len, results, val, vals;
     vals = filters[prop];
-    $filterList = $('#filters ul[data-prop="' + prop + '"]');
+    $filterList = $('#filters .filter[data-prop="' + prop + '"]');
     if (!$filterList.length) {
+      $filter = $('<div></div>');
+      $filter.attr('data-prop', prop);
       $filterList = $('<ul></ul>');
-      $filterList.attr('data-prop', prop);
-      $('#filters').append('<h3>' + prop + '</h3>');
-      $('#filters').append($filterList);
+      $filter.append('<h3>' + prop + '</h3>');
+      $filter.append($filterList);
+      $('#filters').append($filter);
     }
     results = [];
     for (j = 0, len = vals.length; j < len; j++) {
@@ -112,7 +92,7 @@ $(function() {
       if (!$filterItem.length) {
         $filterItem = $('<li></li>');
         $filterItem.attr('data-val', val).html(val);
-        results.push($filterList.append($filterItem));
+        results.push($filter.find('ul').append($filterItem));
       } else {
         results.push(void 0);
       }
@@ -130,23 +110,25 @@ $(function() {
     'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder'
   };
   addPhenomena = function(val) {
-    var $phenItem, $phenList, sentence;
+    var $phen, $phenItem, $phenList, sentence;
     sentence = translator[val];
     if (!sentence) {
       return;
     }
-    $phenList = $('#phenomena ul[data-prop="phenomena"]');
-    if (!$phenList.length) {
+    $phenList = $('#phenomena .filter[data-prop="phenomena"]');
+    if (!$filterList.length) {
+      $phen = $('<div></div>');
+      $phen.attr('data-prop', prop);
       $phenList = $('<ul></ul>');
-      $phenList.attr('data-prop', 'phenomena');
-      $('#phenomena').append('<h3>Phenomena</h3>');
-      $('#phenomena').append($phenList);
+      $phen.append('<h3>' + prop + '</h3>');
+      $phen.append($phenList);
+      $('#filters').append($phen);
     }
     $phenItem = $phenList.find('li[data-val="' + val + '"]');
     if (!$phenItem.length) {
       $phenItem = $('<li></li>');
       $phenItem.attr('data-val', val).html(sentence);
-      return $phenList.append($phenItem);
+      return $phen.find('ul').append($phenItem);
     }
   };
   getUniqueFeatures = function(array, comparatorProperty) {
@@ -162,94 +144,84 @@ $(function() {
     });
     return uniqueFeatures;
   };
-  createMap();
-  loadDataset();
-  $('.slider').each(function(i, slider) {
-    var $slider, max, med, min, options, type;
-    $slider = $(slider);
-    type = $slider.attr('data-type');
-    min = Number($slider.attr('data-min'));
-    max = Number($slider.attr('data-max'));
-    med = Number(((min + max) / 2).toFixed(0));
-    options = {
-      min: min,
-      max: max,
-      range: type === 'range'
-    };
-    if (type === 'scale') {
-      options.value = med;
-    } else if (type === 'range') {
-      options.values = [min, max];
-    }
-    return $slider.slider(options);
-  });
-  $('.slider').on('slidechange', function(e, ui) {
-    var $slider, filter, maxVal, minVal, prop, type, val, vals;
-    $slider = $(this);
-    prop = $slider.attr('data-prop');
-    type = $slider.attr('data-type');
-    filter = clearFilter(prop);
-    if (!filter) {
-      filter = ['any'];
-    }
-    if (type === 'scale') {
-      val = ui.value.toString();
-      filter.push(['==', prop, val]);
-      return map.setFilter('data', filter);
-    } else if (type === 'range') {
-      vals = ui.values;
-      minVal = vals[0];
-      maxVal = vals[1];
-      filter.push(['>=', 'age', minVal]);
-      return map.setFilter('data', filter);
-    }
-  });
-  clearFilter = function(prop) {
-    var arr, arrs, filter, i, j, len;
-    filter = map.getFilter('data');
-    if (filter) {
-      arrs = filter.slice(0);
-      arrs.shift();
-      for (i = j = 0, len = arrs.length; j < len; i = ++j) {
-        arr = arrs[i];
-        if (arr.indexOf(prop) > -1) {
-          filter.splice(i + 1);
-        }
-      }
-      return filter;
+  togglePhenomena = function(e) {
+    var $side;
+    $side = $(this).parents('aside');
+    $side.toggleClass('close');
+    return $('#sentence').toggleClass('show');
+  };
+  selectSentence = function() {
+    var $filter, $sentence, $side, text, val;
+    $sentence = $(this);
+    $filter = $sentence.parents('.filter');
+    $side = $filter.parents('aside');
+    val = $sentence.attr('data-val');
+    text = $sentence.find('span').text();
+    $side.find('.selected').removeClass('selected');
+    $sentence.toggleClass('selected');
+    if ($sentence.is('.selected')) {
+      $('#sentence h1').text(text);
+      return updatePaintProperty(val);
+    } else {
+      return $('#sentence h1').text('');
     }
   };
-  return $('body').on('click', 'aside ul li', function() {
-    var $li, $selected, $side, $ul, __val, _prop, _vals, cond, filter, j, k, len, len1, prop, ref, val, vals;
-    $li = $(this);
-    $ul = $li.parents('ul');
-    $side = $ul.parents('aside');
-    prop = $ul.attr('data-prop');
-    val = $li.attr('data-val');
-    cond = '==';
-    if (val) {
-      if ($li.is('.selected')) {
-        $li.removeClass('selected');
-        val = '';
-      } else {
-        $ul.find('.selected:not([data-val="' + val + '"])').removeClass('selected');
-        $li.addClass('selected');
+  filterMarkers = function() {
+    return $filters.find('.option.selected').each(function(i, option) {
+      var $filter, $option, j, len, marker, markerProps, prop, ref, results, val;
+      $option = $(option);
+      $filter = $option.parents('.filter');
+      prop = $filter.attr('data-prop');
+      val = $option.attr('data-val');
+      if (!val) {
+        val = null;
       }
+      ref = dataset.features;
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        marker = ref[j];
+        markerProps = marker.properties;
+        results.push(console.log(prop));
+      }
+      return results;
+    });
+  };
+  toggleFilters = function(e) {
+    var $filter, $label, prop;
+    $label = $(this);
+    prop = $label.attr('data-prop');
+    $filter = $('.filter[data-prop="' + prop + '"]');
+    return $filter.toggleClass('open');
+  };
+  selectFilter = function(e) {
+    var $filter, $li, $selected, $side, __val, _prop, _vals, filter, j, k, len, len1, prop, ref, val, vals;
+    $li = $(this);
+    $filter = $li.parents('.filter');
+    $side = $filter.parents('aside');
+    prop = $filter.attr('data-prop');
+    val = $li.attr('data-val');
+    if ($li.is('.selected')) {
+      $li.removeClass('selected');
+    } else {
+      $filter.find('.selected:not([data-val="' + val + '"])').removeClass('selected');
+      $li.addClass('selected');
+    }
+    if (val) {
       vals = {};
       $selected = $side.find('li.selected');
       $selected.each(function(i, li) {
         var _prop, _val;
         _val = $(li).attr('data-val');
-        _prop = $(li).parents('ul').attr('data-prop');
+        if (!_val) {
+          return;
+        }
+        _prop = $(li).parents('.filter').attr('data-prop');
         if (!vals[_prop]) {
           return vals[_prop] = [_val];
         } else {
           return vals[_prop].push(_val);
         }
       });
-      if (prop === 'phenomena') {
-        return updatePaintProperty(val);
-      }
       filter = clearFilter(prop);
       if (!filter) {
         filter = ['all'];
@@ -266,6 +238,73 @@ $(function() {
     } else {
       filter = clearFilter(prop);
     }
+    console.log(filter);
     return map.setFilter('data', filter);
-  });
+  };
+  clearFilter = function(prop) {
+    var arr, arrs, filter, i, j, len;
+    filter = map.getFilter('data');
+    if (filter) {
+      arrs = filter.slice(0);
+      arrs.shift();
+      for (i = j = 0, len = arrs.length; j < len; i = ++j) {
+        arr = arrs[i];
+        if (arr.indexOf(prop) > -1) {
+          filter.splice(i + 1);
+        }
+      }
+      return filter;
+    }
+  };
+  setUpSliders = function() {
+    return $('.slider').each(function(i, slider) {
+      var $slider, max, med, min, options, type;
+      $slider = $(slider);
+      type = $slider.attr('data-type');
+      min = Number($slider.attr('data-min'));
+      max = Number($slider.attr('data-max'));
+      med = Number(((min + max) / 2).toFixed(0));
+      options = {
+        min: min,
+        max: max,
+        range: type === 'range'
+      };
+      if (type === 'scale') {
+        options.value = med;
+      } else if (type === 'range') {
+        options.values = [min, max];
+      }
+      return $slider.slider(options);
+    });
+  };
+  changeSlider = function(e, ui) {
+    var $slider, filter, maxVal, minVal, prop, type, val, vals;
+    $slider = $(this);
+    prop = $slider.attr('data-prop');
+    type = $slider.attr('data-type');
+    filter = clearFilter(prop);
+    if (!filter) {
+      filter = ['any'];
+    }
+    if (type === 'scale') {
+      val = ui.value.toString();
+      filter.push(['==', prop, val]);
+      return map.setFilter('data', filter);
+    } else if (type === 'range') {
+      vals = ui.values;
+      minVal = vals[0];
+      maxVal = vals[1];
+      filter.push(['>=', prop, minVal]);
+      filter.push(['<=', prop, maxVal]);
+      return map.setFilter('data', filter);
+    }
+  };
+  $('body').on('click', 'aside .label', toggleFilters);
+  $('body').on('click', 'aside#filters ul li', selectFilter);
+  $('.slider').on('slidechange', changeSlider);
+  $('body').on('click', '.hamburger', togglePhenomena);
+  $('body').on('click', 'aside#phenomena ul li', selectSentence);
+  createMap();
+  loadDataset();
+  return setUpSliders();
 });

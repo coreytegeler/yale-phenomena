@@ -12,12 +12,27 @@ html, body {
     html main .label, body main .label {
       font-weight: normal;
       padding: 0 0 .5em 0; }
+      html main .label:hover, body main .label:hover {
+        cursor: pointer; }
+    html main #sentence, body main #sentence {
+      width: 100%;
+      max-width: 15em;
+      color: black;
+      position: absolute;
+      z-index: 999;
+      left: 4em;
+      top: 3em; }
+      html main #sentence h1, body main #sentence h1 {
+        font-size: 1.5em;
+        margin: 0; }
     html main aside, body main aside {
-      width: calc(20% - 2em);
+      width: 100%;
+      max-width: 17em;
       position: fixed;
       top: 0;
       padding: 1em;
       overflow-y: scroll;
+      overflow-x: hidden;
       z-index: 9999; }
       html main aside ul, body main aside ul {
         margin: 0; }
@@ -63,47 +78,87 @@ html, body {
         left: 0;
         background: #a0a0a0;
         color: #f9f9f9; }
+        html main aside#phenomena .hamburger, body main aside#phenomena .hamburger {
+          width: 1.75em;
+          height: 1.25em;
+          position: absolute;
+          left: .5em;
+          top: .5em;
+          background-image: url(./../img/hamburger.svg);
+          background-position: center;
+          background-size: contain;
+          background-repeat: no-repeat; }
+          html main aside#phenomena .hamburger:hover, body main aside#phenomena .hamburger:hover {
+            cursor: pointer;
+            opacity: .7; }
         html main aside#phenomena ul, body main aside#phenomena ul {
           padding: 2em 0 0 1em; }
           html main aside#phenomena ul li, body main aside#phenomena ul li {
-            padding: 0 0 1em 0;
-            transition: transform 100ms ease-in-out,  padding 100ms ease-in-out;
-            transform-origin: left center; }
+            padding: 0 1em 1em 0;
+            transform-origin: left center;
+            opacity: .7; }
+            html main aside#phenomena ul li span, body main aside#phenomena ul li span {
+              font-weight: normal;
+              padding: 0;
+              margin: 0; }
             html main aside#phenomena ul li:hover, body main aside#phenomena ul li:hover {
+              opacity: 1;
               transform: scale(1.1);
               cursor: pointer; }
+            html main aside#phenomena ul li.selected, body main aside#phenomena ul li.selected {
+              opacity: 1; }
+        html main aside#phenomena.close, body main aside#phenomena.close {
+          width: 1em;
+          left: 0; }
+          html main aside#phenomena.close ul, body main aside#phenomena.close ul {
+            padding: 2em 0 0 0; }
+            html main aside#phenomena.close ul li, body main aside#phenomena.close ul li {
+              width: .8em;
+              height: .8em;
+              padding: 0;
+              margin: 0 0 1em 0;
+              border-radius: 50%;
+              background: #f9f9f9; }
+              html main aside#phenomena.close ul li span, body main aside#phenomena.close ul li span {
+                display: none; }
       html main aside#filters, body main aside#filters {
         height: auto;
         max-height: calc(100% - 2em);
         right: 0;
         background: #f9f9f9; }
-        html main aside#filters ul, body main aside#filters ul {
-          padding: 0 0 0 1em; }
-          html main aside#filters ul li, body main aside#filters ul li {
-            padding: 0 0 .25em 1.25em; }
-            html main aside#filters ul li::before, html main aside#filters ul li::after, body main aside#filters ul li::before, body main aside#filters ul li::after {
-              position: absolute;
-              border-radius: 50%;
-              content: ''; }
-            html main aside#filters ul li::before, body main aside#filters ul li::before {
-              width: .8em;
-              height: .8em;
-              left: 0;
-              top: 0;
-              border: 1px solid black; }
-            html main aside#filters ul li::after, body main aside#filters ul li::after {
-              width: calc(.8em - 2px);
-              height: calc(.8em - 2px);
-              left: 2px;
-              top: 2px;
-              content: '';
-              background: transparent; }
-            html main aside#filters ul li:hover, body main aside#filters ul li:hover {
-              cursor: pointer; }
-              html main aside#filters ul li:hover::after, body main aside#filters ul li:hover::after {
-                background: #a0a0a0; }
-            html main aside#filters ul li.selected::after, html main aside#filters ul li.selected:hover::after, body main aside#filters ul li.selected::after, body main aside#filters ul li.selected:hover::after {
-              background: black !important; }
+        html main aside#filters .filter, body main aside#filters .filter {
+          margin: 0 0 1em 0; }
+          html main aside#filters .filter ul, body main aside#filters .filter ul {
+            height: 0;
+            overflow: hidden;
+            padding: 0 0 0 1em; }
+            html main aside#filters .filter ul li, body main aside#filters .filter ul li {
+              padding: 0 0 .25em 1.25em; }
+              html main aside#filters .filter ul li::before, html main aside#filters .filter ul li::after, body main aside#filters .filter ul li::before, body main aside#filters .filter ul li::after {
+                position: absolute;
+                border-radius: 50%;
+                content: ''; }
+              html main aside#filters .filter ul li::before, body main aside#filters .filter ul li::before {
+                width: .8em;
+                height: .8em;
+                left: 0;
+                top: 0;
+                border: 1px solid black; }
+              html main aside#filters .filter ul li::after, body main aside#filters .filter ul li::after {
+                width: calc(.8em - 2px);
+                height: calc(.8em - 2px);
+                left: 2px;
+                top: 2px;
+                content: '';
+                background: transparent; }
+              html main aside#filters .filter ul li:hover, body main aside#filters .filter ul li:hover {
+                cursor: pointer; }
+                html main aside#filters .filter ul li:hover::after, body main aside#filters .filter ul li:hover::after {
+                  background: #a0a0a0; }
+              html main aside#filters .filter ul li.selected::after, html main aside#filters .filter ul li.selected:hover::after, body main aside#filters .filter ul li.selected::after, body main aside#filters .filter ul li.selected:hover::after {
+                background: black !important; }
+          html main aside#filters .filter.open ul, body main aside#filters .filter.open ul {
+            height: auto; }
     html main #map, body main #map {
       width: 100%;
       height: 100%;

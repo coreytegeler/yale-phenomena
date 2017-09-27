@@ -16,13 +16,31 @@ html, body {
 		.label {
 			font-weight: normal;
 			padding: 0 0 .5em 0;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		#sentence {
+			width: 100%;
+			max-width: 15em;
+			color: black;
+			position: absolute;
+			z-index: 999;
+			left: 4em;
+			top: 3em;
+			h1 {
+				font-size: 1.5em;
+				margin: 0;
+			}
 		}
 		aside {
-			width: calc(20% - 2em);
+			width: 100%;
+			max-width: 17em;
 			position: fixed;
 			top: 0;
 			padding: 1em;
 			overflow-y: scroll;
+			overflow-x: hidden;
 			z-index: 9999;
 			ul {
 				margin: 0;
@@ -84,16 +102,63 @@ html, body {
 				left: 0;
 				background: $grey;
 				color: $white;
+				// transition: width 200ms ease-in-out, left 200ms ease-in-out;
+				.hamburger {
+					width: 1.75em;
+					height: 1.25em;
+					// background: $white;
+					position: absolute;
+					left: .5em;
+					top: .5em;
+					background-image: url(./../img/hamburger.svg);
+					background-position: center;
+					background-size: contain;
+					background-repeat: no-repeat;
+					&:hover {
+						cursor: pointer;
+						opacity: .7;
+					}
+				}
 				ul {
 					padding: 2em 0 0 1em;
 					li {
-						padding: 0 0 1em 0;
-						transition: transform 100ms ease-in-out,  padding 100ms ease-in-out;
+						padding: 0 1em 1em 0;
 						transform-origin: left center;
+						opacity: .7;
+						span {
+							font-weight: normal;
+							padding: 0;
+							margin: 0;
+						}
 						&:hover {
 							// padding: .5em 0;
+							opacity: 1;
 							transform: scale(1.1);
 							cursor: pointer;
+						}
+						&.selected {
+							opacity: 1;
+						}
+					}
+				}
+				&.close {
+					width: 1em;
+					left: 0;
+					ul {
+						padding: 2em 0 0 0;
+						li {
+							width: .8em;
+							height: .8em;
+							padding: 0;
+							margin: 0 0 1em 0;
+							border-radius: 50%;
+							background: $white;
+							&.selected {
+
+							}
+							span {
+								display: none;
+							}
 						}
 					}
 				}
@@ -103,40 +168,51 @@ html, body {
 				max-height: calc(100% - 2em);
 				right: 0;
 				background: $white;
-				ul {
-					padding: 0 0 0 1em;
-					li {
-						padding: 0 0 .25em 1.25em;
-						&::before, &::after {
-							position: absolute;
-							border-radius: 50%;
-							content: '';
-						}
-						&::before {
-							width: .8em;
-							height: .8em;
-							left: 0;
-							top: 0;
-							border: 1px solid black;
-						}
-						&::after {
-							width: calc(.8em - 2px);
-							height: calc(.8em - 2px);
-							left: 2px;
-							top: 2px;
-							content: '';
-							background: transparent;
-						}
-						&:hover {
-							cursor: pointer;
+				.filter {
+					margin: 0 0 1em 0;
+					ul {
+						height: 0;
+						overflow: hidden;
+						padding: 0 0 0 1em;
+						li {
+							padding: 0 0 .25em 1.25em;
+							&::before, &::after {
+								position: absolute;
+								border-radius: 50%;
+								content: '';
+							}
+							&::before {
+								width: .8em;
+								height: .8em;
+								left: 0;
+								top: 0;
+								border: 1px solid black;
+							}
 							&::after {
-								background: $grey;
+								width: calc(.8em - 2px);
+								height: calc(.8em - 2px);
+								left: 2px;
+								top: 2px;
+								content: '';
+								background: transparent;
+							}
+							&:hover {
+								cursor: pointer;
+								&::after {
+									background: $grey;
+								}
+							}
+							&.selected, &.selected:hover {
+								&::after {
+									background: black !important;
+								}
 							}
 						}
-						&.selected, &.selected:hover {
-							&::after {
-								background: black !important;
-							}
+					}
+
+					&.open {
+						ul {
+							height: auto;
 						}
 					}
 				}

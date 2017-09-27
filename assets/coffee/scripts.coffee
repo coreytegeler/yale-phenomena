@@ -8,6 +8,9 @@ $ ->
 	style = 'mapbox://styles/coreytegeler/cj5adbyws0g7l2sqnl74tvzoa'
 	style = 'mapbox://styles/mapbox/light-v9'
 
+	$filters = $('#filters')
+	$phenomena = $('#phenomena')
+
 	createMap = () ->
 		window.map = new mapboxgl.Map
 			container: 'map',
@@ -81,20 +84,18 @@ $ ->
 				window.keys = Object.keys(response.features[0].properties)
 				window.dataset = response
 				filters = {}
-				for feature in dataset.features
-					feature.properties['Age'] = parseInt(feature.properties['Age'])
-					feature.properties['Income'] = parseInt(feature.properties['Income'])
-					props = feature.properties
-					keys = Object.keys(props)
-					for prop in keys
-						value = props[prop]
-						if !filters[prop]
-							filters[prop] = [value]
-						else if filters[prop].indexOf(value) < 0
-							filters[prop].push(value)
+				# for feature in dataset.features
+				# 	props = feature.properties
+				# 	keys = Object.keys(props)
+				# 	for prop in keys
+				# 		value = props[prop]
+				# 		if !filters[prop]
+				# 			filters[prop] = [value]
+				# 		else if filters[prop].indexOf(value) < 0
+				# 			filters[prop].push(value)
 
-				for prop in Object.keys(filters)
-					allowedProps = ['Income', 'Race', 'Age']
+				# for prop in Object.keys(filters)
+				# 	allowedProps = ['Income', 'Race', 'Age']
 					# if allowedProps.indexOf(prop) > -1
 						# addFilters(filters, prop)
 					# else if prop.match(/\d+/g)
@@ -103,18 +104,20 @@ $ ->
 	whiteList = ['Income', 'Race', 'Age']
 	addFilters = (filters, prop) ->
 		vals = filters[prop]
-		$filterList = $('#filters ul[data-prop="'+prop+'"]')
+		$filterList = $('#filters .filter[data-prop="'+prop+'"]')
 		if !$filterList.length
+			$filter = $('<div></div>')
+			$filter.attr('data-prop', prop)
 			$filterList = $('<ul></ul>')
-			$filterList.attr('data-prop', prop)
-			$('#filters').append('<h3>'+prop+'</h3>')
-			$('#filters').append($filterList)
+			$filter.append('<h3>'+prop+'</h3>')
+			$filter.append($filterList)
+			$('#filters').append($filter)
 		for val in vals
 			$filterItem = $filterList.find('li[data-value="'+val+'"]')
 			if !$filterItem.length
 				$filterItem = $('<li></li>')
 				$filterItem.attr('data-val', val).html(val)
-				$filterList.append($filterItem)
+				$filter.find('ul').append($filterItem)
 
 	translator = {
 		'PR_1125': 'The car needs washed'
@@ -130,17 +133,19 @@ $ ->
 		sentence = translator[val]
 		if !sentence
 			return
-		$phenList = $('#phenomena ul[data-prop="phenomena"]')
-		if !$phenList.length
+		$phenList = $('#phenomena .filter[data-prop="phenomena"]')
+		if !$filterList.length
+			$phen = $('<div></div>')
+			$phen.attr('data-prop', prop)
 			$phenList = $('<ul></ul>')
-			$phenList.attr('data-prop', 'phenomena')
-			$('#phenomena').append('<h3>Phenomena</h3>')
-			$('#phenomena').append($phenList)
+			$phen.append('<h3>'+prop+'</h3>')
+			$phen.append($phenList)
+			$('#filters').append($phen)
 		$phenItem = $phenList.find('li[data-val="'+val+'"]')
 		if !$phenItem.length
 			$phenItem = $('<li></li>')
 			$phenItem.attr('data-val', val).html(sentence)
-			$phenList.append($phenItem)				
+			$phen.find('ul').append($phenItem)				
 
 	getUniqueFeatures = (array, comparatorProperty) ->
 		existingFeatureKeys = {}
@@ -152,28 +157,118 @@ $ ->
 				return true
 		return uniqueFeatures
 
-	createMap()
-	loadDataset()
+
+	togglePhenomena = (e) ->
+		$side = $(this).parents('aside')
+		$side.toggleClass('close')
+		$('#sentence').toggleClass('show')
+
+	selectSentence = () ->	
+		$sentence = $(this)
+		$filter = $sentence.parents('.filter')
+		$side = $filter.parents('aside')
+		val = $sentence.attr('data-val')
+		text = $sentence.find('span').text()
+		$side.find('.selected').removeClass('selected')
+		$sentence.toggleClass('selected')
+		if $sentence.is('.selected')
+			$('#sentence h1').text(text)
+			updatePaintProperty(val)
+		else
+			$('#sentence h1').text('')
 
 
-	$('.slider').each (i, slider) ->
-		$slider = $(slider)
-		type = $slider.attr('data-type')
-		min = Number($slider.attr('data-min'))
-		max = Number($slider.attr('data-max'))
-		med = Number(((min+max)/2).toFixed(0))
-		options = {
-			min: min,
-			max: max,
-			range: (type == 'range')
-		}
-		if type == 'scale'
-			options.value = med
-		else if type == 'range'
-			options.values = [min, max]
-		$slider.slider options
+	filterMarkers = () ->
+		$filters.find('.option.selected').each (i, option) ->
+			$option = $(option)
+			$filter = $option.parents('.filter')
+			prop = $filter.attr('data-prop')
+			val = $option.attr('data-val')
+			if !val
+				val = null
+			for marker in dataset.features
+				markerProps = marker.properties
+				console.log prop
+					
+					
 
-	$('.slider').on 'slidechange', (e, ui) ->
+	toggleFilters = (e) ->
+		$label = $(this)
+		prop = $label.attr('data-prop')
+		$filter = $('.filter[data-prop="'+prop+'"]')
+		$filter.toggleClass('open')
+
+	selectFilter = (e) ->
+		$li = $(this)
+		$filter = $li.parents('.filter')
+		$side = $filter.parents('aside')
+		prop = $filter.attr('data-prop')
+		val = $li.attr('data-val')
+		if $li.is('.selected')
+			$li.removeClass('selected')
+		else
+			$filter.find('.selected:not([data-val="'+val+'"])').removeClass('selected')
+			$li.addClass('selected')
+		# filterMarkers()
+		# map.data.setFilter (f) ->
+			# console.log f
+
+
+		if val
+			vals = {}
+			$selected = $side.find('li.selected')
+			$selected.each (i, li) ->
+				_val = $(li).attr('data-val')
+				if !_val
+					return
+				_prop = $(li).parents('.filter').attr('data-prop')
+				if !vals[_prop]
+					vals[_prop] = [_val]
+				else
+					vals[_prop].push(_val)
+			
+			filter = clearFilter(prop)
+			if !filter
+				filter = ['all']
+
+			for _prop in Object.keys(vals)
+				_vals = vals[_prop]
+				for __val in _vals
+						filter.push(['==', _prop, __val])
+		else
+			filter = clearFilter(prop)
+		console.log filter
+		map.setFilter('data', filter)
+
+	clearFilter = (prop) ->
+		filter = map.getFilter('data')
+		if filter
+			arrs = filter.slice(0)
+			arrs.shift()
+			for arr, i in arrs
+				if arr.indexOf(prop) > -1
+					filter.splice(i+1)
+			return filter
+
+	setUpSliders = () ->
+		$('.slider').each (i, slider) ->
+			$slider = $(slider)
+			type = $slider.attr('data-type')
+			min = Number($slider.attr('data-min'))
+			max = Number($slider.attr('data-max'))
+			med = Number(((min+max)/2).toFixed(0))
+			options = {
+				min: min,
+				max: max,
+				range: (type == 'range')
+			}
+			if type == 'scale'
+				options.value = med
+			else if type == 'range'
+				options.values = [min, max]
+			$slider.slider options
+
+	changeSlider = (e, ui) ->
 		$slider = $(this)
 		prop = $slider.attr('data-prop')
 		type = $slider.attr('data-type')
@@ -190,60 +285,20 @@ $ ->
 			vals = ui.values
 			minVal = vals[0]
 			maxVal = vals[1]
-			filter.push(['>=', 'age', minVal])
-			# filter.push(['<=', prop, maxVal])
+			filter.push(['>=', prop, minVal])
+			filter.push(['<=', prop, maxVal])
 			map.setFilter('data', filter)
 
 
-	clearFilter = (prop) ->
-		filter = map.getFilter('data')
-		if filter
-			arrs = filter.slice(0)
-			arrs.shift()
-			for arr, i in arrs
-				if arr.indexOf(prop) > -1
-					filter.splice(i+1)
-			return filter
+	$('body').on 'click', 'aside .label', toggleFilters
+	$('body').on 'click', 'aside#filters ul li', selectFilter
+	$('.slider').on 'slidechange', changeSlider
 
+	$('body').on 'click', '.hamburger', togglePhenomena
+	$('body').on 'click', 'aside#phenomena ul li', selectSentence
 
-	$('body').on 'click', 'aside ul li', () ->
-		$li = $(this)
-		$ul = $li.parents('ul')
-		$side = $ul.parents('aside')
-		prop = $ul.attr('data-prop')
-		val = $li.attr('data-val')
-		cond = '=='
-		if val
-			if $li.is('.selected')
-				$li.removeClass('selected')
-				val = ''
-			else
-				$ul.find('.selected:not([data-val="'+val+'"])').removeClass('selected')
-				$li.addClass('selected')			
+	createMap()
+	loadDataset()
+	setUpSliders()
 
-			vals = {}
-			$selected = $side.find('li.selected')
-			$selected.each (i, li) ->
-				_val = $(li).attr('data-val')
-				_prop = $(li).parents('ul').attr('data-prop')
-				if !vals[_prop]
-					vals[_prop] = [_val]
-				else
-					vals[_prop].push(_val)
-			
-			if prop == 'phenomena'
-				return updatePaintProperty(val)
-			
-			filter = clearFilter(prop)
-			if !filter
-				filter = ['all']
-
-			for _prop in Object.keys(vals)
-				_vals = vals[_prop]
-				for __val in _vals
-					filter.push(['==', _prop, __val])
-		else
-			filter = clearFilter(prop)
-
-		map.setFilter('data', filter)
 		
