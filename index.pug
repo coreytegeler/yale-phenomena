@@ -15,62 +15,68 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 				h1
 			aside#phenomena
 				.hamburger
-				.filter(data-prop='phenomena')
-					ul.open
-						li.option(data-val='PR_1125')
-							span The car needs washed
-						li.option(data-val='CG_1025.1')
-							span I was afraid you might couldn’t find it
-						li.option(data-val='PI_1160')
-							span John plays guitar, but so don’t I
-						li.option(data-val='PI_1171')
-							span Here’s you a piece of pizza
-						li.option(data-val='CG_1026.1')
-							span This seat reclines hella
-						li.option(data-val='PI_1161')
-							span When I don't have hockey and I'm done my homework, I go there and skate
-						li.option(data-val='PI_1172')
-							span I’m SO not going to study tonight
-						li.option(data-val='PR_1116')
-							span Every time you ask me not to hum, I’ll hum more louder
+				.filter.phenomena(data-prop='phenomena')
+					.options
+						ul
+							li.option(data-val='PR_1125')
+								span The car needs washed
+							li.option(data-val='CG_1025.1')
+								span I was afraid you might couldn’t find it
+							li.option(data-val='PI_1160')
+								span John plays guitar, but so don’t I
+							li.option(data-val='PI_1171')
+								span Here’s you a piece of pizza
+							li.option(data-val='CG_1026.1')
+								span This seat reclines hella
+							li.option(data-val='PI_1161')
+								span When I don't have hockey and I'm done my homework, I go there and skate
+							li.option(data-val='PI_1172')
+								span I’m SO not going to study tonight
+							li.option(data-val='PR_1116')
+								span Every time you ask me not to hum, I’ll hum more louder
 			aside#filters
-				.label(data-prop='Race') Race
-				.filter(data-prop='Race').open
-					ul
-						li.option.selected(data-val=null) All Race
-						li.option(data-val='Amerindian') Amerindian
-						li.option(data-val='Asian') Asian
-						li.option(data-val='Black') Black
-						li.option(data-val='Hispanic') Hispanic
-						li.option(data-val='White') White
-						li.option(data-val='Other') Other
+				.filter.race.open(data-prop='Race')
+					.label Race
+					.options
+						ul
+							li.option.selected.all(data-val=null) All Race
+							li.option(data-val='Amerindian') Amerindian
+							li.option(data-val='Asian') Asian
+							li.option(data-val='Black') Black
+							li.option(data-val='Hispanic') Hispanic
+							li.option(data-val='White') White
+							li.option(data-val='Other') Other
 				
-				.label(data-prop='Income') Income
-				.filter(data-prop='Income').open
-					//- .slider(data-prop='Income' data-type='range' data-min='0' data-max='500000')
-					ul
-						li.option.selected(data-val=null) All Income
-						li.option(data-val='12500') 12500
-						li.option(data-val='37500') 37500
-						li.option(data-val='62500') 62500
-						li.option(data-val='75000') 75000
-						li.option(data-val='100000') 100000
+				.filter.income.open(data-prop='Income')
+					.label Income
+					.options
+						//- .slider(data-prop='Income' data-type='range' data-min='0' data-max='500000')
+						ul
+							li.option.selected.all(data-val=null) All Income
+							li.option(data-val='12500') 12500
+							li.option(data-val='37500') 37500
+							li.option(data-val='62500') 62500
+							li.option(data-val='75000') 75000
+							li.option(data-val='100000') 100000
 				
-				.label(data-prop='Age_Bin') Age
-				.filter(data-prop='Age_Bin').open
-					ul
-						li.option.selected(data-val=null) All Ages
-						li.option(data-val='18-30') 18-30
-						li.option(data-val='31-40') 31-40
-						li.option(data-val='41-50') 41-50
-						li.option(data-val='51-60') 51-60
-						li.option(data-val='61_up') 61 &amp; Up
+				.filter.age.open(data-prop='Age_Bin')
+					.label Age
+					.options
+						ul
+							li.option.selected.all(data-val=null) All Ages
+							li.option(data-val='18-30') 18-30
+							li.option(data-val='31-40') 31-40
+							li.option(data-val='41-50') 41-50
+							li.option(data-val='51-60') 51-60
+							li.option(data-val='61_up') 61 &amp; Up
 
-				.label(data-prop='Acceptance_Level') Acceptance Level
-				.filter(data-prop='Acceptance_Level').open
-					//- .slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
-					ul
-						li.option.selected(data-val=null) Show All
-						li.option(data-val='true') 'Acceptable' Only
-						li.option(data-val='false') 'Unacceptable' Only
+
+				.filter.acceptance.open.radio(data-prop='PR_1116')
+					.label Acceptance Level
+					.options
+						//- .slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
+						ul
+							li.option.selected.all(data-val=null) Show All
+							li.option(data-val='3,4,5') 'Acceptable' Only
+							li.option(data-val='1,2') 'Unacceptable' Only
 			#map

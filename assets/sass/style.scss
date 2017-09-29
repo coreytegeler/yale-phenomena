@@ -170,46 +170,47 @@ html, body {
 				background: $white;
 				.filter {
 					margin: 0 0 1em 0;
-					ul {
-						height: 0;
-						overflow: hidden;
-						padding: 0 0 0 1em;
-						li {
-							padding: 0 0 .25em 1.25em;
-							&::before, &::after {
-								position: absolute;
-								border-radius: 50%;
-								content: '';
-							}
-							&::before {
-								width: .8em;
-								height: .8em;
-								left: 0;
-								top: 0;
-								border: 1px solid black;
-							}
-							&::after {
-								width: calc(.8em - 2px);
-								height: calc(.8em - 2px);
-								left: 2px;
-								top: 2px;
-								content: '';
-								background: transparent;
-							}
-							&:hover {
-								cursor: pointer;
-								&::after {
-									background: $grey;
+					.options {
+						ul {
+							height: 0;
+							overflow: hidden;
+							padding: 0 0 0 1em;
+							li {
+								padding: 0 0 .25em 1.25em;
+								&::before, &::after {
+									position: absolute;
+									border-radius: 50%;
+									content: '';
 								}
-							}
-							&.selected, &.selected:hover {
+								&::before {
+									width: .8em;
+									height: .8em;
+									left: 0;
+									top: 0;
+									border: 1px solid black;
+								}
 								&::after {
-									background: black !important;
+									width: calc(.8em - 2px);
+									height: calc(.8em - 2px);
+									left: 2px;
+									top: 2px;
+									content: '';
+									background: transparent;
+								}
+								&:hover {
+									cursor: pointer;
+									&::after {
+										background: $grey;
+									}
+								}
+								&.selected, &.selected:hover {
+									&::after {
+										background: black !important;
+									}
 								}
 							}
 						}
 					}
-
 					&.open {
 						ul {
 							height: auto;

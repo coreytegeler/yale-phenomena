@@ -128,34 +128,34 @@ html, body {
         background: #f9f9f9; }
         html main aside#filters .filter, body main aside#filters .filter {
           margin: 0 0 1em 0; }
-          html main aside#filters .filter ul, body main aside#filters .filter ul {
+          html main aside#filters .filter .options ul, body main aside#filters .filter .options ul {
             height: 0;
             overflow: hidden;
             padding: 0 0 0 1em; }
-            html main aside#filters .filter ul li, body main aside#filters .filter ul li {
+            html main aside#filters .filter .options ul li, body main aside#filters .filter .options ul li {
               padding: 0 0 .25em 1.25em; }
-              html main aside#filters .filter ul li::before, html main aside#filters .filter ul li::after, body main aside#filters .filter ul li::before, body main aside#filters .filter ul li::after {
+              html main aside#filters .filter .options ul li::before, html main aside#filters .filter .options ul li::after, body main aside#filters .filter .options ul li::before, body main aside#filters .filter .options ul li::after {
                 position: absolute;
                 border-radius: 50%;
                 content: ''; }
-              html main aside#filters .filter ul li::before, body main aside#filters .filter ul li::before {
+              html main aside#filters .filter .options ul li::before, body main aside#filters .filter .options ul li::before {
                 width: .8em;
                 height: .8em;
                 left: 0;
                 top: 0;
                 border: 1px solid black; }
-              html main aside#filters .filter ul li::after, body main aside#filters .filter ul li::after {
+              html main aside#filters .filter .options ul li::after, body main aside#filters .filter .options ul li::after {
                 width: calc(.8em - 2px);
                 height: calc(.8em - 2px);
                 left: 2px;
                 top: 2px;
                 content: '';
                 background: transparent; }
-              html main aside#filters .filter ul li:hover, body main aside#filters .filter ul li:hover {
+              html main aside#filters .filter .options ul li:hover, body main aside#filters .filter .options ul li:hover {
                 cursor: pointer; }
-                html main aside#filters .filter ul li:hover::after, body main aside#filters .filter ul li:hover::after {
+                html main aside#filters .filter .options ul li:hover::after, body main aside#filters .filter .options ul li:hover::after {
                   background: #a0a0a0; }
-              html main aside#filters .filter ul li.selected::after, html main aside#filters .filter ul li.selected:hover::after, body main aside#filters .filter ul li.selected::after, body main aside#filters .filter ul li.selected:hover::after {
+              html main aside#filters .filter .options ul li.selected::after, html main aside#filters .filter .options ul li.selected:hover::after, body main aside#filters .filter .options ul li.selected::after, body main aside#filters .filter .options ul li.selected:hover::after {
                 background: black !important; }
           html main aside#filters .filter.open ul, body main aside#filters .filter.open ul {
             height: auto; }

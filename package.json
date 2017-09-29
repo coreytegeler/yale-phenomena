@@ -32,7 +32,7 @@
     "gulp": "gulp dev --dev",
     "gulp:prod": "gulp prod --prod",
     "browsersync": "browser-sync start --server --port 9000 --no-notify --no-open --files '**/*.css' '**/*.js' '*.html'",
-    "dev": "npm run gulp & npm run browsersync",
+    "go": "npm run gulp & npm run browsersync",
     "prod": "npm run gulp:prod"
   }
 }

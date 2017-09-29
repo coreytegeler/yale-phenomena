@@ -171,6 +171,11 @@ $ ->
 		text = $sentence.find('span').text()
 		$side.find('.selected').removeClass('selected')
 		$sentence.toggleClass('selected')
+		$accFilter = $filters.find('.filter.acceptance')
+		$accLabel = $filters.find('.label.acceptance')
+		$accFilter.attr('data-prop', val)
+		$accLabel.attr('data-prop', val)
+
 		if $sentence.is('.selected')
 			$('#sentence h1').text(text)
 			updatePaintProperty(val)
@@ -178,24 +183,9 @@ $ ->
 			$('#sentence h1').text('')
 
 
-	filterMarkers = () ->
-		$filters.find('.option.selected').each (i, option) ->
-			$option = $(option)
-			$filter = $option.parents('.filter')
-			prop = $filter.attr('data-prop')
-			val = $option.attr('data-val')
-			if !val
-				val = null
-			for marker in dataset.features
-				markerProps = marker.properties
-				console.log prop
-					
-					
-
-	toggleFilters = (e) ->
+	toggleFilter = (e) ->
 		$label = $(this)
-		prop = $label.attr('data-prop')
-		$filter = $('.filter[data-prop="'+prop+'"]')
+		$filter = $label.parents('.filter')
 		$filter.toggleClass('open')
 
 	selectFilter = (e) ->
@@ -204,40 +194,53 @@ $ ->
 		$side = $filter.parents('aside')
 		prop = $filter.attr('data-prop')
 		val = $li.attr('data-val')
-		if $li.is('.selected')
-			$li.removeClass('selected')
+		$selected = $filter.find('.selected')
+		if $li.is('.all')
+			$selected.filter(':not(.all)').removeClass('selected')
+		else if $filter.is('.radio')
+			$selected.removeClass('selected')
 		else
-			$filter.find('.selected:not([data-val="'+val+'"])').removeClass('selected')
+			$selected.filter('.all').removeClass('selected')
+
+		if $li.is('.selected:not(.all)')
+			$li.removeClass('selected')
+			if !$filter.find('.selected').lenght
+				$filter.find('.all').addClass('selected')
+		else
 			$li.addClass('selected')
-		# filterMarkers()
-		# map.data.setFilter (f) ->
-			# console.log f
 
 
-		if val
-			vals = {}
-			$selected = $side.find('li.selected')
-			$selected.each (i, li) ->
-				_val = $(li).attr('data-val')
-				if !_val
-					return
-				_prop = $(li).parents('.filter').attr('data-prop')
-				if !vals[_prop]
-					vals[_prop] = [_val]
-				else
-					vals[_prop].push(_val)
-			
+
+		filterMarkers()
+
+	filterMarkers = () ->
+		vals = {}
+		$selected = $filters.find('li.selected')
+		$selected.each (i, li) ->
+			$filter = $(li).parents('.filter')
+			prop = $filter.attr('data-prop')
+			_val = $(li).attr('data-val')
+			if !_val
+				return
+			_prop = $(li).parents('.filter').attr('data-prop')
+			if !vals[_prop]
+				vals[_prop] = [_val]
+			else
+				vals[_prop].push(_val)
 			filter = clearFilter(prop)
-			if !filter
-				filter = ['all']
-
+		if !filter
+			filter = ['all']
+			cond = 'in'
 			for _prop in Object.keys(vals)
 				_vals = vals[_prop]
+				if _prop.indexOf('_') > -1 && _vals[0]
+					_vals = _vals[0].split(',')
+				args = [cond, _prop]
 				for __val in _vals
-						filter.push(['==', _prop, __val])
+					args.push(__val)
+				filter.push(args)
 		else
 			filter = clearFilter(prop)
-		console.log filter
 		map.setFilter('data', filter)
 
 	clearFilter = (prop) ->
@@ -290,7 +293,7 @@ $ ->
 			map.setFilter('data', filter)
 
 
-	$('body').on 'click', 'aside .label', toggleFilters
+	$('body').on 'click', 'aside .label', toggleFilter
 	$('body').on 'click', 'aside#filters ul li', selectFilter
 	$('.slider').on 'slidechange', changeSlider
 
