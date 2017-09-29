@@ -30,15 +30,6 @@ $ ->
 					'circle-radius':
 						'base': 1.75,
 						'stops': [[12, 5], [22, 10]]
-					# 'circle-color':
-					# 	property: 'Gender',
-					# 	type: 'categorical',
-					# 	stops: [
-					# 		['Male', 'blue'],
-					# 		['Female', 'pink'],
-					# 		['Transgender (MTF)', 'green'],
-					# 		['Transgender (FTM)', 'green']
-					# 	]
 
 			dataLayer = map.getLayer('data')
 			dataBounds = map.getBounds(dataLayer).toArray()
@@ -53,12 +44,7 @@ $ ->
 			paddedBounds = map.getBounds()
 			map.setMaxBounds(paddedBounds)
 
-	# map.on 'sourcedata', (e) ->
-	# 	if e.sourceId == 'data'
-	# 		dataPoints = map.queryRenderedFeatures({layers:['data']})
-	# 		dataPoints = getUniqueFeatures dataPoints, 'ResponseID'
-			# for point in dataPoints
-				# console.log point
+		addListeners(map)
 
 	updatePaintProperty = (prop) ->
 		styles = 
@@ -73,33 +59,6 @@ $ ->
 				['5', 'rgba(0,0,0,1)']
 			]
 		map.setPaintProperty('data', 'circle-color', styles);
-
-	
-	loadDataset = () ->
-		$.ajax
-			url: apiBase+'/features',
-			data:
-				access_token: accessToken
-			success: (response) ->
-				window.keys = Object.keys(response.features[0].properties)
-				window.dataset = response
-				filters = {}
-				# for feature in dataset.features
-				# 	props = feature.properties
-				# 	keys = Object.keys(props)
-				# 	for prop in keys
-				# 		value = props[prop]
-				# 		if !filters[prop]
-				# 			filters[prop] = [value]
-				# 		else if filters[prop].indexOf(value) < 0
-				# 			filters[prop].push(value)
-
-				# for prop in Object.keys(filters)
-				# 	allowedProps = ['Income', 'Race', 'Age']
-					# if allowedProps.indexOf(prop) > -1
-						# addFilters(filters, prop)
-					# else if prop.match(/\d+/g)
-					# 	addPhenomena(prop)
 
 	whiteList = ['Income', 'Race', 'Age']
 	addFilters = (filters, prop) ->
@@ -204,7 +163,7 @@ $ ->
 
 		if $li.is('.selected:not(.all)')
 			$li.removeClass('selected')
-			if !$filter.find('.selected').lenght
+			if !$filter.find('.selected').length
 				$filter.find('.all').addClass('selected')
 		else
 			$li.addClass('selected')
@@ -293,15 +252,40 @@ $ ->
 			map.setFilter('data', filter)
 
 
-	$('body').on 'click', 'aside .label', toggleFilter
-	$('body').on 'click', 'aside#filters ul li', selectFilter
-	$('.slider').on 'slidechange', changeSlider
+	addListeners = (map) ->
+		$('body').on 'click', 'aside .label', toggleFilter
+		$('body').on 'click', 'aside#filters ul li', selectFilter
+		$('.slider').on 'slidechange', changeSlider
 
-	$('body').on 'click', '.hamburger', togglePhenomena
-	$('body').on 'click', 'aside#phenomena ul li', selectSentence
+		$('body').on 'click', '.hamburger', togglePhenomena
+		$('body').on 'click', 'aside#phenomena ul li', selectSentence
+
+		popup = new mapboxgl.Popup
+			closeButton: false,
+			closeOnClick: false
+
+		map.on 'mouseenter', 'data', (e) ->
+			map.getCanvas().style.cursor = 'pointer'
+			marker = e.features[0]
+			props = marker.properties
+			props =
+				gender: props['Gender']
+				race: props['Race']
+				raised: props['RaisedPlace']
+				edu: props['Education']
+				income: '$'+props['Income']+'/yr'
+			description = ''
+			prop_keys = Object.keys(props)
+			for prop, i in prop_keys
+				val = props[prop].replace('_','')
+				description += props[prop]
+				if i < prop_keys.length - 1
+					description += ', '
+			popup.setLngLat(marker.geometry.coordinates)
+				.setHTML(description)
+				.addTo(map)
 
 	createMap()
-	loadDataset()
 	setUpSliders()
 
 		

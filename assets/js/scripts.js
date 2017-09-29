@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $phenomena, accessToken, addFilters, addPhenomena, apiBase, changeSlider, clearFilter, createMap, datasetId, filterMarkers, getUniqueFeatures, loadDataset, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilter, togglePhenomena, translator, updatePaintProperty, username, whiteList;
+  var $filters, $phenomena, accessToken, addFilters, addListeners, addPhenomena, apiBase, changeSlider, clearFilter, createMap, datasetId, filterMarkers, getUniqueFeatures, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilter, togglePhenomena, translator, updatePaintProperty, username, whiteList;
   tilesetId = 'Yale_GDP';
   datasetId = 'cj5acubfx065v32mmdelcwb71';
   username = 'coreytegeler';
@@ -17,7 +17,7 @@ $(function() {
       zoom: 3,
       center: [-95.7129, 37.0902]
     });
-    return map.on('load', function() {
+    map.on('load', function() {
       var dataBounds, dataLayer, paddedBounds;
       map.addLayer({
         'id': 'data',
@@ -48,6 +48,7 @@ $(function() {
       paddedBounds = map.getBounds();
       return map.setMaxBounds(paddedBounds);
     });
+    return addListeners(map);
   };
   updatePaintProperty = function(prop) {
     var styles;
@@ -57,20 +58,6 @@ $(function() {
       stops: [['0', 'rgba(0,0,0,.1)'], ['1', 'rgba(0,0,0,.2)'], ['2', 'rgba(0,0,0,.4)'], ['3', 'rgba(0,0,0,.6)'], ['4', 'rgba(0,0,0,.8)'], ['5', 'rgba(0,0,0,1)']]
     };
     return map.setPaintProperty('data', 'circle-color', styles);
-  };
-  loadDataset = function() {
-    return $.ajax({
-      url: apiBase + '/features',
-      data: {
-        access_token: accessToken
-      },
-      success: function(response) {
-        var filters;
-        window.keys = Object.keys(response.features[0].properties);
-        window.dataset = response;
-        return filters = {};
-      }
-    });
   };
   whiteList = ['Income', 'Race', 'Age'];
   addFilters = function(filters, prop) {
@@ -193,7 +180,7 @@ $(function() {
     }
     if ($li.is('.selected:not(.all)')) {
       $li.removeClass('selected');
-      if (!$filter.find('.selected').lenght) {
+      if (!$filter.find('.selected').length) {
         $filter.find('.all').addClass('selected');
       }
     } else {
@@ -301,12 +288,42 @@ $(function() {
       return map.setFilter('data', filter);
     }
   };
-  $('body').on('click', 'aside .label', toggleFilter);
-  $('body').on('click', 'aside#filters ul li', selectFilter);
-  $('.slider').on('slidechange', changeSlider);
-  $('body').on('click', '.hamburger', togglePhenomena);
-  $('body').on('click', 'aside#phenomena ul li', selectSentence);
+  addListeners = function(map) {
+    var popup;
+    $('body').on('click', 'aside .label', toggleFilter);
+    $('body').on('click', 'aside#filters ul li', selectFilter);
+    $('.slider').on('slidechange', changeSlider);
+    $('body').on('click', '.hamburger', togglePhenomena);
+    $('body').on('click', 'aside#phenomena ul li', selectSentence);
+    popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    });
+    return map.on('mouseenter', 'data', function(e) {
+      var description, i, j, len, marker, prop, prop_keys, props, val;
+      map.getCanvas().style.cursor = 'pointer';
+      marker = e.features[0];
+      props = marker.properties;
+      props = {
+        gender: props['Gender'],
+        race: props['Race'],
+        raised: props['RaisedPlace'],
+        edu: props['Education'],
+        income: '$' + props['Income'] + '/yr'
+      };
+      description = '';
+      prop_keys = Object.keys(props);
+      for (i = j = 0, len = prop_keys.length; j < len; i = ++j) {
+        prop = prop_keys[i];
+        val = props[prop].replace('_', '');
+        description += props[prop];
+        if (i < prop_keys.length - 1) {
+          description += ', ';
+        }
+      }
+      return popup.setLngLat(marker.geometry.coordinates).setHTML(description).addTo(map);
+    });
+  };
   createMap();
-  loadDataset();
   return setUpSliders();
 });

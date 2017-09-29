@@ -229,6 +229,22 @@ html, body {
 					width: 100% !important;
 				}
 			}
+			.mapboxgl-popup {
+				max-width: 20em;
+				position: absolute;
+				top: 0;
+				left: 0;
+				pointer-events: none;
+				will-change: transform;
+				.mapboxgl-popup-content {
+					position: relative;
+					background-color: $grey;
+					color: $white;
+					padding: .7em;
+					border-radius: .25em;
+					font-size: .5em;
+				}
+			}
 		}
 	}
 }

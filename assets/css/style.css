@@ -166,3 +166,17 @@ html, body {
       position: relative; }
       html main #map .mapboxgl-canvas-container canvas, body main #map .mapboxgl-canvas-container canvas {
         width: 100% !important; }
+      html main #map .mapboxgl-popup, body main #map .mapboxgl-popup {
+        max-width: 20em;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        will-change: transform; }
+        html main #map .mapboxgl-popup .mapboxgl-popup-content, body main #map .mapboxgl-popup .mapboxgl-popup-content {
+          position: relative;
+          background-color: #a0a0a0;
+          color: #f9f9f9;
+          padding: .7em;
+          border-radius: .25em;
+          font-size: .5em; }
