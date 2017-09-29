@@ -299,7 +299,7 @@ $(function() {
       closeButton: false,
       closeOnClick: false
     });
-    return map.on('mouseenter', 'data', function(e) {
+    map.on('mouseenter', 'data', function(e) {
       var description, i, j, len, marker, prop, prop_keys, props, val;
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
@@ -322,6 +322,9 @@ $(function() {
         }
       }
       return popup.setLngLat(marker.geometry.coordinates).setHTML(description).addTo(map);
+    });
+    return map.on('mouseleave', 'data', function(e) {
+      return console.log(e);
     });
   };
   createMap();

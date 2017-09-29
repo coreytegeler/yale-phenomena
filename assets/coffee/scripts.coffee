@@ -285,6 +285,10 @@ $ ->
 				.setHTML(description)
 				.addTo(map)
 
+		map.on 'mouseleave', 'data', (e) ->
+			# marker = e.features[0]
+			console.log e
+
 	createMap()
 	setUpSliders()
 

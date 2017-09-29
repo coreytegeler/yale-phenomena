@@ -96,7 +96,7 @@ html, body {
           html main aside#phenomena ul li, body main aside#phenomena ul li {
             padding: 0 1em 1em 0;
             transform-origin: left center;
-            opacity: .7; }
+            opacity: .5; }
             html main aside#phenomena ul li span, body main aside#phenomena ul li span {
               font-weight: normal;
               padding: 0;
