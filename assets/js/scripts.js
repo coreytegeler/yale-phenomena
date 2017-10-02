@@ -324,6 +324,7 @@ $(function() {
       return popup.setLngLat(marker.geometry.coordinates).setHTML(description).addTo(map);
     });
     return map.on('mouseleave', 'data', function(e) {
+      console.log(map);
       return console.log(e);
     });
   };

@@ -287,6 +287,7 @@ $ ->
 
 		map.on 'mouseleave', 'data', (e) ->
 			# marker = e.features[0]
+			console.log map
 			console.log e
 
 	createMap()

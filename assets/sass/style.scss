@@ -1,12 +1,22 @@
 $grey: #a0a0a0;
+$dark: #58595b;
 $white: #f9f9f9;
 html, body {
 	width: 100%;
 	height: 100%;
 	margin: 0;
 	overflow: hidden;
+	color: $dark;
 	font: {
 		family: Helvetica;
+	}
+	header {
+		width: 100%;
+		position: fixed;
+		left: 0;
+		top: .5em;
+		text-align: center;
+		z-index: 100;
 	}
 	main {
 		width: 100%;
@@ -15,7 +25,7 @@ html, body {
 		flex-direction: row;
 		.label {
 			font-weight: normal;
-			padding: 0 0 .5em 0;
+			margin: 0 0 .5em 0;
 			&:hover {
 				cursor: pointer;
 			}
@@ -23,7 +33,7 @@ html, body {
 		#sentence {
 			width: 100%;
 			max-width: 15em;
-			color: black;
+			color: $dark;
 			position: absolute;
 			z-index: 999;
 			left: 4em;
@@ -54,13 +64,13 @@ html, body {
 				height: 2px;
 				margin: 1em 0;
 				position: relative;
-				background: black;
+				background: $dark;
 				border: 1px solid $white;
 				.ui-slider-handle {
 					height: 10px;
 					position: absolute;
 					top: -5px;
-					background: black;
+					background: $dark;
 					border: 1px solid $white;
 					transition: transform 100ms ease-in-out;
 					transform-origin: center;
@@ -122,7 +132,7 @@ html, body {
 				ul {
 					padding: 2em 0 0 1em;
 					li {
-						padding: 0 1em 1em 0;
+						margin: 0 1em 1em 0;
 						transform-origin: left center;
 						opacity: .5;
 						span {
@@ -168,8 +178,16 @@ html, body {
 				max-height: calc(100% - 2em);
 				right: 0;
 				background: $white;
+				user-select: none; 
 				.filter {
 					margin: 0 0 1em 0;
+					.label {
+						padding-left: 1.25em;
+						background-image: url('./../img/arrows.svg');
+						background-position: left -1em;
+						background-repeat: no-repeat;
+						background-size: 1em auto;
+					}
 					.options {
 						ul {
 							height: 0;
@@ -187,7 +205,7 @@ html, body {
 									height: .8em;
 									left: 0;
 									top: 0;
-									border: 1px solid black;
+									border: 1px solid $dark;
 								}
 								&::after {
 									width: calc(.8em - 2px);
@@ -205,13 +223,16 @@ html, body {
 								}
 								&.selected, &.selected:hover {
 									&::after {
-										background: black !important;
+										background: $dark !important;
 									}
 								}
 							}
 						}
 					}
 					&.open {
+						.label {
+							background-position: left -2em;
+						}
 						ul {
 							height: auto;
 						}

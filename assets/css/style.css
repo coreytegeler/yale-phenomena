@@ -3,7 +3,15 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  color: #58595b;
   font-family: Helvetica; }
+  html header, body header {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: .5em;
+    text-align: center;
+    z-index: 100; }
   html main, body main {
     width: 100%;
     height: 100%;
@@ -11,13 +19,13 @@ html, body {
     flex-direction: row; }
     html main .label, body main .label {
       font-weight: normal;
-      padding: 0 0 .5em 0; }
+      margin: 0 0 .5em 0; }
       html main .label:hover, body main .label:hover {
         cursor: pointer; }
     html main #sentence, body main #sentence {
       width: 100%;
       max-width: 15em;
-      color: black;
+      color: #58595b;
       position: absolute;
       z-index: 999;
       left: 4em;
@@ -44,13 +52,13 @@ html, body {
         height: 2px;
         margin: 1em 0;
         position: relative;
-        background: black;
+        background: #58595b;
         border: 1px solid #f9f9f9; }
         html main aside .slider .ui-slider-handle, body main aside .slider .ui-slider-handle {
           height: 10px;
           position: absolute;
           top: -5px;
-          background: black;
+          background: #58595b;
           border: 1px solid #f9f9f9;
           transition: transform 100ms ease-in-out;
           transform-origin: center; }
@@ -94,7 +102,7 @@ html, body {
         html main aside#phenomena ul, body main aside#phenomena ul {
           padding: 2em 0 0 1em; }
           html main aside#phenomena ul li, body main aside#phenomena ul li {
-            padding: 0 1em 1em 0;
+            margin: 0 1em 1em 0;
             transform-origin: left center;
             opacity: .5; }
             html main aside#phenomena ul li span, body main aside#phenomena ul li span {
@@ -125,9 +133,16 @@ html, body {
         height: auto;
         max-height: calc(100% - 2em);
         right: 0;
-        background: #f9f9f9; }
+        background: #f9f9f9;
+        user-select: none; }
         html main aside#filters .filter, body main aside#filters .filter {
           margin: 0 0 1em 0; }
+          html main aside#filters .filter .label, body main aside#filters .filter .label {
+            padding-left: 1.25em;
+            background-image: url("./../img/arrows.svg");
+            background-position: left -1em;
+            background-repeat: no-repeat;
+            background-size: 1em auto; }
           html main aside#filters .filter .options ul, body main aside#filters .filter .options ul {
             height: 0;
             overflow: hidden;
@@ -143,7 +158,7 @@ html, body {
                 height: .8em;
                 left: 0;
                 top: 0;
-                border: 1px solid black; }
+                border: 1px solid #58595b; }
               html main aside#filters .filter .options ul li::after, body main aside#filters .filter .options ul li::after {
                 width: calc(.8em - 2px);
                 height: calc(.8em - 2px);
@@ -156,7 +171,9 @@ html, body {
                 html main aside#filters .filter .options ul li:hover::after, body main aside#filters .filter .options ul li:hover::after {
                   background: #a0a0a0; }
               html main aside#filters .filter .options ul li.selected::after, html main aside#filters .filter .options ul li.selected:hover::after, body main aside#filters .filter .options ul li.selected::after, body main aside#filters .filter .options ul li.selected:hover::after {
-                background: black !important; }
+                background: #58595b !important; }
+          html main aside#filters .filter.open .label, body main aside#filters .filter.open .label {
+            background-position: left -2em; }
           html main aside#filters .filter.open ul, body main aside#filters .filter.open ul {
             height: auto; }
     html main #map, body main #map {
