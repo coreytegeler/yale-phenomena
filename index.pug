@@ -19,7 +19,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 			#sentence
 				h1 The car needs washed
 			aside#phenomena
-				.hamburger
+				.hamburger.close
 				.filter.phenomena(data-prop='phenomena')
 					.options
 						ul
@@ -40,6 +40,8 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 							li.option(data-val='PR_1116')
 								span Every time you ask me not to hum, I’ll hum more louder
 			aside#filters
+				.close
+					.arrow
 				.filter.race.open(data-prop='Race')
 					.label Race
 					.options

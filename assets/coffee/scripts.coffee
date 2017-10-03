@@ -117,10 +117,11 @@ $ ->
 		return uniqueFeatures
 
 
-	togglePhenomena = (e) ->
+	toggleSide = (e) ->
 		$side = $(this).parents('aside')
-		$side.toggleClass('close')
-		$('#sentence').toggleClass('show')
+		$side.toggleClass('closed')
+		if $side.is('#phenomena')
+			$('#sentence').toggleClass('show')
 
 	selectSentence = () ->	
 		$sentence = $(this)
@@ -257,7 +258,7 @@ $ ->
 		$('body').on 'click', 'aside#filters ul li', selectFilter
 		$('.slider').on 'slidechange', changeSlider
 
-		$('body').on 'click', '.hamburger', togglePhenomena
+		$('body').on 'click', 'aside .close', toggleSide
 		$('body').on 'click', 'aside#phenomena ul li', selectSentence
 
 		popup = new mapboxgl.Popup

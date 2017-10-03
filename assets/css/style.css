@@ -115,19 +115,19 @@ html, body {
               cursor: pointer; }
             html main aside#phenomena ul li.selected, body main aside#phenomena ul li.selected {
               opacity: 1; }
-        html main aside#phenomena.close, body main aside#phenomena.close {
+        html main aside#phenomena.closed, body main aside#phenomena.closed {
           width: 1em;
           left: 0; }
-          html main aside#phenomena.close ul, body main aside#phenomena.close ul {
+          html main aside#phenomena.closed ul, body main aside#phenomena.closed ul {
             padding: 2em 0 0 0; }
-            html main aside#phenomena.close ul li, body main aside#phenomena.close ul li {
+            html main aside#phenomena.closed ul li, body main aside#phenomena.closed ul li {
               width: .8em;
               height: .8em;
               padding: 0;
               margin: 0 0 1em 0;
               border-radius: 50%;
               background: #f9f9f9; }
-              html main aside#phenomena.close ul li span, body main aside#phenomena.close ul li span {
+              html main aside#phenomena.closed ul li span, body main aside#phenomena.closed ul li span {
                 display: none; }
       html main aside#filters, body main aside#filters {
         height: auto;
@@ -135,6 +135,23 @@ html, body {
         right: 0;
         background: #f9f9f9;
         user-select: none; }
+        html main aside#filters .close, body main aside#filters .close {
+          width: 1.25em;
+          height: 1.25em;
+          padding: 1em;
+          position: fixed;
+          right: 0;
+          top: 0; }
+          html main aside#filters .close .arrow, body main aside#filters .close .arrow {
+            width: 1.25em;
+            height: 1.25em;
+            background-image: url("./../img/arrows.svg");
+            background-position: left -1.25em;
+            background-repeat: no-repeat;
+            background-size: 1.25em auto; }
+          html main aside#filters .close:hover, body main aside#filters .close:hover {
+            opacity: .7;
+            cursor: pointer; }
         html main aside#filters .filter, body main aside#filters .filter {
           margin: 0 0 1em 0; }
           html main aside#filters .filter .label, body main aside#filters .filter .label {
@@ -176,6 +193,11 @@ html, body {
             background-position: left -2em; }
           html main aside#filters .filter.open ul, body main aside#filters .filter.open ul {
             height: auto; }
+        html main aside#filters.closed, body main aside#filters.closed {
+          right: 100%;
+          left: auto; }
+          html main aside#filters.closed .close .arrow, body main aside#filters.closed .close .arrow {
+            background-position: left -3.75em; }
     html main #map, body main #map {
       width: 100%;
       height: 100%;

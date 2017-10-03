@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $phenomena, accessToken, addFilters, addListeners, addPhenomena, apiBase, changeSlider, clearFilter, createMap, datasetId, filterMarkers, getUniqueFeatures, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilter, togglePhenomena, translator, updatePaintProperty, username, whiteList;
+  var $filters, $phenomena, accessToken, addFilters, addListeners, addPhenomena, apiBase, changeSlider, clearFilter, createMap, datasetId, filterMarkers, getUniqueFeatures, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilter, toggleSide, translator, updatePaintProperty, username, whiteList;
   tilesetId = 'Yale_GDP';
   datasetId = 'cj5acubfx065v32mmdelcwb71';
   username = 'coreytegeler';
@@ -131,11 +131,13 @@ $(function() {
     });
     return uniqueFeatures;
   };
-  togglePhenomena = function(e) {
+  toggleSide = function(e) {
     var $side;
     $side = $(this).parents('aside');
-    $side.toggleClass('close');
-    return $('#sentence').toggleClass('show');
+    $side.toggleClass('closed');
+    if ($side.is('#phenomena')) {
+      return $('#sentence').toggleClass('show');
+    }
   };
   selectSentence = function() {
     var $accFilter, $accLabel, $filter, $sentence, $side, text, val;
@@ -293,7 +295,7 @@ $(function() {
     $('body').on('click', 'aside .label', toggleFilter);
     $('body').on('click', 'aside#filters ul li', selectFilter);
     $('.slider').on('slidechange', changeSlider);
-    $('body').on('click', '.hamburger', togglePhenomena);
+    $('body').on('click', 'aside .close', toggleSide);
     $('body').on('click', 'aside#phenomena ul li', selectSentence);
     popup = new mapboxgl.Popup({
       closeButton: false,
