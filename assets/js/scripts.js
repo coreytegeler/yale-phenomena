@@ -168,9 +168,14 @@ $(function() {
   };
   selectFilter = function(prop, val) {
     var $filter, $option, $selected;
+    console.log(val);
     $filter = $filters.find('.filter[data-prop=' + prop + ']');
     $selected = $filter.find('.selected');
-    $option = $filter.find('.option[data-val=' + val + ']');
+    if (!val) {
+      $option = $filter.find('.option.all');
+    } else {
+      $option = $filter.find('.option[data-val=' + val + ']');
+    }
     if ($option.is('.all')) {
       $selected.filter(':not(.all)').removeClass('selected');
     } else if (!$option.length) {
