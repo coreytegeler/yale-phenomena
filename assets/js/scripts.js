@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $phenomena, accessToken, addFilters, addListeners, addPhenomena, apiBase, changeSlider, clearFilter, createMap, datasetId, filterMarkers, getUniqueFeatures, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilter, toggleSide, translator, updatePaintProperty, username, whiteList;
+  var $filters, $phenomena, accessToken, addFilters, addListeners, addPhenomena, apiBase, changeSlider, clearFilter, clickFilter, createMap, datasetId, filterMarkers, getQuery, getUniqueFeatures, human, humanize, machine, mechanize, selectFilter, selectSentence, setUpSliders, style, tilesetId, toggleFilter, toggleSide, updatePaintProperty, updateUrl, username, whiteList;
   tilesetId = 'Yale_GDP';
   datasetId = 'cj5acubfx065v32mmdelcwb71';
   username = 'coreytegeler';
@@ -17,7 +17,7 @@ $(function() {
       zoom: 3,
       center: [-95.7129, 37.0902]
     });
-    map.on('load', function() {
+    return map.on('load', function() {
       var dataBounds, dataLayer, paddedBounds;
       map.addLayer({
         'id': 'data',
@@ -46,16 +46,17 @@ $(function() {
         animate: false
       });
       paddedBounds = map.getBounds();
-      return map.setMaxBounds(paddedBounds);
+      map.setMaxBounds(paddedBounds);
+      addListeners(map);
+      return getQuery();
     });
-    return addListeners(map);
   };
   updatePaintProperty = function(prop) {
     var styles;
     styles = {
       property: prop,
       type: 'categorical',
-      stops: [['0', 'rgba(0,0,0,.1)'], ['1', 'rgba(0,0,0,.2)'], ['2', 'rgba(0,0,0,.4)'], ['3', 'rgba(0,0,0,.6)'], ['4', 'rgba(0,0,0,.8)'], ['5', 'rgba(0,0,0,1)']]
+      stops: [['0', '#ffffff'], ['1', '#d1d2d4'], ['2', '#a7a9ab'], ['3', '#808284'], ['4', '#58585b'], ['5', '#000000']]
     };
     return map.setPaintProperty('data', 'circle-color', styles);
   };
@@ -86,19 +87,9 @@ $(function() {
     }
     return results;
   };
-  translator = {
-    'PR_1125': 'The car needs washed',
-    'CG_1025.1': 'I was afraid you might couldn’t find it',
-    'PI_1160': 'John plays guitar, but so don’t I',
-    'PI_1171': 'Here’s you a piece of pizza',
-    'CG_1026.1': 'This seat reclines hella',
-    'PI_1161': 'When I don\'t have hockey and I\'m done my homework, I go there and skate',
-    'PI_1172': 'I’m SO not going to study tonight',
-    'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder'
-  };
   addPhenomena = function(val) {
     var $phen, $phenItem, $phenList, sentence;
-    sentence = translator[val];
+    sentence = humanize(val);
     if (!sentence) {
       return;
     }
@@ -165,28 +156,37 @@ $(function() {
     $filter = $label.parents('.filter');
     return $filter.toggleClass('open');
   };
-  selectFilter = function(e) {
-    var $filter, $li, $selected, $side, prop, val;
-    $li = $(this);
-    $filter = $li.parents('.filter');
+  clickFilter = function(e) {
+    var $filter, $option, $side, prop, val;
+    $option = $(this);
+    $filter = $option.parents('.filter');
     $side = $filter.parents('aside');
     prop = $filter.attr('data-prop');
-    val = $li.attr('data-val');
+    val = $option.attr('data-val');
+    selectFilter(prop, val);
+    return updateUrl();
+  };
+  selectFilter = function(prop, val) {
+    var $filter, $option, $selected;
+    $filter = $filters.find('.filter[data-prop=' + prop + ']');
     $selected = $filter.find('.selected');
-    if ($li.is('.all')) {
+    $option = $filter.find('.option[data-val=' + val + ']');
+    if ($option.is('.all')) {
       $selected.filter(':not(.all)').removeClass('selected');
+    } else if (!$option.length) {
+      return;
     } else if ($filter.is('.radio')) {
       $selected.removeClass('selected');
     } else {
       $selected.filter('.all').removeClass('selected');
     }
-    if ($li.is('.selected:not(.all)')) {
-      $li.removeClass('selected');
+    if ($option.is('.selected:not(.all)')) {
+      $option.removeClass('selected');
       if (!$filter.find('.selected').length) {
         $filter.find('.all').addClass('selected');
       }
     } else {
-      $li.addClass('selected');
+      $option.addClass('selected');
     }
     return filterMarkers();
   };
@@ -234,6 +234,9 @@ $(function() {
   };
   clearFilter = function(prop) {
     var arr, arrs, filter, i, j, len;
+    if (!map.length) {
+      return;
+    }
     filter = map.getFilter('data');
     if (filter) {
       arrs = filter.slice(0);
@@ -290,10 +293,61 @@ $(function() {
       return map.setFilter('data', filter);
     }
   };
+  updateUrl = function() {
+    var filter, filters, i, ii, j, k, prop, query, queryVal, queryVals, ref, ref1, url, vals;
+    filters = map.getFilter('data');
+    query = {};
+    for (i = j = 1, ref = filters.length - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+      filter = filters[i];
+      prop = humanize(filter[1]);
+      queryVals = [];
+      for (ii = k = 2, ref1 = filter.length - 1; 2 <= ref1 ? k <= ref1 : k >= ref1; ii = 2 <= ref1 ? ++k : --k) {
+        queryVal = humanize(filter[ii]);
+        queryVals.push(queryVal);
+      }
+      vals = queryVals.join();
+      query[prop] = vals;
+    }
+    url = '/?' + $.param(query);
+    url = decodeURIComponent(url);
+    return history.pushState(queryVals, '', url);
+  };
+  getQuery = function() {
+    var i, j, len, pair, prop, query, queryVar, queryVars, results, val, vals;
+    query = window.location.search.substring(1);
+    query = decodeURIComponent(query);
+    if (!query) {
+      return;
+    }
+    queryVars = query.split('&');
+    results = [];
+    for (i = j = 0, len = queryVars.length; j < len; i = ++j) {
+      queryVar = queryVars[i];
+      pair = queryVar.split('=');
+      prop = pair[0];
+      vals = pair[1].split(',');
+      if (mechanize(prop)) {
+        prop = mechanize(prop);
+      }
+      results.push((function() {
+        var k, len1, results1;
+        results1 = [];
+        for (k = 0, len1 = vals.length; k < len1; k++) {
+          val = vals[k];
+          if (mechanize(val)) {
+            val = mechanize(val);
+          }
+          results1.push(selectFilter(prop, val));
+        }
+        return results1;
+      })());
+    }
+    return results;
+  };
   addListeners = function(map) {
     var popup;
     $('body').on('click', 'aside .label', toggleFilter);
-    $('body').on('click', 'aside#filters ul li', selectFilter);
+    $('body').on('click', 'aside#filters ul li', clickFilter);
     $('.slider').on('slidechange', changeSlider);
     $('body').on('click', 'aside .close', toggleSide);
     $('body').on('click', 'aside#phenomena ul li', selectSentence);
@@ -326,10 +380,50 @@ $(function() {
       return popup.setLngLat(marker.geometry.coordinates).setHTML(description).addTo(map);
     });
     return map.on('mouseleave', 'data', function(e) {
-      console.log(map);
-      return console.log(e);
+      return popup.remove();
     });
   };
   createMap();
-  return setUpSliders();
+  setUpSliders();
+  humanize = function(str) {
+    if (human[str]) {
+      str = human[str];
+    }
+    return str;
+  };
+  mechanize = function(str) {
+    if (machine[str]) {
+      str = machine[str];
+    }
+    return str;
+  };
+  human = {
+    'PR_1125': 'The car needs washed',
+    'CG_1025.1': 'I was afraid you might couldn’t find it',
+    'PI_1160': 'John plays guitar, but so don’t I',
+    'PI_1171': 'Here’s you a piece of pizza',
+    'CG_1026.1': 'This seat reclines hella',
+    'PI_1161': 'When I don\'t have hockey and I\'m done my homework, I go there and skate',
+    'PI_1172': 'I’m SO not going to study tonight',
+    'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder',
+    'Age_Bin': 'age',
+    'Race': 'race',
+    'Income': 'income',
+    'Age': 'age',
+    'Asian': 'asian',
+    'Black': 'black',
+    'White': 'white',
+    'Hispanic': 'hispanic',
+    'Amerindian': 'amerindian'
+  };
+  return machine = {
+    'age': 'Age_Bin',
+    'income': 'Income',
+    'race': 'Race',
+    'asian': 'Asian',
+    'black': 'Black',
+    'white': 'White',
+    'hispanic': 'Hispanic',
+    'amerindian': 'Amerindian'
+  };
 });

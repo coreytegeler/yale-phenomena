@@ -44,19 +44,20 @@ $ ->
 			paddedBounds = map.getBounds()
 			map.setMaxBounds(paddedBounds)
 
-		addListeners(map)
+			addListeners(map)
+			getQuery()
 
 	updatePaintProperty = (prop) ->
 		styles = 
 			property: prop,
 			type: 'categorical',
 			stops: [
-				['0', 'rgba(0,0,0,.1)'],
-				['1', 'rgba(0,0,0,.2)'],
-				['2', 'rgba(0,0,0,.4)'],
-				['3', 'rgba(0,0,0,.6)'],
-				['4', 'rgba(0,0,0,.8)']
-				['5', 'rgba(0,0,0,1)']
+				['0', '#ffffff'],
+				['1', '#d1d2d4'],
+				['2', '#a7a9ab'],
+				['3', '#808284'],
+				['4', '#58585b']
+				['5', '#000000']
 			]
 		map.setPaintProperty('data', 'circle-color', styles);
 
@@ -78,18 +79,8 @@ $ ->
 				$filterItem.attr('data-val', val).html(val)
 				$filter.find('ul').append($filterItem)
 
-	translator = {
-		'PR_1125': 'The car needs washed'
-		'CG_1025.1': 'I was afraid you might couldn’t find it'
-		'PI_1160': 'John plays guitar, but so don’t I'
-		'PI_1171': 'Here’s you a piece of pizza'
-		'CG_1026.1': 'This seat reclines hella'
-		'PI_1161': 'When I don\'t have hockey and I\'m done my homework, I go there and skate'
-		'PI_1172': 'I’m SO not going to study tonight'
-		'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder'
-	}
 	addPhenomena = (val) ->
-		sentence = translator[val]
+		sentence = humanize(val)
 		if !sentence
 			return
 		$phenList = $('#phenomena .filter[data-prop="phenomena"]')
@@ -148,29 +139,34 @@ $ ->
 		$filter = $label.parents('.filter')
 		$filter.toggleClass('open')
 
-	selectFilter = (e) ->
-		$li = $(this)
-		$filter = $li.parents('.filter')
+	clickFilter = (e) ->
+		$option = $(this)
+		$filter = $option.parents('.filter')
 		$side = $filter.parents('aside')
 		prop = $filter.attr('data-prop')
-		val = $li.attr('data-val')
+		val = $option.attr('data-val')
+		selectFilter(prop, val)
+		updateUrl()
+
+	selectFilter = (prop, val) ->
+		$filter = $filters.find('.filter[data-prop='+prop+']')
 		$selected = $filter.find('.selected')
-		if $li.is('.all')
+		$option = $filter.find('.option[data-val='+val+']')
+		if $option.is('.all')
 			$selected.filter(':not(.all)').removeClass('selected')
+		else if !$option.length
+			return
 		else if $filter.is('.radio')
 			$selected.removeClass('selected')
 		else
 			$selected.filter('.all').removeClass('selected')
 
-		if $li.is('.selected:not(.all)')
-			$li.removeClass('selected')
+		if $option.is('.selected:not(.all)')
+			$option.removeClass('selected')
 			if !$filter.find('.selected').length
 				$filter.find('.all').addClass('selected')
 		else
-			$li.addClass('selected')
-
-
-
+			$option.addClass('selected')
 		filterMarkers()
 
 	filterMarkers = () ->
@@ -201,9 +197,12 @@ $ ->
 				filter.push(args)
 		else
 			filter = clearFilter(prop)
+
 		map.setFilter('data', filter)
 
 	clearFilter = (prop) ->
+		if !map.length
+			return
 		filter = map.getFilter('data')
 		if filter
 			arrs = filter.slice(0)
@@ -252,10 +251,42 @@ $ ->
 			filter.push(['<=', prop, maxVal])
 			map.setFilter('data', filter)
 
+	updateUrl = () ->
+		filters = map.getFilter('data')
+		query = {}
+		for i in [1..filters.length-1]
+			filter = filters[i]
+			prop = humanize(filter[1])
+			queryVals = []
+			for ii in [2..filter.length-1]
+				queryVal = humanize(filter[ii])
+				queryVals.push(queryVal)
+			vals = queryVals.join()
+			query[prop] = vals
+		url = '/?'+$.param query
+		url = decodeURIComponent(url)
+		history.pushState queryVals, '', url
+
+	getQuery = () ->
+		query = window.location.search.substring(1)
+		query = decodeURIComponent(query)
+		if !query
+			return
+		queryVars = query.split('&')
+		for queryVar, i in queryVars
+			pair = queryVar.split('=')
+			prop = pair[0]
+			vals = pair[1].split(',')
+			if mechanize(prop)
+				prop = mechanize(prop)
+			for val in  vals
+				if mechanize(val)
+					val = mechanize(val)
+				selectFilter(prop, val)
 
 	addListeners = (map) ->
 		$('body').on 'click', 'aside .label', toggleFilter
-		$('body').on 'click', 'aside#filters ul li', selectFilter
+		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
 
 		$('body').on 'click', 'aside .close', toggleSide
@@ -287,11 +318,47 @@ $ ->
 				.addTo(map)
 
 		map.on 'mouseleave', 'data', (e) ->
-			# marker = e.features[0]
-			console.log map
-			console.log e
+			popup.remove()
 
 	createMap()
 	setUpSliders()
+	humanize = (str) ->
+		if human[str]
+			str = human[str]
+		return str
+
+	mechanize = (str) ->
+		if machine[str]
+			str = machine[str]
+		return str
+
+	human =
+		'PR_1125': 'The car needs washed'
+		'CG_1025.1': 'I was afraid you might couldn’t find it'
+		'PI_1160': 'John plays guitar, but so don’t I'
+		'PI_1171': 'Here’s you a piece of pizza'
+		'CG_1026.1': 'This seat reclines hella'
+		'PI_1161': 'When I don\'t have hockey and I\'m done my homework, I go there and skate'
+		'PI_1172': 'I’m SO not going to study tonight'
+		'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder'
+		'Age_Bin': 'age'
+		'Race': 'race'
+		'Income': 'income'
+		'Age': 'age'
+		'Asian': 'asian'
+		'Black': 'black'
+		'White': 'white'
+		'Hispanic': 'hispanic'
+		'Amerindian': 'amerindian'
+
+	machine =
+		'age': 'Age_Bin'
+		'income': 'Income'
+		'race': 'Race'
+		'asian': 'Asian'
+		'black': 'Black'
+		'white': 'White'
+		'hispanic': 'Hispanic'
+		'amerindian': 'Amerindian'
 
 		
