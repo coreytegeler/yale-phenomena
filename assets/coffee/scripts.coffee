@@ -149,12 +149,12 @@ $ ->
 		updateUrl()
 
 	selectFilter = (prop, val) ->
-		$filter = $filters.find('.filter[data-prop='+prop+']')
+		$filter = $filters.find('.filter[data-prop="'+prop+'"]')
 		$selected = $filter.find('.selected')
 		if !val
 			$option = $filter.find('.option.all')
 		else
-			$option = $filter.find('.option[data-val='+val+']')
+			$option = $filter.find('.option[data-val="'+val+'"]')
 		if $option.is('.all')
 			$selected.filter(':not(.all)').removeClass('selected')
 		else if !$option.length
@@ -192,7 +192,7 @@ $ ->
 			cond = 'in'
 			for _prop in Object.keys(vals)
 				_vals = vals[_prop]
-				if _prop.indexOf('_') > -1 && _vals[0]
+				if _prop.indexOf('_') > -1 && _vals[0] && _prop != 'Age_Bin'
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
@@ -200,7 +200,6 @@ $ ->
 				filter.push(args)
 		else
 			filter = clearFilter(prop)
-
 		map.setFilter('data', filter)
 
 	clearFilter = (prop) ->
@@ -257,6 +256,8 @@ $ ->
 	updateUrl = () ->
 		filters = map.getFilter('data')
 		query = {}
+		if !filters
+			return
 		for i in [1..filters.length-1]
 			if filter = filters[i]
 				prop = humanize(filter[1])

@@ -17,13 +17,13 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 				span )
 		main
 			#sentence
-				h1 The car needs washed
+				h1
 			aside#phenomena
 				.hamburger.close
 				.filter.phenomena(data-prop='phenomena')
 					.options
 						ul
-							li.option.selected(data-val='PR_1125')
+							li.option(data-val='PR_1125')
 								span The car needs washed
 							li.option(data-val='CG_1025.1')
 								span I was afraid you might couldn’t find it
@@ -78,7 +78,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 							li.option(data-val='61_up') 61 &amp; Up
 
 
-				.filter.acceptance.open.radio(data-prop='PR_1125')
+				.filter.acceptance.open.radio(data-prop=null)
 					.label Acceptance Level
 					.options
 						//- .slider(data-prop='Age' data-type='range' data-min='0' data-max='100')

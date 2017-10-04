@@ -168,12 +168,12 @@ $(function() {
   };
   selectFilter = function(prop, val) {
     var $filter, $option, $selected;
-    $filter = $filters.find('.filter[data-prop=' + prop + ']');
+    $filter = $filters.find('.filter[data-prop="' + prop + '"]');
     $selected = $filter.find('.selected');
     if (!val) {
       $option = $filter.find('.option.all');
     } else {
-      $option = $filter.find('.option[data-val=' + val + ']');
+      $option = $filter.find('.option[data-val="' + val + '"]');
     }
     if ($option.is('.all')) {
       $selected.filter(':not(.all)').removeClass('selected');
@@ -221,7 +221,7 @@ $(function() {
       for (j = 0, len = ref.length; j < len; j++) {
         _prop = ref[j];
         _vals = vals[_prop];
-        if (_prop.indexOf('_') > -1 && _vals[0]) {
+        if (_prop.indexOf('_') > -1 && _vals[0] && _prop !== 'Age_Bin') {
           _vals = _vals[0].split(',');
         }
         args = [cond, _prop];
@@ -301,6 +301,9 @@ $(function() {
     var filter, filters, i, ii, j, k, prop, query, queryVal, queryVals, ref, ref1, url, vals;
     filters = map.getFilter('data');
     query = {};
+    if (!filters) {
+      return;
+    }
     for (i = j = 1, ref = filters.length - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
       if (filter = filters[i]) {
         prop = humanize(filter[1]);
