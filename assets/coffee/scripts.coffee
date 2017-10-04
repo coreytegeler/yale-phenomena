@@ -267,9 +267,12 @@ $ ->
 					queryVals.push(queryVal)
 				vals = queryVals.join()
 				query[prop] = vals
-		url = window.location.replace(window.location.search,'')
-		url += '/?'+$.param query
+		console.log '1 ' + window.location
+		console.log '2 ' + window.location.replace(window.location.search,'')
+		url = '/?'+$.param query
 		url = decodeURIComponent(url)
+		console.log 'url: ' + url
+		return
 		history.pushState queryVals, '', url
 
 	getQuery = () ->
