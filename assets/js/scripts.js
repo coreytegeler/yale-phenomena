@@ -316,8 +316,8 @@ $(function() {
         query[prop] = vals;
       }
     }
-    console.log(window.location);
-    url = '/?' + $.param(query);
+    url = window.location.replace(window.location.search, '');
+    url += '/?' + $.param(query);
     url = decodeURIComponent(url);
     return history.pushState(queryVals, '', url);
   };
