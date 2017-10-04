@@ -149,7 +149,6 @@ $ ->
 		updateUrl()
 
 	selectFilter = (prop, val) ->
-		console.log val
 		$filter = $filters.find('.filter[data-prop='+prop+']')
 		$selected = $filter.find('.selected')
 		if !val
@@ -259,14 +258,14 @@ $ ->
 		filters = map.getFilter('data')
 		query = {}
 		for i in [1..filters.length-1]
-			filter = filters[i]
-			prop = humanize(filter[1])
-			queryVals = []
-			for ii in [2..filter.length-1]
-				queryVal = humanize(filter[ii])
-				queryVals.push(queryVal)
-			vals = queryVals.join()
-			query[prop] = vals
+			if filter = filters[i]
+				prop = humanize(filter[1])
+				queryVals = []
+				for ii in [2..filter.length-1]
+					queryVal = humanize(filter[ii])
+					queryVals.push(queryVal)
+				vals = queryVals.join()
+				query[prop] = vals
 		url = '/?'+$.param query
 		url = decodeURIComponent(url)
 		history.pushState queryVals, '', url

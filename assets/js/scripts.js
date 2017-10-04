@@ -168,7 +168,6 @@ $(function() {
   };
   selectFilter = function(prop, val) {
     var $filter, $option, $selected;
-    console.log(val);
     $filter = $filters.find('.filter[data-prop=' + prop + ']');
     $selected = $filter.find('.selected');
     if (!val) {
@@ -303,15 +302,16 @@ $(function() {
     filters = map.getFilter('data');
     query = {};
     for (i = j = 1, ref = filters.length - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-      filter = filters[i];
-      prop = humanize(filter[1]);
-      queryVals = [];
-      for (ii = k = 2, ref1 = filter.length - 1; 2 <= ref1 ? k <= ref1 : k >= ref1; ii = 2 <= ref1 ? ++k : --k) {
-        queryVal = humanize(filter[ii]);
-        queryVals.push(queryVal);
+      if (filter = filters[i]) {
+        prop = humanize(filter[1]);
+        queryVals = [];
+        for (ii = k = 2, ref1 = filter.length - 1; 2 <= ref1 ? k <= ref1 : k >= ref1; ii = 2 <= ref1 ? ++k : --k) {
+          queryVal = humanize(filter[ii]);
+          queryVals.push(queryVal);
+        }
+        vals = queryVals.join();
+        query[prop] = vals;
       }
-      vals = queryVals.join();
-      query[prop] = vals;
     }
     url = '/?' + $.param(query);
     url = decodeURIComponent(url);
