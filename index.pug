@@ -23,22 +23,6 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 				.filter.phenomena(data-prop='phenomena')
 					.options
 						ul
-							li.option(data-val='PR_1125')
-								span The car needs washed
-							li.option(data-val='CG_1025.1')
-								span I was afraid you might couldn’t find it
-							li.option(data-val='PI_1160')
-								span John plays guitar, but so don’t I
-							li.option(data-val='PI_1171')
-								span Here’s you a piece of pizza
-							li.option(data-val='CG_1026.1')
-								span This seat reclines hella
-							li.option(data-val='PI_1161')
-								span When I don't have hockey and I'm done my homework, I go there and skate
-							li.option(data-val='PI_1172')
-								span I’m SO not going to study tonight
-							li.option(data-val='PR_1116')
-								span Every time you ask me not to hum, I’ll hum more louder
 			aside#filters
 				.close
 					.arrow
@@ -54,34 +38,22 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 							li.option(data-val='White') White
 							li.option(data-val='Other') Other
 				
-				.filter.income.open(data-prop='Income')
-					.label Income
-					.options
-						//- .slider(data-prop='Income' data-type='range' data-min='0' data-max='500000')
-						ul
-							li.option.selected.all(data-val=null) All Income
-							li.option(data-val='12500') 12500
-							li.option(data-val='37500') 37500
-							li.option(data-val='62500') 62500
-							li.option(data-val='75000') 75000
-							li.option(data-val='100000') 100000
-				
 				.filter.age.open(data-prop='Age_Bin')
 					.label Age
 					.options
-						ul
-							li.option.selected.all(data-val=null) All Ages
-							li.option(data-val='18-30') 18-30
-							li.option(data-val='31-40') 31-40
-							li.option(data-val='41-50') 41-50
-							li.option(data-val='51-60') 51-60
-							li.option(data-val='61_up') 61 &amp; Up
+						.slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
+						//- ul
+						//- 	li.option.selected.all(data-val=null) All Ages
+						//- 	li.option(data-val='18-30') 18-30
+						//- 	li.option(data-val='31-40') 31-40
+						//- 	li.option(data-val='41-50') 41-50
+						//- 	li.option(data-val='51-60') 51-60
+						//- 	li.option(data-val='61_up') 61 &amp; Up
 
 
 				.filter.acceptance.open.radio(data-prop=null)
 					.label Acceptance Level
 					.options
-						//- .slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
 						ul
 							li.option.selected.all(data-val=null) Show All
 							li.option(data-val='3,4,5') 'Acceptable' Only

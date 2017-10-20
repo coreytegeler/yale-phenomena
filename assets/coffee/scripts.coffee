@@ -1,12 +1,17 @@
 $ ->
-	tilesetId = 'Yale_GDP'
-	datasetId = 'cj5acubfx065v32mmdelcwb71'
-	username = 'coreytegeler'
-	apiBase = 'https://api.mapbox.com/datasets/v1/'+username+'/'+datasetId
 	accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg'
 	mapboxgl.accessToken = accessToken
-	style = 'mapbox://styles/coreytegeler/cj5adbyws0g7l2sqnl74tvzoa'
-	style = 'mapbox://styles/mapbox/light-v9'
+
+	styleURI = 'mapbox://styles/mapbox/light-v9'
+	styleURI = 'mapbox://styles/coreytegeler/cj5adbyws0g7l2sqnl74tvzoa'
+
+	dataURI = 'mapbox://coreytegeler.cj8yqu9o509q92wo4ybzg13xo-9ir7s'
+	dataID = 'survey8'
+
+	countURI = 'mapbox://coreytegeler.afjjqi6e'
+	countID = 'gz_2010_us_050_00_500k-c9lvkv'
+	
+	keyURI = '/data/key8.csv'
 
 	$filters = $('#filters')
 	$phenomena = $('#phenomena')
@@ -14,18 +19,18 @@ $ ->
 	createMap = () ->
 		window.map = new mapboxgl.Map
 			container: 'map',
-			style: style,
+			style: styleURI,
 			zoom: 3,
 			center: [-95.7129, 37.0902]
 
 		map.on 'load', () ->
 			map.addLayer
 				'id': 'data',
-				'type': 'circle',
+				'type': 'circle'
 				'source':
-					type: 'vector',
-					url: 'mapbox://coreytegeler.cj5acubfx065v32mmdelcwb71-677sh'
-				'source-layer': tilesetId
+					type: 'vector'
+					url: dataURI
+				'source-layer': dataID
 				'paint':
 					'circle-radius':
 						'base': 1.75,
@@ -43,6 +48,24 @@ $ ->
 
 			paddedBounds = map.getBounds()
 			map.setMaxBounds(paddedBounds)
+			
+
+			map.addLayer
+				'id': 'counties'
+				'type': 'line'
+				'source':
+					type: 'vector'
+					url: countURI
+				'source-layer': countID
+				'paint':
+					'line-width': 1
+					'line-color': 'black'
+					'line-opacity': 0.1
+
+			# countLayer = map.getLayer(countID)
+			# console.log countID, countLayer
+			# countLayer = map.getLayer('counties')
+			# console.log countID, countLayer
 
 			addListeners(map)
 			getQuery()
@@ -52,12 +75,12 @@ $ ->
 			property: prop,
 			type: 'categorical',
 			stops: [
-				['0', '#ffffff'],
-				['1', '#d1d2d4'],
-				['2', '#a7a9ab'],
-				['3', '#808284'],
-				['4', '#58585b']
-				['5', '#000000']
+				[0, '#ffffff'],
+				[1, '#d1d2d4'],
+				[2, '#a7a9ab'],
+				[3, '#808284'],
+				[4, '#58585b']
+				[5, '#000000']
 			]
 		map.setPaintProperty('data', 'circle-color', styles);
 
@@ -200,6 +223,23 @@ $ ->
 				filter.push(args)
 		else
 			filter = clearFilter(prop)
+		$sliders = $filters.find('.slider')
+		$sliders.each (i, slider) ->
+			$slider = $(slider)
+			prop = $slider.attr('data-prop')
+			type = $slider.attr('data-type')
+			if type == 'scale'
+				if val = $slider.attr('data-val')
+					filter.push(['==', prop, val])
+			else if type == 'range'
+				minVal = $slider.attr('data-min-val')
+				maxVal = $slider.attr('data-max-val')
+				console.log minVal, maxVal
+				if minVal && maxVal
+					filter.push(['>=', prop, parseInt(minVal)])
+					filter.push(['<=', prop, parseInt(maxVal)])
+
+		console.log filter
 		map.setFilter('data', filter)
 
 	clearFilter = (prop) ->
@@ -236,22 +276,42 @@ $ ->
 		$slider = $(this)
 		prop = $slider.attr('data-prop')
 		type = $slider.attr('data-type')
-
-		filter = clearFilter(prop)
-		if !filter
-			filter = ['any']
-
 		if type == 'scale'
 			val = ui.value.toString()
-			filter.push(['==', prop, val])
-			map.setFilter('data', filter)
+			$slider.attr('data-val', val)
 		else if type == 'range'
 			vals = ui.values
 			minVal = vals[0]
 			maxVal = vals[1]
-			filter.push(['>=', prop, minVal])
-			filter.push(['<=', prop, maxVal])
-			map.setFilter('data', filter)
+			$slider.attr('data-min-val', minVal)
+			$slider.attr('data-max-val', maxVal)
+		filterMarkers()
+
+	installKey = () ->
+		$options = $phenomena.find('ul')
+		$.ajax
+			url: keyURI
+			dataType: 'text'
+			success: (data) ->
+				data = data.split(/\r?\n|\r/)
+				for row, i in data
+					if i != 0
+						parsedRow = row.split(',')
+						type = parsedRow[0]
+						num = parsedRow[1]
+						sentence = row.split(num+',')[1]
+						prefix = switch
+							when type.indexOf('Primary') > -1 then 'PR'
+							when type.indexOf('Pilot') > -1 then 'PI'
+							when type.indexOf('ControlG') > -1 then 'CG'
+							when type.indexOf('ControlU') > -1 then 'CU'
+							else 'X'
+						val = prefix + '_' + num
+						$option = $('<li></li>')
+							.addClass('option')
+							.attr('data-val', val)
+							.append('<span>'+sentence+'</span>')
+						$options.append($option)
 
 	updateUrl = () ->
 		filters = map.getFilter('data')
@@ -269,7 +329,8 @@ $ ->
 				query[prop] = vals
 		location =  window.location
 		url = location.href.replace(location.search,'')
-		url += '?'+$.param query
+		if filter != 'all'
+			url += '?'+$.param query
 		url = decodeURIComponent(url)
 		history.pushState queryVals, '', url
 
@@ -306,6 +367,7 @@ $ ->
 			map.getCanvas().style.cursor = 'pointer'
 			marker = e.features[0]
 			props = marker.properties
+			console.log props
 			props =
 				gender: props['Gender']
 				race: props['Race']
@@ -326,6 +388,7 @@ $ ->
 		map.on 'mouseleave', 'data', (e) ->
 			popup.remove()
 
+	installKey()
 	createMap()
 	setUpSliders()
 
@@ -337,7 +400,8 @@ $ ->
 	mechanize = (str) ->
 		if machine[str]
 			str = machine[str]
-		return str
+		return str					
+
 
 	human =
 		'PR_1125': 'The car needs washed'
