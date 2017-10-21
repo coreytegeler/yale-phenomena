@@ -20,13 +20,13 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 				h1
 			aside#phenomena
 				.hamburger.close
-				.filter.phenomena(data-prop='phenomena')
+				.fieldset.phenomena(data-prop='phenomena')
 					.options
 						ul
 			aside#filters
 				.close
 					.arrow
-				.filter.race.open(data-prop='Race')
+				.fieldset.filter.race.open(data-prop='Race')
 					.label Race
 					.options
 						ul
@@ -38,7 +38,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 							li.option(data-val='White') White
 							li.option(data-val='Other') Other
 				
-				.filter.age.open(data-prop='Age_Bin')
+				.fieldset.filter.age.open(data-prop='Age_Bin')
 					.label Age
 					.options
 						.slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
@@ -51,11 +51,19 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 						//- 	li.option(data-val='61_up') 61 &amp; Up
 
 
-				.filter.acceptance.open.radio(data-prop=null)
+				.fieldset.filter.acceptance.open.radio(data-prop=null)
 					.label Acceptance Level
 					.options
 						ul
 							li.option.selected.all(data-val=null) Show All
 							li.option(data-val='3,4,5') 'Acceptable' Only
 							li.option(data-val='1,2') 'Unacceptable' Only
+
+				.fieldset.features.open(data-prop='features')
+					.label Show Features
+					.options
+						ul
+							li.option(data-val='counties') Counties
+							li.option(data-val='hot-spots') Hot Spots
+							li.option(data-val='cold-spots') Cold Spots
 			#map

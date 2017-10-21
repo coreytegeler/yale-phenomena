@@ -31,6 +31,7 @@ $ ->
 					type: 'vector'
 					url: dataURI
 				'source-layer': dataID
+				'zoom': 10
 				'paint':
 					'circle-radius':
 						'base': 1.75,
@@ -38,16 +39,16 @@ $ ->
 
 			dataLayer = map.getLayer('data')
 			dataBounds = map.getBounds(dataLayer).toArray()
-			map.fitBounds dataBounds,
-				padding:
-					top: 200
-					bottom: 200
-					left: 200
-					right: 200
-				animate: false
+			# map.fitBounds dataBounds,
+			# 	padding:
+			# 		top: 200
+			# 		bottom: 200
+			# 		left: 200
+			# 		right: 200
+			# 	animate: false
 
-			paddedBounds = map.getBounds()
-			map.setMaxBounds(paddedBounds)
+			# paddedBounds = map.getBounds()
+			# map.setMaxBounds(paddedBounds)
 			
 
 			map.addLayer
@@ -57,15 +58,14 @@ $ ->
 					type: 'vector'
 					url: countURI
 				'source-layer': countID
+				'layout':
+					'visibility': 'none'
+				'minzoom': 0
+				'maxzoom': 24
 				'paint':
 					'line-width': 1
 					'line-color': 'black'
 					'line-opacity': 0.1
-
-			# countLayer = map.getLayer(countID)
-			# console.log countID, countLayer
-			# countLayer = map.getLayer('counties')
-			# console.log countID, countLayer
 
 			addListeners(map)
 			getQuery()
@@ -84,41 +84,41 @@ $ ->
 			]
 		map.setPaintProperty('data', 'circle-color', styles);
 
-	whiteList = ['Income', 'Race', 'Age']
-	addFilters = (filters, prop) ->
-		vals = filters[prop]
-		$filterList = $('#filters .filter[data-prop="'+prop+'"]')
-		if !$filterList.length
-			$filter = $('<div></div>')
-			$filter.attr('data-prop', prop)
-			$filterList = $('<ul></ul>')
-			$filter.append('<h3>'+prop+'</h3>')
-			$filter.append($filterList)
-			$('#filters').append($filter)
-		for val in vals
-			$filterItem = $filterList.find('li[data-value="'+val+'"]')
-			if !$filterItem.length
-				$filterItem = $('<li></li>')
-				$filterItem.attr('data-val', val).html(val)
-				$filter.find('ul').append($filterItem)
+	# whiteList = ['Income', 'Race', 'Age']
+	# addFilters = (filters, prop) ->
+	# 	vals = filters[prop]
+	# 	$filterList = $('#filters .filter[data-prop="'+prop+'"]')
+	# 	if !$filterList.length
+	# 		$filter = $('<div></div>')
+	# 		$filter.attr('data-prop', prop)
+	# 		$filterList = $('<ul></ul>')
+	# 		$filter.append('<h3>'+prop+'</h3>')
+	# 		$filter.append($filterList)
+	# 		$('#filters').append($filter)
+	# 	for val in vals
+	# 		$filterItem = $filterList.find('li[data-value="'+val+'"]')
+	# 		if !$filterItem.length
+	# 			$filterItem = $('<li></li>')
+	# 			$filterItem.attr('data-val', val).html(val)
+	# 			$filter.find('ul').append($filterItem)
 
-	addPhenomena = (val) ->
-		sentence = humanize(val)
-		if !sentence
-			return
-		$phenList = $('#phenomena .filter[data-prop="phenomena"]')
-		if !$filterList.length
-			$phen = $('<div></div>')
-			$phen.attr('data-prop', prop)
-			$phenList = $('<ul></ul>')
-			$phen.append('<h3>'+prop+'</h3>')
-			$phen.append($phenList)
-			$('#filters').append($phen)
-		$phenItem = $phenList.find('li[data-val="'+val+'"]')
-		if !$phenItem.length
-			$phenItem = $('<li></li>')
-			$phenItem.attr('data-val', val).html(sentence)
-			$phen.find('ul').append($phenItem)				
+	# addPhenomena = (val) ->
+	# 	sentence = humanize(val)
+	# 	if !sentence
+	# 		return
+	# 	$phenList = $('#phenomena .filter[data-prop="phenomena"]')
+	# 	if !$filterList.length
+	# 		$phen = $('<div></div>')
+	# 		$phen.attr('data-prop', prop)
+	# 		$phenList = $('<ul></ul>')
+	# 		$phen.append('<h3>'+prop+'</h3>')
+	# 		$phen.append($phenList)
+	# 		$('#filters').append($phen)
+	# 	$phenItem = $phenList.find('li[data-val="'+val+'"]')
+	# 	if !$phenItem.length
+	# 		$phenItem = $('<li></li>')
+	# 		$phenItem.attr('data-val', val).html(sentence)
+	# 		$phen.find('ul').append($phenItem)				
 
 	getUniqueFeatures = (array, comparatorProperty) ->
 		existingFeatureKeys = {}
@@ -139,13 +139,13 @@ $ ->
 
 	selectSentence = () ->	
 		$sentence = $(this)
-		$filter = $sentence.parents('.filter')
-		$side = $filter.parents('aside')
+		$fieldset = $sentence.parents('.fieldset')
+		$side = $fieldset.parents('aside')
 		val = $sentence.attr('data-val')
 		text = $sentence.find('span').text()
 		$side.find('.selected').removeClass('selected')
 		$sentence.toggleClass('selected')
-		$accFilter = $filters.find('.filter.acceptance')
+		$accFilter = $filters.find('.fieldset.acceptance')
 		$accLabel = $filters.find('.label.acceptance')
 		$accFilter.attr('data-prop', val)
 		$accLabel.attr('data-prop', val)
@@ -159,45 +159,49 @@ $ ->
 
 	toggleFilter = (e) ->
 		$label = $(this)
-		$filter = $label.parents('.filter')
-		$filter.toggleClass('open')
+		$fieldset = $label.parents('.fieldset')
+		$fieldset.toggleClass('open')
 
-	clickFilter = (e) ->
+	clickFilter = (e) ->		
 		$option = $(this)
-		$filter = $option.parents('.filter')
-		$side = $filter.parents('aside')
-		prop = $filter.attr('data-prop')
+		$fieldset = $option.parents('.fieldset')
+		$side = $fieldset.parents('aside')
+		prop = $fieldset.attr('data-prop')
 		val = $option.attr('data-val')
 		selectFilter(prop, val)
 		updateUrl()
 
 	selectFilter = (prop, val) ->
-		$filter = $filters.find('.filter[data-prop="'+prop+'"]')
-		$selected = $filter.find('.selected')
+		$fieldset = $filters.find('.fieldset[data-prop="'+prop+'"]')
+		$selected = $fieldset.find('.selected')
 		if !val
-			$option = $filter.find('.option.all')
+			$option = $fieldset.find('.option.all')
 		else
-			$option = $filter.find('.option[data-val="'+val+'"]')
+			$option = $fieldset.find('.option[data-val="'+val+'"]')
 		if $option.is('.all')
 			$selected.filter(':not(.all)').removeClass('selected')
 		else if !$option.length
 			return
-		else if $filter.is('.radio')
+		else if $fieldset.is('.radio')
 			$selected.removeClass('selected')
 		else
 			$selected.filter('.all').removeClass('selected')
 
 		if $option.is('.selected:not(.all)')
 			$option.removeClass('selected')
-			if !$filter.find('.selected').length
-				$filter.find('.all').addClass('selected')
+			if !$fieldset.find('.selected').length
+				$fieldset.find('.all').addClass('selected')
 		else
 			$option.addClass('selected')
-		filterMarkers()
+
+		if $fieldset.is('.features')
+			toggleFeature($option)
+		else
+			filterMarkers()
 
 	filterMarkers = () ->
 		vals = {}
-		$selected = $filters.find('li.selected')
+		$selected = $filters.find('.filter li.selected')
 		$selected.each (i, li) ->
 			$filter = $(li).parents('.filter')
 			prop = $filter.attr('data-prop')
@@ -219,6 +223,8 @@ $ ->
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
+					if !isNaN(__val)
+						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
 		else
@@ -234,12 +240,9 @@ $ ->
 			else if type == 'range'
 				minVal = $slider.attr('data-min-val')
 				maxVal = $slider.attr('data-max-val')
-				console.log minVal, maxVal
 				if minVal && maxVal
 					filter.push(['>=', prop, parseInt(minVal)])
 					filter.push(['<=', prop, parseInt(maxVal)])
-
-		console.log filter
 		map.setFilter('data', filter)
 
 	clearFilter = (prop) ->
@@ -253,6 +256,18 @@ $ ->
 				if arr.indexOf(prop) > -1
 					filter.splice(i+1)
 			return filter
+
+	toggleFeature = (option) ->
+		$option = $(option)
+		$fieldset = $option.parents('.fieldset')
+		layer = $option.attr('data-val')
+		if !map.getLayer(layer)
+			return
+		visibility = map.getLayoutProperty(layer, 'visibility')
+		if visibility == 'visible'
+			map.setLayoutProperty(layer, 'visibility', 'none')
+		else
+			map.setLayoutProperty(layer, 'visibility', 'visible')
 
 	setUpSliders = () ->
 		$('.slider').each (i, slider) ->
@@ -367,7 +382,6 @@ $ ->
 			map.getCanvas().style.cursor = 'pointer'
 			marker = e.features[0]
 			props = marker.properties
-			console.log props
 			props =
 				gender: props['Gender']
 				race: props['Race']
