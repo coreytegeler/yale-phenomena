@@ -8,7 +8,7 @@ $(function() {
   dataID = 'survey8';
   countURI = 'mapbox://coreytegeler.afjjqi6e';
   countID = 'gz_2010_us_050_00_500k-c9lvkv';
-  keyURI = '/data/key8.csv';
+  keyURI = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
   createMap = function() {
@@ -303,6 +303,7 @@ $(function() {
       success: function(data) {
         var $option, i, j, len, num, parsedRow, prefix, results, row, sentence, type, val;
         data = data.split(/\r?\n|\r/);
+        console.log(data);
         results = [];
         for (i = j = 0, len = data.length; j < len; i = ++j) {
           row = data[i];

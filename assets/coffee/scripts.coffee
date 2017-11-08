@@ -11,7 +11,7 @@ $ ->
 	countURI = 'mapbox://coreytegeler.afjjqi6e'
 	countID = 'gz_2010_us_050_00_500k-c9lvkv'
 	
-	keyURI = '/data/key8.csv'
+	keyURI = 'data/key8.csv'
 
 	$filters = $('#filters')
 	$phenomena = $('#phenomena')
@@ -309,6 +309,7 @@ $ ->
 			dataType: 'text'
 			success: (data) ->
 				data = data.split(/\r?\n|\r/)
+				console.log data
 				for row, i in data
 					if i != 0
 						parsedRow = row.split(',')
