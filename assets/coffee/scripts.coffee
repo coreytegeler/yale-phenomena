@@ -157,7 +157,7 @@ $ ->
 			$('#sentence h1').text('')
 
 
-	toggleFilter = (e) ->
+	toggleFieldset = (e) ->
 		$label = $(this)
 		$fieldset = $label.parents('.fieldset')
 		$fieldset.toggleClass('open')
@@ -367,7 +367,7 @@ $ ->
 				selectFilter(prop, val)
 
 	addListeners = (map) ->
-		$('body').on 'click', 'aside .label', toggleFilter
+		$('body').on 'click', 'aside .label', toggleFieldset
 		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
 
@@ -383,20 +383,22 @@ $ ->
 			marker = e.features[0]
 			props = marker.properties
 			props =
-				gender: props['Gender']
-				race: props['Race']
-				raised: props['RaisedPlace']
-				edu: props['Education']
-				income: '$'+props['Income']+'/yr'
-			description = ''
+				'Age': props['Age']
+				'Gender': props['Gender']
+				'Education': props['Education']
+				'Race': props['Race']
+				'Place Raised': props['RaisedPlace']
+				'Current Place': props['CurrentCity']+', '+props['CurrentState']
+				'Father Raised Place': props['DadCity']+', '+props['DadState']
+				'Mother Raised Place': props['MomCity']+', '+props['MomState']
+			ul = '<ul>'
 			prop_keys = Object.keys(props)
 			for prop, i in prop_keys
-				val = props[prop].replace('_','')
-				description += props[prop]
-				if i < prop_keys.length - 1
-					description += ', '
+				ul += '<li>'+prop+': '+props[prop]+'</li>'
+				if i > prop_keys.length - 1
+					description += '</ul>'
 			popup.setLngLat(marker.geometry.coordinates)
-				.setHTML(description)
+				.setHTML(ul)
 				.addTo(map)
 
 		map.on 'mouseleave', 'data', (e) ->

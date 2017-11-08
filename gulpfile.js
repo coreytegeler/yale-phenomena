@@ -77,7 +77,7 @@ gulp.task('watch', function() {
 });
 
 
-gulp.task('dev', [
+gulp.task('default', [
   'compile-pug',
   'compile-sass',
   'compile-coffee',

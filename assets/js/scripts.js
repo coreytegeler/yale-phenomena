@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $phenomena, accessToken, addListeners, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, styleURI, toggleFeature, toggleFilter, toggleSide, updatePaintProperty, updateUrl;
+  var $filters, $phenomena, accessToken, addListeners, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, styleURI, toggleFeature, toggleFieldset, toggleSide, updatePaintProperty, updateUrl;
   accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg';
   mapboxgl.accessToken = accessToken;
   styleURI = 'mapbox://styles/mapbox/light-v9';
@@ -111,7 +111,7 @@ $(function() {
       return $('#sentence h1').text('');
     }
   };
-  toggleFilter = function(e) {
+  toggleFieldset = function(e) {
     var $fieldset, $label;
     $label = $(this);
     $fieldset = $label.parents('.fieldset');
@@ -397,7 +397,7 @@ $(function() {
   };
   addListeners = function(map) {
     var popup;
-    $('body').on('click', 'aside .label', toggleFilter);
+    $('body').on('click', 'aside .label', toggleFieldset);
     $('body').on('click', 'aside#filters ul li', clickFilter);
     $('.slider').on('slidechange', changeSlider);
     $('body').on('click', 'aside .close', toggleSide);
@@ -407,28 +407,30 @@ $(function() {
       closeOnClick: false
     });
     map.on('mouseenter', 'data', function(e) {
-      var description, i, j, len, marker, prop, prop_keys, props, val;
+      var i, j, len, marker, prop, prop_keys, props, ul;
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
       props = marker.properties;
       props = {
-        gender: props['Gender'],
-        race: props['Race'],
-        raised: props['RaisedPlace'],
-        edu: props['Education'],
-        income: '$' + props['Income'] + '/yr'
+        'Age': props['Age'],
+        'Gender': props['Gender'],
+        'Education': props['Education'],
+        'Race': props['Race'],
+        'Place Raised': props['RaisedPlace'],
+        'Current Place': props['CurrentCity'] + ', ' + props['CurrentState'],
+        'Father Raised Place': props['DadCity'] + ', ' + props['DadState'],
+        'Mother Raised Place': props['MomCity'] + ', ' + props['MomState']
       };
-      description = '';
+      ul = '<ul>';
       prop_keys = Object.keys(props);
       for (i = j = 0, len = prop_keys.length; j < len; i = ++j) {
         prop = prop_keys[i];
-        val = props[prop].replace('_', '');
-        description += props[prop];
-        if (i < prop_keys.length - 1) {
-          description += ', ';
+        ul += '<li>' + prop + ': ' + props[prop] + '</li>';
+        if (i > prop_keys.length - 1) {
+          description += '</ul>';
         }
       }
-      return popup.setLngLat(marker.geometry.coordinates).setHTML(description).addTo(map);
+      return popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
     });
     return map.on('mouseleave', 'data', function(e) {
       return popup.remove();

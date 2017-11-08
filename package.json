@@ -29,7 +29,7 @@
     "yargs": "^6.6.0"
   },
   "scripts": {
-    "gulp": "gulp dev --dev",
+    "gulp": "gulp --dev",
     "gulp:prod": "gulp prod --prod",
     "browsersync": "browser-sync start --server --port 9000 --no-notify --no-open --files '**/*.css' '**/*.js' '*.html'",
     "go": "npm run gulp & npm run browsersync",
