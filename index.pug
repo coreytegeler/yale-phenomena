@@ -38,10 +38,12 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 				//- 			li.option(data-val='White') White
 				//- 			li.option(data-val='Other') Other
 				
-				.fieldset.filter.age.open(data-prop='Age_Bin')
-					.label Age
+				.fieldset.filter.age.open(data-prop='Age')
+					.label
+						span Age
+						span.val
 					.options
-						.slider(data-prop='Age' data-type='range' data-min='0' data-max='100')
+						.slider(data-type='range' data-min='0' data-max='100')
 						//- ul
 						//- 	li.option.selected.all(data-val=null) All Ages
 						//- 	li.option(data-val='18-30') 18-30
@@ -51,9 +53,12 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 						//- 	li.option(data-val='61_up') 61 &amp; Up
 
 
-				.fieldset.filter.acceptance.open.radio(data-prop=null)
-					.label Acceptance Level
+				.fieldset.filter.acceptance.open.radio.disabled(data-prop=null)
+					.label
+						span Acceptance Level
+						span.val
 					.options
+						.slider(data-type='range' data-min='0' data-max='5')
 						ul
 							li.option.selected.all(data-val=null) Show All
 							li.option(data-val='3,4,5') 'Acceptable' Only

@@ -87,12 +87,13 @@ $(function() {
     var $side;
     $side = $(this).parents('aside');
     $side.toggleClass('closed');
-    if ($side.is('#phenomena')) {
+    console.log($('#sentence h1').html());
+    if ($side.is('#phenomena') && $('#sentence h1').html()) {
       return $('#sentence').toggleClass('show');
     }
   };
   selectSentence = function() {
-    var $accFilter, $accLabel, $fieldset, $sentence, $side, text, val;
+    var $accFieldset, $accLabel, $fieldset, $sentence, $side, text, val;
     $sentence = $(this);
     $fieldset = $sentence.parents('.fieldset');
     $side = $fieldset.parents('aside');
@@ -100,15 +101,17 @@ $(function() {
     text = $sentence.find('span').text();
     $side.find('.selected').removeClass('selected');
     $sentence.toggleClass('selected');
-    $accFilter = $filters.find('.fieldset.acceptance');
+    $accFieldset = $filters.find('.fieldset.acceptance');
     $accLabel = $filters.find('.label.acceptance');
-    $accFilter.attr('data-prop', val);
+    $accFieldset.attr('data-prop', val);
     $accLabel.attr('data-prop', val);
     if ($sentence.is('.selected')) {
       $('#sentence h1').text(text);
-      return updatePaintProperty(val);
+      updatePaintProperty(val);
+      return $accFieldset.removeClass('disabled');
     } else {
-      return $('#sentence h1').text('');
+      $('#sentence h1').text('');
+      return $accFieldset.addClass('disabled');
     }
   };
   toggleFieldset = function(e) {
@@ -204,22 +207,28 @@ $(function() {
     }
     $sliders = $filters.find('.slider');
     $sliders.each(function(i, slider) {
-      var $slider, maxVal, minVal, prop, type, val;
+      var $fieldset, $slider, $val, current, maxVal, minVal, prop, type, val;
       $slider = $(slider);
-      prop = $slider.attr('data-prop');
+      $fieldset = $slider.parents('.fieldset');
+      $val = $fieldset.find('.label .val');
+      prop = $fieldset.attr('data-prop');
       type = $slider.attr('data-type');
+      current = '';
       if (type === 'scale') {
         if (val = $slider.attr('data-val')) {
-          return filter.push(['==', prop, val]);
+          filter.push(['==', prop, val]);
+          current = '(' + val + ')';
         }
       } else if (type === 'range') {
         minVal = $slider.attr('data-min-val');
         maxVal = $slider.attr('data-max-val');
         if (minVal && maxVal) {
           filter.push(['>=', prop, parseInt(minVal)]);
-          return filter.push(['<=', prop, parseInt(maxVal)]);
+          filter.push(['<=', prop, parseInt(maxVal)]);
+          current = '(' + minVal + '-' + maxVal + ')';
         }
       }
+      return $val.text(current);
     });
     return map.setFilter('data', filter);
   };
@@ -303,7 +312,6 @@ $(function() {
       success: function(data) {
         var $option, i, j, len, num, parsedRow, prefix, results, row, sentence, type, val;
         data = data.split(/\r?\n|\r/);
-        console.log(data);
         results = [];
         for (i = j = 0, len = data.length; j < len; i = ++j) {
           row = data[i];

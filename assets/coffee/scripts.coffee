@@ -134,7 +134,8 @@ $ ->
 	toggleSide = (e) ->
 		$side = $(this).parents('aside')
 		$side.toggleClass('closed')
-		if $side.is('#phenomena')
+		console.log $('#sentence h1').html()
+		if $side.is('#phenomena') && $('#sentence h1').html()
 			$('#sentence').toggleClass('show')
 
 	selectSentence = () ->	
@@ -145,16 +146,17 @@ $ ->
 		text = $sentence.find('span').text()
 		$side.find('.selected').removeClass('selected')
 		$sentence.toggleClass('selected')
-		$accFilter = $filters.find('.fieldset.acceptance')
+		$accFieldset = $filters.find('.fieldset.acceptance')
 		$accLabel = $filters.find('.label.acceptance')
-		$accFilter.attr('data-prop', val)
+		$accFieldset.attr('data-prop', val)
 		$accLabel.attr('data-prop', val)
-
 		if $sentence.is('.selected')
 			$('#sentence h1').text(text)
 			updatePaintProperty(val)
+			$accFieldset.removeClass('disabled')
 		else
 			$('#sentence h1').text('')
+			$accFieldset.addClass('disabled')
 
 
 	toggleFieldset = (e) ->
@@ -232,17 +234,23 @@ $ ->
 		$sliders = $filters.find('.slider')
 		$sliders.each (i, slider) ->
 			$slider = $(slider)
-			prop = $slider.attr('data-prop')
+			$fieldset = $slider.parents('.fieldset')
+			$val = $fieldset.find('.label .val')
+			prop = $fieldset.attr('data-prop')
 			type = $slider.attr('data-type')
+			current = ''
 			if type == 'scale'
 				if val = $slider.attr('data-val')
 					filter.push(['==', prop, val])
+					current = '('+val+')'
 			else if type == 'range'
 				minVal = $slider.attr('data-min-val')
 				maxVal = $slider.attr('data-max-val')
 				if minVal && maxVal
 					filter.push(['>=', prop, parseInt(minVal)])
 					filter.push(['<=', prop, parseInt(maxVal)])
+					current = '('+minVal+'-'+maxVal+')'
+			$val.text(current)
 		map.setFilter('data', filter)
 
 	clearFilter = (prop) ->
@@ -309,7 +317,6 @@ $ ->
 			dataType: 'text'
 			success: (data) ->
 				data = data.split(/\r?\n|\r/)
-				console.log data
 				for row, i in data
 					if i != 0
 						parsedRow = row.split(',')
