@@ -10,65 +10,107 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 		//- link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet')
 		link(href='./assets/css/style.css' rel='stylesheet')
 	body
-		header
-			strong
-				span (Verbal 
-				em rather
-				span )
-		main
-			#sentence
-				h1
-			aside#phenomena
-				.hamburger.close
-				.fieldset.phenomena(data-prop='phenomena')
-					.options
-						ul
-			aside#filters
-				.close
-					.arrow
-				//- .fieldset.filter.race.open(data-prop='Race')
-				//- 	.label Race
-				//- 	.options
-				//- 		ul
-				//- 			li.option.selected.all(data-val=null) All Race
-				//- 			li.option(data-val='Amerindian') Amerindian
-				//- 			li.option(data-val='Asian') Asian
-				//- 			li.option(data-val='Black') Black
-				//- 			li.option(data-val='Hispanic') Hispanic
-				//- 			li.option(data-val='White') White
-				//- 			li.option(data-val='Other') Other
-				
-				.fieldset.filter.age.open(data-prop='Age')
-					.label
-						span Age
-						span.val
-					.options
-						.slider(data-type='range' data-min='0' data-max='100')
-						//- ul
-						//- 	li.option.selected.all(data-val=null) All Ages
-						//- 	li.option(data-val='18-30') 18-30
-						//- 	li.option(data-val='31-40') 31-40
-						//- 	li.option(data-val='41-50') 41-50
-						//- 	li.option(data-val='51-60') 51-60
-						//- 	li.option(data-val='61_up') 61 &amp; Up
+
+		#embed
+			#frame
+				header.fixed
+					.wrapper
+						h1 Dative Presentatives
+						h2.sentence
+				aside#phenomena.closed
+					.hamburger.close
+					.inner
+						header.static
+							.wrapper
+								h1 Dative Presentatives
+								h2.sentence
+						.fieldset.phenomena(data-prop='phenomena')
+							.options
+								ul
+				aside#filters
+					.tabs
+						.tab
+							.label Accept/Reject
+						.tab.active
+							.label Filters
+					.inner
+						.fieldset.filter.race(data-prop='Race')
+							.label
+								.arrow
+								span Race/Ethnicity
+							.options
+								ul
+									li.option.selected.all(data-val=null) All Race
+									li.option(data-val='Amerindian') Amerindian
+									li.option(data-val='Asian') Asian
+									li.option(data-val='Black') Black
+									li.option(data-val='Hispanic') Hispanic
+									li.option(data-val='White') White
+									li.option(data-val='Other') Other
+
+						.fieldset.filter.race(data-prop='Education')
+							.label
+								.arrow
+								span Education
+							.options
+								ul
+									li.option.selected.all(data-val=null) All Education
+									li.option(data-val='Associates degree') Associates degree
+									li.option(data-val='Bachelors degree') Bachelors degree
+									li.option(data-val='Graduate degree (masters doctorate etc.)') Graduate degree (masters doctorate etc.)
+									li.option(data-val='High school graduate') High school graduate
+									li.option(data-val='Some college no degree') Some college no degree
+									li.option(data-val='Other') Other
+
+						.fieldset.filter.race(data-prop='Gender')
+							.label
+								.arrow
+								span Gender
+							.options
+								ul
+									li.option.selected.all(data-val=null) All Gender
+									li.option(data-val='Female') Female
+									li.option(data-val='Male') Male
+									li.option(data-val='Transgender (FTM)') Transgender (FTM)
+									li.option(data-val='Transgender (MTF)') Transgender (MTF)
+									li.option(data-val='Other') Other
+						
+						.fieldset.filter.age(data-prop='Age')
+							.label
+								.arrow
+								span Age Range
+								span.val
+							.options
+								.slider(data-type='range' data-min='0' data-max='100')
+								//- ul
+								//- 	li.option.selected.all(data-val=null) All Ages
+								//- 	li.option(data-val='18-30') 18-30
+								//- 	li.option(data-val='31-40') 31-40
+								//- 	li.option(data-val='41-50') 41-50
+								//- 	li.option(data-val='51-60') 51-60
+								//- 	li.option(data-val='61_up') 61 &amp; Up
 
 
-				.fieldset.filter.acceptance.open.radio.disabled(data-prop=null)
-					.label
-						span Acceptance Level
-						span.val
-					.options
-						.slider(data-type='range' data-min='0' data-max='5')
-						ul
-							li.option.selected.all(data-val=null) Show All
-							li.option(data-val='3,4,5') 'Acceptable' Only
-							li.option(data-val='1,2') 'Unacceptable' Only
+						.fieldset.filter.acceptability.radio.disabled(data-prop=null)
+							.label
+								.arrow
+								span Acceptability
+								span.val
+							.options
+								.slider(data-type='range' data-min='0' data-max='5')
+								ul
+									li.option.selected.all(data-val=null) Show All
+									li.option(data-val='3,4,5') 'Acceptable' Only
+									li.option(data-val='1,2') 'Unacceptable' Only
 
-				.fieldset.features.open(data-prop='features')
-					.label Show Features
-					.options
-						ul
-							li.option(data-val='counties') Counties
-							li.option(data-val='hot-spots') Hot Spots
-							li.option(data-val='cold-spots') Cold Spots
-			#map
+						.fieldset.advanced(data-prop='advanced')
+							.label
+								.arrow
+								span Advanced
+							.options
+								ul
+									li.option(data-val='counties') Counties
+									li.option(data-val='hot-spots') Hot Spots
+									li.option(data-val='cold-spots') Cold Spots
+				main
+					#map

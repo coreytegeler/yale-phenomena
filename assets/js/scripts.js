@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $phenomena, accessToken, addListeners, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, styleURI, toggleFeature, toggleFieldset, toggleSide, updatePaintProperty, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, accessToken, addListeners, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, styleURI, toggleFeature, toggleFieldset, toggleSide, updatePaintProperty, updateUrl;
   accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg';
   mapboxgl.accessToken = accessToken;
   styleURI = 'mapbox://styles/mapbox/light-v9';
@@ -11,6 +11,8 @@ $(function() {
   keyURI = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
+  $fixedHeader = $('header.fixed');
+  $headerSentence = $('header.fixed .sentence');
   createMap = function() {
     window.map = new mapboxgl.Map({
       container: 'map',
@@ -66,7 +68,7 @@ $(function() {
     styles = {
       property: prop,
       type: 'categorical',
-      stops: [[0, '#ffffff'], [1, '#d1d2d4'], [2, '#a7a9ab'], [3, '#808284'], [4, '#58585b'], [5, '#000000']]
+      stops: [[0, '#795292'], [1, '#795292'], [2, '#795292'], [3, '#5fa990'], [4, '#5fa990'], [5, '#5fa990']]
     };
     return map.setPaintProperty('data', 'circle-color', styles);
   };
@@ -87,9 +89,8 @@ $(function() {
     var $side;
     $side = $(this).parents('aside');
     $side.toggleClass('closed');
-    console.log($('#sentence h1').html());
-    if ($side.is('#phenomena') && $('#sentence h1').html()) {
-      return $('#sentence').toggleClass('show');
+    if ($side.is('#phenomena')) {
+      return $fixedHeader.toggleClass('hide');
     }
   };
   selectSentence = function() {
@@ -101,16 +102,16 @@ $(function() {
     text = $sentence.find('span').text();
     $side.find('.selected').removeClass('selected');
     $sentence.toggleClass('selected');
-    $accFieldset = $filters.find('.fieldset.acceptance');
-    $accLabel = $filters.find('.label.acceptance');
+    $accFieldset = $filters.find('.fieldset.acceptability');
+    $accLabel = $filters.find('.label.acceptability');
     $accFieldset.attr('data-prop', val);
     $accLabel.attr('data-prop', val);
     if ($sentence.is('.selected')) {
-      $('#sentence h1').text(text);
+      $headerSentence.text(text);
       updatePaintProperty(val);
       return $accFieldset.removeClass('disabled');
     } else {
-      $('#sentence h1').text('');
+      $headerSentence.text('');
       return $accFieldset.addClass('disabled');
     }
   };
@@ -156,7 +157,7 @@ $(function() {
     } else {
       $option.addClass('selected');
     }
-    if ($fieldset.is('.features')) {
+    if ($fieldset.is('.advanced')) {
       return toggleFeature($option);
     } else {
       return filterMarkers();

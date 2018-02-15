@@ -15,6 +15,8 @@ $ ->
 
 	$filters = $('#filters')
 	$phenomena = $('#phenomena')
+	$fixedHeader = $('header.fixed')
+	$headerSentence = $('header.fixed .sentence')
 
 	createMap = () ->
 		window.map = new mapboxgl.Map
@@ -75,12 +77,18 @@ $ ->
 			property: prop,
 			type: 'categorical',
 			stops: [
-				[0, '#ffffff'],
-				[1, '#d1d2d4'],
-				[2, '#a7a9ab'],
-				[3, '#808284'],
-				[4, '#58585b']
-				[5, '#000000']
+				# [0, '#ffffff'],
+				# [1, '#d1d2d4'],
+				# [2, '#a7a9ab'],
+				# [3, '#808284'],
+				# [4, '#58585b']
+				# [5, '#000000']
+				[0, '#795292'],
+				[1, '#795292'],
+				[2, '#795292'],
+				[3, '#5fa990'],
+				[4, '#5fa990'],
+				[5, '#5fa990'],
 			]
 		map.setPaintProperty('data', 'circle-color', styles);
 
@@ -134,9 +142,8 @@ $ ->
 	toggleSide = (e) ->
 		$side = $(this).parents('aside')
 		$side.toggleClass('closed')
-		console.log $('#sentence h1').html()
-		if $side.is('#phenomena') && $('#sentence h1').html()
-			$('#sentence').toggleClass('show')
+		if $side.is('#phenomena')
+			$fixedHeader.toggleClass('hide')
 
 	selectSentence = () ->	
 		$sentence = $(this)
@@ -146,16 +153,16 @@ $ ->
 		text = $sentence.find('span').text()
 		$side.find('.selected').removeClass('selected')
 		$sentence.toggleClass('selected')
-		$accFieldset = $filters.find('.fieldset.acceptance')
-		$accLabel = $filters.find('.label.acceptance')
+		$accFieldset = $filters.find('.fieldset.acceptability')
+		$accLabel = $filters.find('.label.acceptability')
 		$accFieldset.attr('data-prop', val)
 		$accLabel.attr('data-prop', val)
 		if $sentence.is('.selected')
-			$('#sentence h1').text(text)
+			$headerSentence.text(text)
 			updatePaintProperty(val)
 			$accFieldset.removeClass('disabled')
 		else
-			$('#sentence h1').text('')
+			$headerSentence.text('')
 			$accFieldset.addClass('disabled')
 
 
@@ -196,7 +203,7 @@ $ ->
 		else
 			$option.addClass('selected')
 
-		if $fieldset.is('.features')
+		if $fieldset.is('.advanced')
 			toggleFeature($option)
 		else
 			filterMarkers()

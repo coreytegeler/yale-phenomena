@@ -3,237 +3,329 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  color: #58595b;
-  font-family: Helvetica; }
-  html header, body header {
+  color: #1f3155;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.2em; }
+
+#embed {
+  width: 80vw;
+  height: 70vw;
+  margin: 5vw 10vw;
+  display: table; }
+
+#frame {
+  width: calc(100% - 4em);
+  height: calc(100% - 4em);
+  padding: 2em;
+  background-color: #afd7ed;
+  position: relative; }
+
+h1 {
+  font-size: 1.5em;
+  line-height: 1.5em; }
+
+h2 {
+  font-size: 1.25em;
+  line-height: 1.25em; }
+
+header {
+  color: #1f3155;
+  opacity: 1; }
+  header .wrapper {
+    width: calc(100% - 2em);
+    padding: 1em;
+    display: table;
+    background-color: #f9f9f9; }
+  header h1 {
+    display: inline;
+    margin: 0 0 2em 0;
+    padding: 0 0 .125em 0;
+    border-bottom: 0.125em solid #1f3155; }
+  header.fixed {
+    width: calc(100% - 4em);
+    height: calc(100% - 4em);
+    position: absolute;
+    left: 2em;
+    top: 2em;
+    z-index: 500;
+    overflow: hidden;
+    pointer-events: none; }
+    header.fixed .wrapper {
+      max-width: 16em;
+      border-radius: .5em;
+      box-shadow: 0 0 4em 3em #f9f9f9; }
+      header.fixed .wrapper h1 {
+        pointer-events: all; }
+      header.fixed .wrapper h2.sentence {
+        margin: 0;
+        padding: 2em 0 0 0;
+        pointer-events: all; }
+  header.static {
+    width: 18em;
+    padding: 0 0 0 2em; }
+  header.hide {
+    display: none; }
+
+aside {
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  z-index: 400; }
+  aside .inner {
     width: 100%;
-    position: fixed;
-    left: 0;
-    top: .5em;
-    text-align: center;
-    z-index: 100; }
-  html main, body main {
-    width: 100%;
+    max-width: 20em;
     height: 100%;
+    overflow: hidden;
     display: flex;
-    flex-direction: row; }
-    html main .label, body main .label {
-      font-weight: normal;
-      margin: 0 0 .5em 0; }
-      html main .label:hover, body main .label:hover {
-        cursor: pointer; }
-    html main #sentence, body main #sentence {
-      width: 100%;
-      max-width: 15em;
-      padding: 2em 0 2em 2em;
+    flex-direction: column; }
+  aside ul {
+    margin: 0; }
+    aside ul li {
+      list-style: none;
+      position: relative; }
+  aside .slider {
+    width: calc(100% - 10px);
+    height: 2px;
+    margin: 1em 0;
+    position: relative;
+    background: #1f3155;
+    border: 1px solid #f9f9f9; }
+    aside .slider .ui-slider-handle {
+      height: 10px;
       position: absolute;
-      left: 2em;
-      top: 0;
-      color: #58595b;
-      z-index: 999;
-      opacity: 1; }
-      html main #sentence h1, body main #sentence h1 {
-        font-size: 1.5em;
-        margin: 0; }
-    html main aside, body main aside {
-      width: 100%;
-      max-width: 17em;
-      position: fixed;
-      top: 0;
+      top: -5px;
+      background: #1f3155;
+      border: 1px solid #f9f9f9;
+      transition: transform 100ms ease-in-out;
+      transform-origin: center; }
+      aside .slider .ui-slider-handle.ui-state-hover, aside .slider .ui-slider-handle.ui-state-active {
+        cursor: ew-resize;
+        transform: scale(1.5);
+        z-index: 99999; }
+      aside .slider .ui-slider-handle.ui-state-focus {
+        background: blue;
+        outline: none; }
+    aside .slider[data-type='scale'] .ui-slider-handle {
+      width: 10px;
+      left: -5px;
+      border-radius: 50%; }
+    aside .slider[data-type='range'] .ui-slider-range {
+      height: 2px;
+      position: absolute;
+      top: -1px;
+      background: blue;
+      border: 1px solid #f9f9f9; }
+    aside .slider[data-type='range'] .ui-slider-handle {
+      width: 5px;
+      left: 0px; }
+  aside#phenomena {
+    height: calc(100% - 4em);
+    left: 0;
+    top: 2em;
+    color: #1f3155;
+    pointer-events: none; }
+    aside#phenomena .hamburger {
+      width: 2em;
+      height: 2em;
+      position: absolute;
+      left: 0em;
+      top: 0em;
+      background-image: url(./../img/hamburger.svg);
+      background-position: center;
+      background-size: 1.25em auto;
+      background-repeat: no-repeat;
+      pointer-events: all; }
+      aside#phenomena .hamburger:hover {
+        cursor: pointer;
+        opacity: .7; }
+    aside#phenomena .inner {
+      box-shadow: 0 0 4em 3em #f9f9f9; }
+    aside#phenomena .phenomena {
       padding: 1em;
-      overflow-y: scroll;
-      overflow-x: hidden;
-      z-index: 9999; }
-      html main aside ul, body main aside ul {
-        margin: 0; }
-        html main aside ul li, body main aside ul li {
-          list-style: none;
-          position: relative; }
-      html main aside .slider, body main aside .slider {
-        width: calc(100% - 10px);
-        height: 2px;
-        margin: 1em 0;
-        position: relative;
-        background: #58595b;
-        border: 1px solid #f9f9f9; }
-        html main aside .slider .ui-slider-handle, body main aside .slider .ui-slider-handle {
-          height: 10px;
-          position: absolute;
-          top: -5px;
-          background: #58595b;
-          border: 1px solid #f9f9f9;
-          transition: transform 100ms ease-in-out;
-          transform-origin: center; }
-          html main aside .slider .ui-slider-handle.ui-state-hover, html main aside .slider .ui-slider-handle.ui-state-active, body main aside .slider .ui-slider-handle.ui-state-hover, body main aside .slider .ui-slider-handle.ui-state-active {
-            cursor: ew-resize;
-            transform: scale(1.5);
-            z-index: 99999; }
-          html main aside .slider .ui-slider-handle.ui-state-focus, body main aside .slider .ui-slider-handle.ui-state-focus {
-            background: blue;
-            outline: none; }
-        html main aside .slider[data-type='scale'] .ui-slider-handle, body main aside .slider[data-type='scale'] .ui-slider-handle {
-          width: 10px;
-          left: -5px;
-          border-radius: 50%; }
-        html main aside .slider[data-type='range'] .ui-slider-range, body main aside .slider[data-type='range'] .ui-slider-range {
-          height: 2px;
-          position: absolute;
-          top: -1px;
-          background: blue;
-          border: 1px solid #f9f9f9; }
-        html main aside .slider[data-type='range'] .ui-slider-handle, body main aside .slider[data-type='range'] .ui-slider-handle {
-          width: 5px;
-          left: 0px; }
-      html main aside#phenomena, body main aside#phenomena {
-        height: calc(100% - 2em);
-        left: 0;
-        background: #a0a0a0;
-        color: #f9f9f9; }
-        html main aside#phenomena .hamburger, body main aside#phenomena .hamburger {
-          width: 1.75em;
-          height: 1.25em;
-          position: absolute;
-          left: .5em;
-          top: .5em;
-          background-image: url(./../img/hamburger.svg);
-          background-position: center;
-          background-size: contain;
-          background-repeat: no-repeat; }
-          html main aside#phenomena .hamburger:hover, body main aside#phenomena .hamburger:hover {
-            cursor: pointer;
-            opacity: .7; }
-        html main aside#phenomena ul, body main aside#phenomena ul {
-          padding: 2em 0 0 1em; }
-          html main aside#phenomena ul li, body main aside#phenomena ul li {
-            margin: 0 1em 1em 0;
-            transform-origin: left center;
-            opacity: .5; }
-            html main aside#phenomena ul li span, body main aside#phenomena ul li span {
-              font-weight: normal;
-              padding: 0;
-              margin: 0; }
-            html main aside#phenomena ul li:hover, body main aside#phenomena ul li:hover {
-              opacity: 1;
-              transform: scale(1.1);
-              cursor: pointer; }
-            html main aside#phenomena ul li.selected, body main aside#phenomena ul li.selected {
-              opacity: 1; }
-        html main aside#phenomena.closed, body main aside#phenomena.closed {
+      margin: 0 0 0 2em;
+      background-color: #f9f9f9;
+      pointer-events: all;
+      display: flex;
+      overflow-y: auto; }
+      aside#phenomena .phenomena::-webkit-scrollbar {
+        display: none; }
+      aside#phenomena .phenomena::-webkit-scrollbar-thumb {
+        display: none; }
+    aside#phenomena ul {
+      padding: 0; }
+      aside#phenomena ul li {
+        margin: 0 1em 1em 0;
+        transform-origin: left center; }
+        aside#phenomena ul li span {
+          font-weight: normal;
+          padding: 0;
+          margin: 0; }
+        aside#phenomena ul li:hover, aside#phenomena ul li.selected {
+          cursor: pointer; }
+          aside#phenomena ul li:hover span, aside#phenomena ul li.selected span {
+            font-weight: bold; }
+    aside#phenomena.closed {
+      width: 2em;
+      left: 0; }
+      aside#phenomena.closed .phenomena {
+        padding: 0;
+        margin: 0;
+        background-color: transparent; }
+        aside#phenomena.closed .phenomena .options {
+          width: 100%; }
+        aside#phenomena.closed .phenomena ul li {
+          width: .5em;
+          height: .5em;
+          padding: 0;
+          margin: .75em;
+          border-radius: 50%;
+          background: #f9f9f9; }
+          aside#phenomena.closed .phenomena ul li span {
+            display: none; }
+  aside#filters {
+    height: auto;
+    max-height: calc(100% - 2em);
+    max-width: 20em;
+    right: 2em;
+    top: 0;
+    user-select: none; }
+    aside#filters .tabs {
+      height: 2em; }
+      aside#filters .tabs .tab {
+        width: calc(50% - 1px);
+        height: calc(100% - 5px);
+        margin: 5px 0 0 0;
+        display: table;
+        float: left;
+        background-color: #dcdfe2;
+        border-radius: 5px 5px 0 0; }
+        aside#filters .tabs .tab .label {
+          margin: auto;
+          display: table-cell;
+          vertical-align: middle;
+          text-align: center;
+          font-weight: bold;
+          opacity: .5;
+          text-transform: uppercase; }
+        aside#filters .tabs .tab.active {
+          background-color: #f2f2ef; }
+          aside#filters .tabs .tab.active .label {
+            opacity: 1; }
+        aside#filters .tabs .tab:hover {
+          cursor: pointer; }
+        aside#filters .tabs .tab:first-child {
+          margin-right: 1px; }
+        aside#filters .tabs .tab:last-child {
+          margin-left: 1px; }
+    aside#filters .inner {
+      padding: 1em;
+      background: #f2f2ef; }
+    aside#filters .fieldset {
+      margin: 0 0 1em 0; }
+      aside#filters .fieldset .label {
+        padding-left: 1.25em;
+        font-weight: bold;
+        position: relative; }
+        aside#filters .fieldset .label .arrow {
           width: 1em;
-          left: 0; }
-          html main aside#phenomena.closed ul, body main aside#phenomena.closed ul {
-            padding: 2em 0 0 0; }
-            html main aside#phenomena.closed ul li, body main aside#phenomena.closed ul li {
+          height: 1em;
+          left: 0;
+          top: 0;
+          position: absolute;
+          background-image: url("./../img/arrows.svg");
+          background-position: left -1em;
+          background-repeat: no-repeat;
+          background-size: 1em auto; }
+        aside#filters .fieldset .label .val {
+          margin-left: .5em;
+          opacity: .5; }
+        aside#filters .fieldset .label:hover {
+          cursor: pointer; }
+      aside#filters .fieldset .options {
+        height: 0;
+        overflow: hidden; }
+        aside#filters .fieldset .options ul {
+          padding: 0 0 0 1em; }
+          aside#filters .fieldset .options ul li {
+            padding: .25em 0 .25em 1.25em;
+            margin: .75em 0 0 0;
+            font-weight: bold; }
+            aside#filters .fieldset .options ul li::before, aside#filters .fieldset .options ul li::after {
+              position: absolute;
+              border-radius: 50%;
+              content: ''; }
+            aside#filters .fieldset .options ul li::before {
               width: .8em;
               height: .8em;
-              padding: 0;
-              margin: 0 0 1em 0;
-              border-radius: 50%;
-              background: #f9f9f9; }
-              html main aside#phenomena.closed ul li span, body main aside#phenomena.closed ul li span {
-                display: none; }
-      html main aside#filters, body main aside#filters {
-        height: auto;
-        max-height: calc(100% - 2em);
-        right: 0;
-        background: #f9f9f9;
-        user-select: none; }
-        html main aside#filters .close, body main aside#filters .close {
-          width: 1.25em;
-          height: 1.25em;
-          padding: 1em;
-          position: fixed;
-          right: 0;
-          top: 0; }
-          html main aside#filters .close .arrow, body main aside#filters .close .arrow {
-            width: 1.25em;
-            height: 1.25em;
-            background-image: url("./../img/arrows.svg");
-            background-position: left -1.25em;
-            background-repeat: no-repeat;
-            background-size: 1.25em auto; }
-          html main aside#filters .close:hover, body main aside#filters .close:hover {
-            opacity: .7;
-            cursor: pointer; }
-        html main aside#filters .fieldset, body main aside#filters .fieldset {
-          margin: 0 0 1em 0; }
-          html main aside#filters .fieldset .label, body main aside#filters .fieldset .label {
-            padding-left: 1.25em;
-            background-image: url("./../img/arrows.svg");
-            background-position: left -1em;
-            background-repeat: no-repeat;
-            background-size: 1em auto; }
-            html main aside#filters .fieldset .label .val, body main aside#filters .fieldset .label .val {
-              margin-left: .5em;
-              opacity: .5; }
-          html main aside#filters .fieldset .options, body main aside#filters .fieldset .options {
-            height: 0;
-            overflow: hidden; }
-            html main aside#filters .fieldset .options ul, body main aside#filters .fieldset .options ul {
-              padding: 0 0 0 1em; }
-              html main aside#filters .fieldset .options ul li, body main aside#filters .fieldset .options ul li {
-                padding: 0 0 .25em 1.25em; }
-                html main aside#filters .fieldset .options ul li::before, html main aside#filters .fieldset .options ul li::after, body main aside#filters .fieldset .options ul li::before, body main aside#filters .fieldset .options ul li::after {
-                  position: absolute;
-                  border-radius: 50%;
-                  content: ''; }
-                html main aside#filters .fieldset .options ul li::before, body main aside#filters .fieldset .options ul li::before {
-                  width: .8em;
-                  height: .8em;
-                  left: 0;
-                  top: 0;
-                  border: 1px solid #58595b; }
-                html main aside#filters .fieldset .options ul li::after, body main aside#filters .fieldset .options ul li::after {
-                  width: calc(.8em - 2px);
-                  height: calc(.8em - 2px);
-                  left: 2px;
-                  top: 2px;
-                  content: '';
-                  background: transparent; }
-                html main aside#filters .fieldset .options ul li:hover, body main aside#filters .fieldset .options ul li:hover {
-                  cursor: pointer; }
-                  html main aside#filters .fieldset .options ul li:hover::after, body main aside#filters .fieldset .options ul li:hover::after {
-                    background: #a0a0a0; }
-                html main aside#filters .fieldset .options ul li.selected::after, html main aside#filters .fieldset .options ul li.selected:hover::after, body main aside#filters .fieldset .options ul li.selected::after, body main aside#filters .fieldset .options ul li.selected:hover::after {
-                  background: #58595b !important; }
-          html main aside#filters .fieldset.open .label, body main aside#filters .fieldset.open .label {
-            background-position: left -2em; }
-          html main aside#filters .fieldset.open .options, body main aside#filters .fieldset.open .options {
-            height: auto; }
-          html main aside#filters .fieldset.disabled, body main aside#filters .fieldset.disabled {
-            opacity: .5;
-            pointer-events: none; }
-            html main aside#filters .fieldset.disabled .label, body main aside#filters .fieldset.disabled .label {
-              background-position: left -1em !important; }
-            html main aside#filters .fieldset.disabled .options, body main aside#filters .fieldset.disabled .options {
-              height: 0 !important; }
-        html main aside#filters.closed, body main aside#filters.closed {
-          right: 100%;
-          left: auto; }
-          html main aside#filters.closed .close .arrow, body main aside#filters.closed .close .arrow {
-            background-position: left -3.75em; }
-    html main #map, body main #map {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: relative; }
-      html main #map .mapboxgl-canvas-container canvas, body main #map .mapboxgl-canvas-container canvas {
-        width: 100% !important; }
-      html main #map .mapboxgl-popup, body main #map .mapboxgl-popup {
-        max-width: 20em;
-        position: absolute;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        will-change: transform; }
-        html main #map .mapboxgl-popup .mapboxgl-popup-content, body main #map .mapboxgl-popup .mapboxgl-popup-content {
-          position: relative;
-          background-color: #a0a0a0;
-          color: #f9f9f9;
-          padding: .7em;
-          border-radius: .25em;
-          font-size: .5em; }
-          html main #map .mapboxgl-popup .mapboxgl-popup-content ul, body main #map .mapboxgl-popup .mapboxgl-popup-content ul {
-            padding: 0;
-            margin: 0;
-            list-style: none; }
+              left: 0;
+              top: .25em;
+              border: 1px solid #1f3155; }
+            aside#filters .fieldset .options ul li::after {
+              width: calc(.8em - 2px);
+              height: calc(.8em - 2px);
+              left: 2px;
+              top: calc(2px + .25em);
+              content: '';
+              background: transparent; }
+            aside#filters .fieldset .options ul li:hover {
+              cursor: pointer; }
+              aside#filters .fieldset .options ul li:hover::after {
+                background: #f9f9f9; }
+            aside#filters .fieldset .options ul li.selected::after, aside#filters .fieldset .options ul li.selected:hover::after {
+              background: #1f3155 !important; }
+      aside#filters .fieldset.open .label .arrow {
+        background-position: left -2em; }
+      aside#filters .fieldset.open .options {
+        height: auto; }
+      aside#filters .fieldset.disabled {
+        opacity: .5;
+        pointer-events: none; }
+        aside#filters .fieldset.disabled .label .arrow {
+          background-position: left -1em !important; }
+        aside#filters .fieldset.disabled .options {
+          height: 0 !important; }
+    aside#filters.closed .close .arrow {
+      background-position: left -3.75em; }
+
+main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative; }
+  main .label {
+    font-weight: normal;
+    margin: 0 0 .5em 0; }
+    main .label:hover {
+      cursor: pointer; }
+  main #map {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative; }
+    main #map .mapboxgl-canvas-container canvas {
+      width: 100% !important; }
+    main #map .mapboxgl-popup {
+      width: 18em;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: none !important;
+      will-change: transform;
+      z-index: 500;
+      pointer-events: none; }
+      main #map .mapboxgl-popup .mapboxgl-popup-content {
+        position: relative;
+        background-color: #795292;
+        color: #f9f9f9;
+        padding: 1.75em 2em;
+        font-size: .75em;
+        line-height: 1.2em; }
+        main #map .mapboxgl-popup .mapboxgl-popup-content ul {
+          padding: 0;
+          margin: 0;
+          list-style: none; }
+          main #map .mapboxgl-popup .mapboxgl-popup-content ul li {
+            padding: .25em 0;
+            margin: 0; }

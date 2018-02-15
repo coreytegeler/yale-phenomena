@@ -1,0 +1,48 @@
+$lightBlue: #afd7ed;
+$dark: #1f3155;
+$lightGrey: #f2f2ef;
+$mediumGrey: #dcdfe2;
+$white: #f9f9f9;
+$purple: #795292;
+$green: #5fa990;
+
+
+@mixin baseText {
+	font-size: 15px;
+	line-height: 1.2em;
+}
+
+
+@mixin xSmallText {
+	font-size: .75em;
+	line-height: 1.2em;
+}
+
+@mixin smallText {
+	font-size: 1em;
+	line-height: 1.2em;
+}
+
+@mixin mediumText {
+	font-size: 1.25em;
+	line-height: 1.2em;
+}
+
+@mixin largeText {
+	font-size: 1.25em;
+	line-height: 1.25em;
+}
+
+@mixin xLargeText {
+	font-size: 1.5em;
+	line-height: 1.5em;
+}
+
+@mixin hideScroll {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	&::-webkit-scrollbar-thumb {
+		display: none;
+	}
+}
