@@ -8,6 +8,9 @@ html, body {
   font-size: 15px;
   line-height: 1.2em; }
 
+body {
+  overflow-y: auto; }
+
 #embed {
   width: 80vw;
   height: 70vw;

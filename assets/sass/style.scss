@@ -8,6 +8,9 @@ html, body {
 	font-family: Helvetica, Arial, sans-serif;
 	@include baseText;
 }
+body {
+	overflow-y: auto;
+}
 #embed {
 	width: 80vw;
 	height: 70vw;
