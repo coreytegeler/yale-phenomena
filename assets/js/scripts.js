@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, accessToken, addListeners, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, styleURI, toggleFeature, toggleFieldset, toggleSide, updatePaintProperty, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, accessToken, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, startListening, styleURI, toggleFeature, toggleFieldset, toggleFilterTabs, toggleSide, updatePaintProperty, updateUrl;
   accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg';
   mapboxgl.accessToken = accessToken;
   styleURI = 'mapbox://styles/mapbox/light-v9';
@@ -59,7 +59,7 @@ $(function() {
           'line-opacity': 0.1
         }
       });
-      addListeners(map);
+      startListening(map);
       return getQuery();
     });
   };
@@ -114,6 +114,19 @@ $(function() {
       $headerSentence.text('');
       return $accFieldset.addClass('disabled');
     }
+  };
+  toggleFilterTabs = function(e) {
+    var $form, $tab, formId;
+    $tab = $(this);
+    if ($tab.is('.active')) {
+      return;
+    }
+    formId = $tab.attr('data-form');
+    $form = $('.form[data-form="' + formId + '"]');
+    $('.tab.active').removeClass('active');
+    $('.form.active').removeClass('active');
+    $tab.addClass('active');
+    return $form.addClass('active');
   };
   toggleFieldset = function(e) {
     var $fieldset, $label;
@@ -311,7 +324,7 @@ $(function() {
       url: keyURI,
       dataType: 'text',
       success: function(data) {
-        var $option, i, j, len, num, parsedRow, prefix, results, row, sentence, type, val;
+        var $li, i, j, len, num, parsedRow, prefix, results, row, sentence, type, val;
         data = data.split(/\r?\n|\r/);
         results = [];
         for (i = j = 0, len = data.length; j < len; i = ++j) {
@@ -336,8 +349,10 @@ $(function() {
               }
             })();
             val = prefix + '_' + num;
-            $option = $('<li></li>').addClass('option').attr('data-val', val).append('<span>' + sentence + '</span>');
-            results.push($options.append($option));
+            $li = $('<li></li>').addClass('sentence').attr('data-val', val).append('<span>' + sentence + '</span>');
+            $filters.find('.fieldset.accept ul').append($li.clone());
+            $filters.find('.fieldset.reject ul').append($li.clone());
+            results.push($options.append($li.addClass('option')));
           } else {
             results.push(void 0);
           }
@@ -405,13 +420,14 @@ $(function() {
     }
     return results;
   };
-  addListeners = function(map) {
+  startListening = function(map) {
     var popup;
     $('body').on('click', 'aside .label', toggleFieldset);
     $('body').on('click', 'aside#filters ul li', clickFilter);
     $('.slider').on('slidechange', changeSlider);
     $('body').on('click', 'aside .close', toggleSide);
     $('body').on('click', 'aside#phenomena ul li', selectSentence);
+    $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
     popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false
@@ -440,10 +456,20 @@ $(function() {
           description += '</ul>';
         }
       }
-      return popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
+      popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
+      return $(popup._content).parent().addClass('show').attr('data-id', marker.id);
     });
     return map.on('mouseleave', 'data', function(e) {
-      return popup.remove();
+      var $popup, oldId;
+      $popup = $('.mapboxgl-popup');
+      oldId = $popup.attr('data-id');
+      return setTimeout(function() {
+        var newId;
+        newId = $popup.attr('data-id');
+        if (oldId === newId) {
+          return $popup.removeClass('show');
+        }
+      }, 500);
     });
   };
   installKey();

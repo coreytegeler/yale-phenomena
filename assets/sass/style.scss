@@ -13,13 +13,13 @@ body {
 }
 #embed {
 	width: 80vw;
-	height: 70vw;
-	margin: 5vw 10vw;
+	height: 95vh;
+	margin: 2.5vh 10vw;
 	display: table;
 }
 #frame {
 	width: calc(100% - 4em);
-	height: calc(100% - 4em);
+	height: 100%;
 	padding: 2em;
 	background-color: $lightBlue;
 	position: relative;
@@ -68,10 +68,6 @@ header {
 			}
 		}
 	}
-	&.static {
-		width: 18em;
-		padding: 0 0 0 2em;
-	}
 	&.hide {
 		display: none;
 	}
@@ -81,69 +77,49 @@ aside {
 	position: absolute;
 	overflow: hidden;
 	z-index: 400;
+	header {
+		width: 18em;
+		padding: 0 0 0 2em;
+		.shadow.top {
+
+		}
+	}
 	.inner {
 		width: 100%;
 		max-width: 20em;
 		height: 100%;
 		overflow: hidden;
-    display: flex;
-    flex-direction: column;
-	}
-	ul {
-		margin: 0;
-		li {
-			list-style: none;
+		ul {
+			margin: 0;
+			li {
+				list-style: none;
+				position: relative;
+			}
+		}
+		.scroller {
+			max-height: 100%;
+	    position: relative;
+	    pointer-events: all;
+			overflow-y: scroll;
+			@include hideScroll;
+		}
+		.form {
+			pointer-events: all;
 			position: relative;
 		}
-	}
-	.slider {
-		width: calc(100% - 10px);
-		height: 2px;
-		margin: 1em 0;
-		position: relative;
-		background: $dark;
-		border: 1px solid $white;
-		.ui-slider-handle {
-			height: 10px;
-			position: absolute;
-			top: -5px;
-			background: $dark;
-			border: 1px solid $white;
-			transition: transform 100ms ease-in-out;
-			transform-origin: center;
-			&.ui-state-hover, &.ui-state-active {
-				cursor: ew-resize;
-				transform: scale(1.5);
-				z-index: 99999;
-			}
-			&.ui-state-focus {
-				background: blue;
-				outline: none;
-			}
-		}
-		&:hover {
-			// background: blue;
-		}
-		&[data-type='scale'] {
-			.ui-slider-handle {
-				width: 10px;
-				left: -5px;
-				border-radius: 50%;
-			}
-		}
-		&[data-type='range'] {
-			.ui-slider-range {
-				height: 2px;
-				position: absolute;
-				top: -1px;
-				background: blue;
-				border: 1px solid $white;
-			}
-			.ui-slider-handle {
-				width: 5px;
-				left: 0px;
-			}
-		}
+		.shadow {
+	  	width: 100%;
+	  	height: 2em;
+	  	&.top {
+	  		position: absolute;
+	  		left: 0;
+	  		top: 0;
+	  	}
+	    &.bottom {
+	    	position: relative;
+	    	margin-top: -2em;
+	    }
+	  }
 	}
 	&#phenomena {
 		height: calc(100% - 4em);
@@ -156,7 +132,9 @@ aside {
 			height: 2em;
 			position: absolute;
 			left: 0em;
-			top: 0em;
+			top: 3.5em;
+			z-index: 500;
+			background-color: $lightBlue;
 			background-image: url(./../img/hamburger.svg);
 			background-position: center;
 			background-size: 1.25em auto;
@@ -169,6 +147,21 @@ aside {
 		}
 		.inner {
 			box-shadow: 0 0 4em 3em $white;
+			display: flex;
+	    flex-direction: column;
+		}
+		.shadow {
+			&.top {
+				box-shadow: inset 0 3em 2em -1.5em $white;
+				position: relative;
+				margin: 0 0 -2em 2em;
+				z-index: 500;
+			}
+			&.bottom {
+				box-shadow: inset 0 -3em 2em -1.5em $white;
+		    width: calc(100% - 2em);
+		    margin-left: 2em;
+			}
 		}
 		.phenomena {
 			padding: 1em;
@@ -200,6 +193,16 @@ aside {
 		&.closed {
 			width: 2em;
 			left: 0;
+			.shadow {
+				margin-left: 0;
+				&.top {
+					box-shadow: inset 0 3em 2em -1.5em $lightBlue;
+				}
+				&.bottom {
+					width: 2em;
+					box-shadow: inset 0 -3em 2em -1.5em $lightBlue;
+				}
+			}
 			.phenomena {
 				padding: 0;
 				margin: 0;
@@ -227,21 +230,22 @@ aside {
 		}
 	}
 	&#filters {
-		height: auto;
-		max-height: calc(100% - 2em);
+		height: calc(100% - 2em);
 		max-width: 20em;
 		right: 2em;
 		top: 0;
 		user-select: none;
+		pointer-events: none;
 		.tabs {
 			height: 2em;
+			pointer-events: all;
 			.tab {
 				width: calc(50% - 1px);
 				height: calc(100% - 5px);
 				margin: 5px 0 0 0;
 				display: table;
 				float: left;
-				background-color: $mediumGrey;
+				background-color: $lightGrey;
 				border-radius: 5px 5px 0 0;
 				.label {
 					margin: auto;
@@ -249,11 +253,11 @@ aside {
 			    vertical-align: middle;
 			    text-align: center;
 			    font-weight: bold;
-			    opacity: .5;
+			    color: $mediumGrey;
 			    text-transform: uppercase;
 				}
 				&.active {
-					background-color: $lightGrey;
+					background-color: $lighterGrey;
 					.label {
 						opacity: 1;
 					}
@@ -270,29 +274,32 @@ aside {
 			}
 		}
 		.inner {
-			padding: 1em;
-			background: $lightGrey;
+			width: 100%;
+			height: calc(100% - 2em);
+			position: absolute;
+			left: 0;
+			top: 2em;
+			.form {
+				width: calc(100% - 2em);
+				padding: 2em 1em;
+				background-color: $lighterGrey;
+				display: none;
+				&.active {
+					display: block;
+				}
+			}
+			.shadow {
+				&.top {
+					box-shadow: inset 0 3em 2em -1.5em $lighterGrey;
+					margin-bottom: -2em;
+					z-index: 500;
+				}
+				&.bottom {
+					box-shadow: inset 0 -3em 2em -1.5em $lighterGrey;
+			    width: 100%;
+				}
+			}
 		}
-		// .close {
-		// 	width: 1.25em;
-		// 	height: 1.25em;
-		// 	padding: 1em;
-		// 	position: absolute;
-		// 	right: 0;
-		// 	top: 0;
-		// 	.arrow {
-		// 		width: 1.25em;
-		// 		height: 1.25em;
-		// 		background-image: url('./../img/arrows.svg');
-		// 		background-position: left -1.25em;
-		// 		background-repeat: no-repeat;
-		// 		background-size: 1.25em auto;
-		// 	}
-		// 	&:hover {
-		// 		opacity: .7;
-		// 		cursor: pointer;
-		// 	}
-		// }
 		.fieldset {
 			margin: 0 0 1em 0;
 			.label {
@@ -324,40 +331,95 @@ aside {
 				ul {
 					padding: 0 0 0 1em;
 					li {
-						padding: .25em 0 .25em 1.25em;
+						padding: .25em 0;
 						margin: .75em 0 0 0;
 						font-weight: bold;
-						&::before, &::after {
-							position: absolute;
-							border-radius: 50%;
-							content: '';
-						}
-						&::before {
-							width: .8em;
-							height: .8em;
-							left: 0;
-							top: .25em;
-							border: 1px solid $dark;
-						}
-						&::after {
-							width: calc(.8em - 2px);
-							height: calc(.8em - 2px);
-							left: 2px;
-							top: calc(2px + .25em);
-							content: '';
-							background: transparent;
-						}
-						&:hover {
-							cursor: pointer;
+						cursor: pointer;
+						&.option {
+							padding-left: 1.25em;
+							&::before, &::after {
+								position: absolute;
+								border-radius: 50%;
+								content: '';
+							}
+							&::before {
+								width: .8em;
+								height: .8em;
+								left: 0;
+								top: .25em;
+								border: 1px solid $dark;
+							}
 							&::after {
-								background: $white;
+								width: calc(.8em - 2px);
+								height: calc(.8em - 2px);
+								left: 2px;
+								top: calc(2px + .25em);
+								content: '';
+								background: transparent;
+							}
+							&:hover {
+								&::after {
+									background: $white;
+								}
+							}
+							&.selected, &.selected:hover {
+								&::after {
+									background: $dark !important;
+								}
 							}
 						}
-						&.selected, &.selected:hover {
-							&::after {
-								background: $dark !important;
-							}
+						&.sentence {
+							padding-left: .25em;
 						}
+					}
+				}
+			}
+			.slider {
+				width: calc(100% - 10px);
+				height: 2px;
+				margin: 1em 0;
+				position: relative;
+				background: $dark;
+				border: 1px solid $white;
+				.ui-slider-handle {
+					height: 10px;
+					position: absolute;
+					top: -5px;
+					background: $dark;
+					border: 1px solid $white;
+					transition: transform 100ms ease-in-out;
+					transform-origin: center;
+					&.ui-state-hover, &.ui-state-active {
+						cursor: ew-resize;
+						transform: scale(1.5);
+						z-index: 99999;
+					}
+					&.ui-state-focus {
+						background: blue;
+						outline: none;
+					}
+				}
+				&:hover {
+					// background: blue;
+				}
+				&[data-type='scale'] {
+					.ui-slider-handle {
+						width: 10px;
+						left: -5px;
+						border-radius: 50%;
+					}
+				}
+				&[data-type='range'] {
+					.ui-slider-range {
+						height: 2px;
+						position: absolute;
+						top: -1px;
+						background: blue;
+						border: 1px solid $white;
+					}
+					.ui-slider-handle {
+						width: 5px;
+						left: 0px;
 					}
 				}
 			}
@@ -416,7 +478,9 @@ main {
 			bottom: 0;
 			left: 0;
 			transform: none !important;
-			will-change: transform;
+			opacity: 0;
+			transition: opacity 200ms ease-in-out;
+			will-change: transform, opacity;
 			z-index: 500;
 			pointer-events: none;
 			.mapboxgl-popup-content {
@@ -434,6 +498,9 @@ main {
 						margin: 0;
 					}
 				}
+			}
+			&.show {
+				opacity: 1;
 			}
 		}
 	}

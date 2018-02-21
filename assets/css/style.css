@@ -13,13 +13,13 @@ body {
 
 #embed {
   width: 80vw;
-  height: 70vw;
-  margin: 5vw 10vw;
+  height: 95vh;
+  margin: 2.5vh 10vw;
   display: table; }
 
 #frame {
   width: calc(100% - 4em);
-  height: calc(100% - 4em);
+  height: 100%;
   padding: 2em;
   background-color: #afd7ed;
   position: relative; }
@@ -64,9 +64,6 @@ header {
         margin: 0;
         padding: 2em 0 0 0;
         pointer-events: all; }
-  header.static {
-    width: 18em;
-    padding: 0 0 0 2em; }
   header.hide {
     display: none; }
 
@@ -75,53 +72,41 @@ aside {
   position: absolute;
   overflow: hidden;
   z-index: 400; }
+  aside header {
+    width: 18em;
+    padding: 0 0 0 2em; }
   aside .inner {
     width: 100%;
     max-width: 20em;
     height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column; }
-  aside ul {
-    margin: 0; }
-    aside ul li {
-      list-style: none;
+    overflow: hidden; }
+    aside .inner ul {
+      margin: 0; }
+      aside .inner ul li {
+        list-style: none;
+        position: relative; }
+    aside .inner .scroller {
+      max-height: 100%;
+      position: relative;
+      pointer-events: all;
+      overflow-y: scroll; }
+      aside .inner .scroller::-webkit-scrollbar {
+        display: none; }
+      aside .inner .scroller::-webkit-scrollbar-thumb {
+        display: none; }
+    aside .inner .form {
+      pointer-events: all;
       position: relative; }
-  aside .slider {
-    width: calc(100% - 10px);
-    height: 2px;
-    margin: 1em 0;
-    position: relative;
-    background: #1f3155;
-    border: 1px solid #f9f9f9; }
-    aside .slider .ui-slider-handle {
-      height: 10px;
-      position: absolute;
-      top: -5px;
-      background: #1f3155;
-      border: 1px solid #f9f9f9;
-      transition: transform 100ms ease-in-out;
-      transform-origin: center; }
-      aside .slider .ui-slider-handle.ui-state-hover, aside .slider .ui-slider-handle.ui-state-active {
-        cursor: ew-resize;
-        transform: scale(1.5);
-        z-index: 99999; }
-      aside .slider .ui-slider-handle.ui-state-focus {
-        background: blue;
-        outline: none; }
-    aside .slider[data-type='scale'] .ui-slider-handle {
-      width: 10px;
-      left: -5px;
-      border-radius: 50%; }
-    aside .slider[data-type='range'] .ui-slider-range {
-      height: 2px;
-      position: absolute;
-      top: -1px;
-      background: blue;
-      border: 1px solid #f9f9f9; }
-    aside .slider[data-type='range'] .ui-slider-handle {
-      width: 5px;
-      left: 0px; }
+    aside .inner .shadow {
+      width: 100%;
+      height: 2em; }
+      aside .inner .shadow.top {
+        position: absolute;
+        left: 0;
+        top: 0; }
+      aside .inner .shadow.bottom {
+        position: relative;
+        margin-top: -2em; }
   aside#phenomena {
     height: calc(100% - 4em);
     left: 0;
@@ -133,7 +118,9 @@ aside {
       height: 2em;
       position: absolute;
       left: 0em;
-      top: 0em;
+      top: 3.5em;
+      z-index: 500;
+      background-color: #afd7ed;
       background-image: url(./../img/hamburger.svg);
       background-position: center;
       background-size: 1.25em auto;
@@ -143,7 +130,18 @@ aside {
         cursor: pointer;
         opacity: .7; }
     aside#phenomena .inner {
-      box-shadow: 0 0 4em 3em #f9f9f9; }
+      box-shadow: 0 0 4em 3em #f9f9f9;
+      display: flex;
+      flex-direction: column; }
+    aside#phenomena .shadow.top {
+      box-shadow: inset 0 3em 2em -1.5em #f9f9f9;
+      position: relative;
+      margin: 0 0 -2em 2em;
+      z-index: 500; }
+    aside#phenomena .shadow.bottom {
+      box-shadow: inset 0 -3em 2em -1.5em #f9f9f9;
+      width: calc(100% - 2em);
+      margin-left: 2em; }
     aside#phenomena .phenomena {
       padding: 1em;
       margin: 0 0 0 2em;
@@ -171,6 +169,13 @@ aside {
     aside#phenomena.closed {
       width: 2em;
       left: 0; }
+      aside#phenomena.closed .shadow {
+        margin-left: 0; }
+        aside#phenomena.closed .shadow.top {
+          box-shadow: inset 0 3em 2em -1.5em #afd7ed; }
+        aside#phenomena.closed .shadow.bottom {
+          width: 2em;
+          box-shadow: inset 0 -3em 2em -1.5em #afd7ed; }
       aside#phenomena.closed .phenomena {
         padding: 0;
         margin: 0;
@@ -187,14 +192,15 @@ aside {
           aside#phenomena.closed .phenomena ul li span {
             display: none; }
   aside#filters {
-    height: auto;
-    max-height: calc(100% - 2em);
+    height: calc(100% - 2em);
     max-width: 20em;
     right: 2em;
     top: 0;
-    user-select: none; }
+    user-select: none;
+    pointer-events: none; }
     aside#filters .tabs {
-      height: 2em; }
+      height: 2em;
+      pointer-events: all; }
       aside#filters .tabs .tab {
         width: calc(50% - 1px);
         height: calc(100% - 5px);
@@ -209,7 +215,7 @@ aside {
           vertical-align: middle;
           text-align: center;
           font-weight: bold;
-          opacity: .5;
+          color: #7e889b;
           text-transform: uppercase; }
         aside#filters .tabs .tab.active {
           background-color: #f2f2ef; }
@@ -222,8 +228,25 @@ aside {
         aside#filters .tabs .tab:last-child {
           margin-left: 1px; }
     aside#filters .inner {
-      padding: 1em;
-      background: #f2f2ef; }
+      width: 100%;
+      height: calc(100% - 2em);
+      position: absolute;
+      left: 0;
+      top: 2em; }
+      aside#filters .inner .form {
+        width: calc(100% - 2em);
+        padding: 2em 1em;
+        background-color: #f2f2ef;
+        display: none; }
+        aside#filters .inner .form.active {
+          display: block; }
+      aside#filters .inner .shadow.top {
+        box-shadow: inset 0 3em 2em -1.5em #f2f2ef;
+        margin-bottom: -2em;
+        z-index: 500; }
+      aside#filters .inner .shadow.bottom {
+        box-shadow: inset 0 -3em 2em -1.5em #f2f2ef;
+        width: 100%; }
     aside#filters .fieldset {
       margin: 0 0 1em 0; }
       aside#filters .fieldset .label {
@@ -251,32 +274,70 @@ aside {
         aside#filters .fieldset .options ul {
           padding: 0 0 0 1em; }
           aside#filters .fieldset .options ul li {
-            padding: .25em 0 .25em 1.25em;
+            padding: .25em 0;
             margin: .75em 0 0 0;
-            font-weight: bold; }
-            aside#filters .fieldset .options ul li::before, aside#filters .fieldset .options ul li::after {
-              position: absolute;
-              border-radius: 50%;
-              content: ''; }
-            aside#filters .fieldset .options ul li::before {
-              width: .8em;
-              height: .8em;
-              left: 0;
-              top: .25em;
-              border: 1px solid #1f3155; }
-            aside#filters .fieldset .options ul li::after {
-              width: calc(.8em - 2px);
-              height: calc(.8em - 2px);
-              left: 2px;
-              top: calc(2px + .25em);
-              content: '';
-              background: transparent; }
-            aside#filters .fieldset .options ul li:hover {
-              cursor: pointer; }
-              aside#filters .fieldset .options ul li:hover::after {
+            font-weight: bold;
+            cursor: pointer; }
+            aside#filters .fieldset .options ul li.option {
+              padding-left: 1.25em; }
+              aside#filters .fieldset .options ul li.option::before, aside#filters .fieldset .options ul li.option::after {
+                position: absolute;
+                border-radius: 50%;
+                content: ''; }
+              aside#filters .fieldset .options ul li.option::before {
+                width: .8em;
+                height: .8em;
+                left: 0;
+                top: .25em;
+                border: 1px solid #1f3155; }
+              aside#filters .fieldset .options ul li.option::after {
+                width: calc(.8em - 2px);
+                height: calc(.8em - 2px);
+                left: 2px;
+                top: calc(2px + .25em);
+                content: '';
+                background: transparent; }
+              aside#filters .fieldset .options ul li.option:hover::after {
                 background: #f9f9f9; }
-            aside#filters .fieldset .options ul li.selected::after, aside#filters .fieldset .options ul li.selected:hover::after {
-              background: #1f3155 !important; }
+              aside#filters .fieldset .options ul li.option.selected::after, aside#filters .fieldset .options ul li.option.selected:hover::after {
+                background: #1f3155 !important; }
+            aside#filters .fieldset .options ul li.sentence {
+              padding-left: .25em; }
+      aside#filters .fieldset .slider {
+        width: calc(100% - 10px);
+        height: 2px;
+        margin: 1em 0;
+        position: relative;
+        background: #1f3155;
+        border: 1px solid #f9f9f9; }
+        aside#filters .fieldset .slider .ui-slider-handle {
+          height: 10px;
+          position: absolute;
+          top: -5px;
+          background: #1f3155;
+          border: 1px solid #f9f9f9;
+          transition: transform 100ms ease-in-out;
+          transform-origin: center; }
+          aside#filters .fieldset .slider .ui-slider-handle.ui-state-hover, aside#filters .fieldset .slider .ui-slider-handle.ui-state-active {
+            cursor: ew-resize;
+            transform: scale(1.5);
+            z-index: 99999; }
+          aside#filters .fieldset .slider .ui-slider-handle.ui-state-focus {
+            background: blue;
+            outline: none; }
+        aside#filters .fieldset .slider[data-type='scale'] .ui-slider-handle {
+          width: 10px;
+          left: -5px;
+          border-radius: 50%; }
+        aside#filters .fieldset .slider[data-type='range'] .ui-slider-range {
+          height: 2px;
+          position: absolute;
+          top: -1px;
+          background: blue;
+          border: 1px solid #f9f9f9; }
+        aside#filters .fieldset .slider[data-type='range'] .ui-slider-handle {
+          width: 5px;
+          left: 0px; }
       aside#filters .fieldset.open .label .arrow {
         background-position: left -2em; }
       aside#filters .fieldset.open .options {
@@ -315,7 +376,9 @@ main {
       bottom: 0;
       left: 0;
       transform: none !important;
-      will-change: transform;
+      opacity: 0;
+      transition: opacity 200ms ease-in-out;
+      will-change: transform, opacity;
       z-index: 500;
       pointer-events: none; }
       main #map .mapboxgl-popup .mapboxgl-popup-content {
@@ -332,3 +395,5 @@ main {
           main #map .mapboxgl-popup .mapboxgl-popup-content ul li {
             padding: .25em 0;
             margin: 0; }
+      main #map .mapboxgl-popup.show {
+        opacity: 1; }

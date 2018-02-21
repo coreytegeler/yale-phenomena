@@ -69,7 +69,7 @@ $ ->
 					'line-color': 'black'
 					'line-opacity': 0.1
 
-			addListeners(map)
+			startListening(map)
 			getQuery()
 
 	updatePaintProperty = (prop) ->
@@ -164,6 +164,18 @@ $ ->
 		else
 			$headerSentence.text('')
 			$accFieldset.addClass('disabled')
+
+
+	toggleFilterTabs = (e) ->
+		$tab = $(this)
+		if $tab.is('.active')
+			return
+		formId = $tab.attr('data-form')
+		$form = $('.form[data-form="'+formId+'"]')
+		$('.tab.active').removeClass('active')
+		$('.form.active').removeClass('active')
+		$tab.addClass('active')
+		$form.addClass('active')
 
 
 	toggleFieldset = (e) ->
@@ -337,11 +349,13 @@ $ ->
 							when type.indexOf('ControlU') > -1 then 'CU'
 							else 'X'
 						val = prefix + '_' + num
-						$option = $('<li></li>')
-							.addClass('option')
+						$li = $('<li></li>')
+							.addClass('sentence')
 							.attr('data-val', val)
 							.append('<span>'+sentence+'</span>')
-						$options.append($option)
+						$filters.find('.fieldset.accept ul').append($li.clone())
+						$filters.find('.fieldset.reject ul').append($li.clone())
+						$options.append($li.addClass('option'))
 
 	updateUrl = () ->
 		filters = map.getFilter('data')
@@ -381,13 +395,15 @@ $ ->
 					val = mechanize(val)
 				selectFilter(prop, val)
 
-	addListeners = (map) ->
+	startListening = (map) ->
 		$('body').on 'click', 'aside .label', toggleFieldset
 		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
 
 		$('body').on 'click', 'aside .close', toggleSide
 		$('body').on 'click', 'aside#phenomena ul li', selectSentence
+
+		$('body').on 'click', 'aside#filters .tab', toggleFilterTabs
 
 		popup = new mapboxgl.Popup
 			closeButton: false,
@@ -415,9 +431,19 @@ $ ->
 			popup.setLngLat(marker.geometry.coordinates)
 				.setHTML(ul)
 				.addTo(map)
+			$(popup._content).parent()
+				.addClass('show')
+				.attr('data-id', marker.id)
+
 
 		map.on 'mouseleave', 'data', (e) ->
-			popup.remove()
+			$popup = $('.mapboxgl-popup')
+			oldId = $popup.attr('data-id')
+			setTimeout () ->
+				newId = $popup.attr('data-id')
+				if oldId == newId
+					$popup.removeClass('show')
+			, 500
 
 	installKey()
 	createMap()

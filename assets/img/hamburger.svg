@@ -3,7 +3,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="600px" height="500px" viewBox="0 0 600 500" enable-background="new 0 0 600 500" xml:space="preserve">
-<rect x="1.713" y="236.842" fill="#FFFFFF" width="596.573" height="26.316"/>
-<rect x="1.714" fill="#FFFFFF" width="596.573" height="26.316"/>
-<rect x="1.714" y="473.684" fill="#FFFFFF" width="596.573" height="26.316"/>
+<rect fill="#7E889B" width="600" height="75"/>
+<rect y="212.5" fill="#7E889B" width="600" height="75"/>
+<rect y="425" fill="#7E889B" width="600" height="75"/>
 </svg>
