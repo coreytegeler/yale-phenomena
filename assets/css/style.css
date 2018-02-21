@@ -15,11 +15,11 @@ body {
   width: 80vw;
   height: 95vh;
   margin: 2.5vh 10vw;
-  display: table; }
+  display: block; }
 
 #frame {
   width: calc(100% - 4em);
-  height: 100%;
+  height: calc(100% - 4em);
   padding: 2em;
   background-color: #afd7ed;
   position: relative; }
@@ -37,7 +37,7 @@ header {
   opacity: 1; }
   header .wrapper {
     width: calc(100% - 2em);
-    padding: 1em;
+    padding: 1em 1em 0 1em;
     display: table;
     background-color: #f9f9f9; }
   header h1 {
@@ -99,14 +99,15 @@ aside {
       position: relative; }
     aside .inner .shadow {
       width: 100%;
-      height: 2em; }
+      height: 4em;
+      display: table; }
       aside .inner .shadow.top {
         position: absolute;
         left: 0;
         top: 0; }
       aside .inner .shadow.bottom {
         position: relative;
-        margin-top: -2em; }
+        margin-top: -4em; }
   aside#phenomena {
     height: calc(100% - 4em);
     left: 0;
@@ -134,16 +135,16 @@ aside {
       display: flex;
       flex-direction: column; }
     aside#phenomena .shadow.top {
-      box-shadow: inset 0 3em 2em -1.5em #f9f9f9;
+      box-shadow: inset 0 2.5em 1.5em -1em #f9f9f9;
       position: relative;
-      margin: 0 0 -2em 2em;
+      margin: 0 0 -4em 2em;
       z-index: 500; }
     aside#phenomena .shadow.bottom {
-      box-shadow: inset 0 -3em 2em -1.5em #f9f9f9;
+      box-shadow: inset 0 -2.5em 1.5em -1em #f9f9f9;
       width: calc(100% - 2em);
       margin-left: 2em; }
     aside#phenomena .phenomena {
-      padding: 1em;
+      padding: 1.5em 1em;
       margin: 0 0 0 2em;
       background-color: #f9f9f9;
       pointer-events: all;
@@ -172,12 +173,13 @@ aside {
       aside#phenomena.closed .shadow {
         margin-left: 0; }
         aside#phenomena.closed .shadow.top {
-          box-shadow: inset 0 3em 2em -1.5em #afd7ed; }
+          margin-top: 1em;
+          box-shadow: inset 0 2.5em 1.5em -1em #afd7ed; }
         aside#phenomena.closed .shadow.bottom {
           width: 2em;
-          box-shadow: inset 0 -3em 2em -1.5em #afd7ed; }
+          box-shadow: inset 0 -2.5em 1.5em -1em #afd7ed; }
       aside#phenomena.closed .phenomena {
-        padding: 0;
+        padding: 1.25em 0;
         margin: 0;
         background-color: transparent; }
         aside#phenomena.closed .phenomena .options {
@@ -241,11 +243,11 @@ aside {
         aside#filters .inner .form.active {
           display: block; }
       aside#filters .inner .shadow.top {
-        box-shadow: inset 0 3em 2em -1.5em #f2f2ef;
-        margin-bottom: -2em;
+        box-shadow: inset 0 2.5em 1.5em -1em #f2f2ef;
+        margin-bottom: -4em;
         z-index: 500; }
       aside#filters .inner .shadow.bottom {
-        box-shadow: inset 0 -3em 2em -1.5em #f2f2ef;
+        box-shadow: inset 0 -2.5em 1.5em -1em #f2f2ef;
         width: 100%; }
     aside#filters .fieldset {
       margin: 0 0 1em 0; }

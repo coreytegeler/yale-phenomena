@@ -39,6 +39,14 @@ $green: #5fa990;
 	line-height: 1.5em;
 }
 
+@mixin bottomShadow($color) {
+	box-shadow: inset 0 -2.5em 1.5em -1em  $color;
+}
+
+@mixin topShadow($color) {
+	box-shadow: inset 0 2.5em 1.5em -1em  $color;
+}
+
 @mixin hideScroll {
 	&::-webkit-scrollbar {
 		display: none;
