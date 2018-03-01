@@ -339,17 +339,29 @@ $(function() {
     return filterMarkers();
   };
   changeThresholds = function(e) {
-    var $input, $option, $sibling, sibVal, val;
+    var $input, $option, $sibling, allowed, i, j, max, min, range, rangeStr, ref, ref1, sibVal, val;
     $input = $(this);
     $sibling = $input.siblings('input');
     $option = $input.parents('.option');
     val = $input.val();
     sibVal = $sibling.val();
     if ($input.is('.min')) {
-      return console.log(val < sibVal);
+      allowed = val <= sibVal;
     } else {
-      return console.log(val > sibVal);
+      allowed = val >= sibVal;
     }
+    if (!allowed) {
+      $input.val(sibVal);
+    }
+    min = $option.find('input.min').val();
+    max = $option.find('input.max').val();
+    range = [];
+    for (i = j = ref = min, ref1 = max; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
+      range.push(Math.abs(i));
+    }
+    rangeStr = JSON.stringify(range).replace(/[\[\]']+/g, '');
+    $option.attr('data-val', rangeStr);
+    return filterMarkers();
   };
   installKey = function() {
     var $options;

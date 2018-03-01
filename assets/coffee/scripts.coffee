@@ -356,9 +356,19 @@ $ ->
 		val = $input.val()
 		sibVal = $sibling.val()
 		if $input.is('.min')
-			console.log val < sibVal
+			allowed = val <= sibVal
 		else
-			console.log val > sibVal
+			allowed = val >= sibVal
+		if !allowed
+			$input.val(sibVal)
+		min = $option.find('input.min').val()
+		max = $option.find('input.max').val()
+		range = []
+		for i in [min..max]
+			range.push(Math.abs(i))
+		rangeStr = JSON.stringify(range).replace(/[\[\]']+/g,'')
+		$option.attr('data-val', rangeStr)
+		filterMarkers()
 
 
 	installKey = () ->

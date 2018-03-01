@@ -302,8 +302,8 @@ aside {
         aside#filters .fieldset .options ul {
           padding: 0 0 0 1.25em; }
           aside#filters .fieldset .options ul li {
-            padding: .25em 0 .25em 0;
-            margin: .25em 1em 0 0;
+            padding: .25em 1.25em .25em 0;
+            margin: .25em 0 0 0;
             cursor: pointer;
             background-image: url(./../img/x.svg);
             background-position: 200% center;
