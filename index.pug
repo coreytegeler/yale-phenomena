@@ -124,15 +124,15 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 									.options
 										ul
 											li.option.selected.all(data-val=null) Show All
-											li.option(data-val='3,4,5').acceptable
+											li.option.range-input(data-val='3,4,5').acceptable
 												span 'Acceptable' Only
-												.range-input
+												.inputs
 													input.min(type='number' value='3' min='1' max='5')
 													span &ndash;
 													input.max(type='number' value='5' min='1' max='5')
-											li.option(data-val='1,2').unacceptable
+											li.option.range-input(data-val='1,2').unacceptable
 												span 'Unacceptable' Only
-												.range-input
+												.inputs
 													input.min(type='number' value='1' min='1' max='5')
 													span &ndash;
 													input.max(type='number' value='2' min='1' max='5')

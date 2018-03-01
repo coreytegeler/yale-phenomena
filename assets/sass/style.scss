@@ -354,33 +354,41 @@ aside {
 				}
 			}
 			.range-input {
-				font-weight: normal;
-				display: inline;
-				float: right;
-				color: $white;
-				input {
-					width: 1.5em;
-					background-color: transparent;
-					border: none;
-					outline: none;
-					display: inline;
-					text-align: center;
-					color: $white;
-					padding: 0 0 1px 0;
-					&::-webkit-outer-spin-button,
-					&::-webkit-inner-spin-button {
-						-webkit-appearance: none;
-						margin: 0;
+				&:hover {
+					&.no-hover {
+						font-weight: normal;
 					}
-
+				}
+				.inputs {
+					font-weight: normal;
+					display: inline;
+					float: right;
+					color: $white;
+					cursor: default;
+					input {
+						width: 1.5em;
+						background-color: transparent;
+						border: none;
+						outline: none;
+						display: inline;
+						text-align: center;
+						color: $white;
+						padding: 0 0 1px 0;
+						&::-webkit-outer-spin-button,
+						&::-webkit-inner-spin-button {
+							-webkit-appearance: none;
+							margin: 0;
+						}
+					}
+				}
+				&.acceptable .inputs {
+					background-color: $green;
+				}
+				&.unacceptable .inputs {
+					background-color: $purple;
 				}
 			}
-			.acceptable .range-input {
-				background-color: $green;
-			}
-			.unacceptable .range-input {
-				background-color: $purple;
-			}
+			
 			.slider {
 				width: calc(100% - 10px);
 				height: 2px;

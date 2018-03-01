@@ -1,14 +1,14 @@
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Bold.woff2") format("woff2"), url("./../fonts/Mallory-Bold.woff") format("woff");
-  font-weight: bold;
+  src: url("./../fonts/Mallory-Light.woff2") format("woff2"), url("./../fonts/Mallory-Light.woff") format("woff");
+  font-weight: 300;
   font-style: normal; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Medium.woff2") format("woff2"), url("./../fonts/Mallory-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal; }
+  src: url("./../fonts/Mallory-LightItalic.woff2") format("woff2"), url("./../fonts/Mallory-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic; }
 
 @font-face {
   font-family: 'Mallory';
@@ -18,9 +18,33 @@
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Light.woff2") format("woff2"), url("./../fonts/Mallory-Light.woff") format("woff");
-  font-weight: 300;
+  src: url("./../fonts/Mallory-BookItalic.woff2") format("woff2"), url("./../fonts/Mallory-BookItalic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-Medium.woff2") format("woff2"), url("./../fonts/Mallory-Medium.woff") format("woff");
+  font-weight: 500;
   font-style: normal; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-MediumItalic.woff2") format("woff2"), url("./../fonts/Mallory-MediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-Bold.woff2") format("woff2"), url("./../fonts/Mallory-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-BoldItalic.woff2") format("woff2"), url("./../fonts/Mallory-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic; }
 
 html, body {
   width: 100%;
@@ -314,12 +338,15 @@ aside {
       aside#filters .fieldset ul li.selected {
         font-weight: bold;
         background-position: right center; }
-      aside#filters .fieldset .range-input {
+      aside#filters .fieldset .range-input:hover.no-hover {
+        font-weight: normal; }
+      aside#filters .fieldset .range-input .inputs {
         font-weight: normal;
         display: inline;
         float: right;
-        color: #f9f9f9; }
-        aside#filters .fieldset .range-input input {
+        color: #f9f9f9;
+        cursor: default; }
+        aside#filters .fieldset .range-input .inputs input {
           width: 1.5em;
           background-color: transparent;
           border: none;
@@ -328,12 +355,12 @@ aside {
           text-align: center;
           color: #f9f9f9;
           padding: 0 0 1px 0; }
-          aside#filters .fieldset .range-input input::-webkit-outer-spin-button, aside#filters .fieldset .range-input input::-webkit-inner-spin-button {
+          aside#filters .fieldset .range-input .inputs input::-webkit-outer-spin-button, aside#filters .fieldset .range-input .inputs input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0; }
-      aside#filters .fieldset .acceptable .range-input {
+      aside#filters .fieldset .range-input.acceptable .inputs {
         background-color: #5fa990; }
-      aside#filters .fieldset .unacceptable .range-input {
+      aside#filters .fieldset .range-input.unacceptable .inputs {
         background-color: #78558a; }
       aside#filters .fieldset .slider {
         width: calc(100% - 10px);

@@ -85,29 +85,34 @@ $ ->
 			startListening(map)
 			getQuery()
 
-	updatePaintProperty = (prop) ->
+	updateThresholdColors = () ->
+		prop = $('.fieldset.phenomena .sentence.selected').attr('data-val')
+		if !prop
+			return
+
+		aColor = '#5fa990'
+		uColor = '#795292'
+
+		aVal = $('.option.acceptable').attr('data-val')
+		aRange = JSON.parse('['+aVal+']')
+		uVal = $('.option.unacceptable').attr('data-val')
+		uRange = JSON.parse('['+uVal+']')
+
+		stops = []
+		for i in aRange
+			stops.push([i, aColor])
+		for i in uRange
+			stops.push([i, uColor])
+
 		fillStyles = 
 			property: prop,
 			type: 'categorical',
-			stops: [
-				[0, '#795292'],
-				[1, '#795292'],
-				[2, '#795292'],
-				[3, '#5fa990'],
-				[4, '#5fa990'],
-				[5, '#5fa990'],
-			]
+			stops: stops
 		outlineStyles = 
 			property: prop,
 			type: 'categorical',
-			stops: [
-				[0, '#795292'],
-				[1, '#795292'],
-				[2, '#795292'],
-				[3, '#5fa990'],
-				[4, '#5fa990'],
-				[5, '#5fa990'],
-			]
+			stops: stops
+
 		map.setPaintProperty('data-circle', 'circle-color', fillStyles);
 		map.setPaintProperty('data-outline', 'circle-stroke-color', outlineStyles);
 
@@ -178,7 +183,7 @@ $ ->
 		$accLabel.attr('data-prop', val)
 		if $sentence.is('.selected')
 			$headerSentence.text(text)
-			updatePaintProperty(val)
+			updateThresholdColors()
 			$accFieldset.removeClass('disabled')
 		else
 			$headerSentence.text('')
@@ -204,6 +209,9 @@ $ ->
 
 	clickFilter = (e) ->		
 		$option = $(this)
+		if $option.is('.range-input') && $(e.target).is('.inputs, .inputs *')
+			console.log 'false'
+			return false
 		$fieldset = $option.parents('.fieldset')
 		$side = $fieldset.parents('aside')
 		prop = $fieldset.attr('data-prop')
@@ -351,24 +359,43 @@ $ ->
 
 	changeThresholds = (e) ->
 		$input = $(this)
-		$sibling = $input.siblings('input')
+		$sibInput = $input.siblings('input')
 		$option = $input.parents('.option')
+		$sibOption = $option.siblings('.option.range-input')
 		val = $input.val()
-		sibVal = $sibling.val()
+		sibVal = $sibInput.val()
+
 		if $input.is('.min')
 			allowed = val <= sibVal
 		else
 			allowed = val >= sibVal
 		if !allowed
 			$input.val(sibVal)
+
+		sibMinVal = $sibOption.find('.min').val()
+		sibMaxVal = $sibOption.find('.max').val()
+		if $option.is('.acceptable') && $input.is('.min') && val <= sibMaxVal
+			$input.val(Math.abs(sibMaxVal) + 1)
+		else if $option.is('.unacceptable') && $input.is('.max') && val >= sibMinVal
+			$input.val(Math.abs(sibMinVal) - 1)
+
 		min = $option.find('input.min').val()
 		max = $option.find('input.max').val()
+
 		range = []
 		for i in [min..max]
 			range.push(Math.abs(i))
 		rangeStr = JSON.stringify(range).replace(/[\[\]']+/g,'')
 		$option.attr('data-val', rangeStr)
+
+		updateThresholdColors()
 		filterMarkers()
+
+	hoverThresholds = (e) ->
+		$(this).parents('.option').addClass('no-hover')
+
+	unhoverThresholds = (e) ->
+		$(this).parents('.option').removeClass('no-hover')
 
 
 	installKey = () ->
@@ -442,6 +469,8 @@ $ ->
 		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
 		$('.range-input input').on 'change', changeThresholds
+		$('.range-input .inputs').on 'mouseenter', hoverThresholds
+		$('.range-input .inputs').on 'mouseleave', unhoverThresholds
 
 		$('body').on 'click', 'aside .close', toggleSide
 		$('body').on 'click', 'aside#phenomena ul li', selectSentence
