@@ -332,9 +332,10 @@ aside {
           font-weight: 400; }
       aside#filters .fieldset .options {
         height: 0;
+        padding: 0 0 0 2em;
         overflow: hidden; }
         aside#filters .fieldset .options ul {
-          padding: 0 0 0 1.25em; }
+          padding: 0; }
           aside#filters .fieldset .options ul li {
             padding: .25em 1.25em .25em 0;
             margin: .25em 0 0 0;
@@ -376,16 +377,25 @@ aside {
       aside#filters .fieldset .slider {
         width: calc(100% - 10px);
         height: 2px;
-        margin: 1em 0;
+        margin: 10px 0 20px 0;
         position: relative;
         background: #dcdfe2; }
         aside#filters .fieldset .slider .ui-slider-handle {
-          height: 10px;
+          width: 2px;
+          height: 11px;
           position: absolute;
           top: -5px;
           background: #153554;
           transition: transform 100ms ease-in-out;
           transform-origin: center; }
+          aside#filters .fieldset .slider .ui-slider-handle::after {
+            width: 3em;
+            position: absolute;
+            top: 11px;
+            margin-left: -1.5em;
+            content: attr(data-val);
+            color: #7a91ad;
+            text-align: center; }
           aside#filters .fieldset .slider .ui-slider-handle.ui-state-hover, aside#filters .fieldset .slider .ui-slider-handle.ui-state-active {
             cursor: ew-resize;
             z-index: 99999; }
@@ -398,15 +408,12 @@ aside {
         aside#filters .fieldset .slider[data-type='range'] .ui-slider-range {
           height: 2px;
           position: absolute;
-          top: -1px;
           background: #153554; }
-        aside#filters .fieldset .slider[data-type='range'] .ui-slider-handle {
-          width: 5px;
-          left: 0px; }
       aside#filters .fieldset.open .label .arrow {
         background-position: left -2em; }
       aside#filters .fieldset.open .options {
-        height: auto; }
+        height: auto;
+        overflow: visible; }
       aside#filters .fieldset.disabled {
         opacity: .5;
         pointer-events: none; }

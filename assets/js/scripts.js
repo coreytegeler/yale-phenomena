@@ -32,7 +32,7 @@ $(function() {
         'source-layer': dataID,
         'zoom': 10,
         'paint': {
-          'circle-color': 'rgb(21,53,84)',
+          'circle-color': 'rgb(122,145,173)',
           'circle-radius': 4
         }
       });
@@ -46,7 +46,7 @@ $(function() {
         'source-layer': dataID,
         'zoom': 10,
         'paint': {
-          'circle-stroke-color': 'rgb(21,53,84)',
+          'circle-stroke-color': 'rgb(122,145,173)',
           'circle-stroke-width': 2,
           'circle-radius': 5,
           'circle-color': 'transparent'
@@ -266,17 +266,17 @@ $(function() {
     }
     $sliders = $filters.find('.slider');
     $sliders.each(function(i, slider) {
-      var $fieldset, $slider, $val, current, maxVal, minVal, prop, type, val;
+      var $fieldset, $handles, $slider, current, maxVal, minVal, prop, type, val;
       $slider = $(slider);
+      $handles = $slider.find('.ui-slider-handle');
       $fieldset = $slider.parents('.fieldset');
-      $val = $fieldset.find('.label .val');
       prop = $fieldset.attr('data-prop');
       type = $slider.attr('data-type');
       current = '';
       if (type === 'scale') {
         if (val = $slider.attr('data-val')) {
           filter.push(['==', prop, val]);
-          current = '(' + val + ')';
+          return current = '(' + val + ')';
         }
       } else if (type === 'range') {
         minVal = $slider.attr('data-min-val');
@@ -284,10 +284,10 @@ $(function() {
         if (minVal && maxVal) {
           filter.push(['>=', prop, parseInt(minVal)]);
           filter.push(['<=', prop, parseInt(maxVal)]);
-          current = '(' + minVal + '-' + maxVal + ')';
+          $handles.first().attr('data-val', minVal);
+          return $handles.last().attr('data-val', maxVal);
         }
       }
-      return $val.text(current);
     });
     map.setFilter('data-circle', filter);
     return map.setFilter('data-outline', filter);
@@ -327,7 +327,7 @@ $(function() {
   };
   setUpSliders = function() {
     return $('.slider').each(function(i, slider) {
-      var $slider, max, med, min, options, type;
+      var $handles, $slider, max, med, min, options, type;
       $slider = $(slider);
       type = $slider.attr('data-type');
       min = Number($slider.attr('data-min'));
@@ -343,7 +343,12 @@ $(function() {
       } else if (type === 'range') {
         options.values = [min, max];
       }
-      return $slider.slider(options);
+      $slider.slider(options);
+      if (type === 'range') {
+        $handles = $slider.find('.ui-slider-handle');
+        $handles.first().attr('data-val', min);
+        return $handles.last().attr('data-val', max);
+      }
     });
   };
   changeSlider = function(e, ui) {

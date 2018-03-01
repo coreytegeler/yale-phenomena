@@ -339,9 +339,10 @@ aside {
 			}
 			.options {
 				height: 0;
+				padding: 0 0 0 2em;
 				overflow: hidden;
 				ul {
-					padding: 0 0 0 1.25em;
+					padding: 0;
 					li {
 						padding: .25em 1.25em .25em 0;
 						margin: .25em 0 0 0;
@@ -404,17 +405,26 @@ aside {
 			.slider {
 				width: calc(100% - 10px);
 				height: 2px;
-				margin: 1em 0;
+				margin: 10px 0 20px 0;
 				position: relative;
 				background: $lightGrey;
-				// border: 1px solid $white;
 				.ui-slider-handle {
-					height: 10px;
+					width: 2px;
+					height: 11px;
 					position: absolute;
 					top: -5px;
 					background: $dark;
 					transition: transform 100ms ease-in-out;
 					transform-origin: center;
+					&::after {
+						width: 3em;
+						position: absolute;
+						top: 11px;
+						margin-left: -1.5em;
+						content: attr(data-val);
+						color: $mediumGrey;
+						text-align: center;
+					}
 					&.ui-state-hover, &.ui-state-active {
 						cursor: ew-resize;
 						z-index: 99999;
@@ -437,14 +447,13 @@ aside {
 					.ui-slider-range {
 						height: 2px;
 						position: absolute;
-						top: -1px;
 						background: $dark;
 						// border: 1px solid $white;
 					}
-					.ui-slider-handle {
-						width: 5px;
-						left: 0px;
-					}
+					// .ui-slider-handle {
+					// 	width: 2px;
+					// 	left: 0px;
+					// }
 				}
 			}
 			&.open {
@@ -453,6 +462,7 @@ aside {
 				}
 				.options {
 					height: auto;
+					overflow: visible;
 				}
 			}
 			&.disabled {

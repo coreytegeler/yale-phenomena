@@ -35,7 +35,7 @@ $ ->
 				'source-layer': dataID
 				'zoom': 10
 				'paint':
-					'circle-color': 'rgb(21,53,84)'
+					'circle-color': 'rgb(122,145,173)'
 					'circle-radius': 4
 
 			map.addLayer
@@ -47,7 +47,7 @@ $ ->
 				'source-layer': dataID
 				'zoom': 10
 				'paint':
-					'circle-stroke-color': 'rgb(21,53,84)'
+					'circle-stroke-color': 'rgb(122,145,173)'
 					'circle-stroke-width': 2
 					'circle-radius': 5
 					'circle-color': 'transparent'
@@ -282,8 +282,9 @@ $ ->
 		$sliders = $filters.find('.slider')
 		$sliders.each (i, slider) ->
 			$slider = $(slider)
+			$handles = $slider.find('.ui-slider-handle')
 			$fieldset = $slider.parents('.fieldset')
-			$val = $fieldset.find('.label .val')
+			# $val = $fieldset.find('.label .val')
 			prop = $fieldset.attr('data-prop')
 			type = $slider.attr('data-type')
 			current = ''
@@ -297,8 +298,8 @@ $ ->
 				if minVal && maxVal
 					filter.push(['>=', prop, parseInt(minVal)])
 					filter.push(['<=', prop, parseInt(maxVal)])
-					current = '('+minVal+'-'+maxVal+')'
-			$val.text(current)
+					$handles.first().attr('data-val', minVal)
+					$handles.last().attr('data-val', maxVal)
 		map.setFilter('data-circle', filter)
 		map.setFilter('data-outline', filter)
 
@@ -333,16 +334,21 @@ $ ->
 			min = Number($slider.attr('data-min'))
 			max = Number($slider.attr('data-max'))
 			med = Number(((min+max)/2).toFixed(0))
-			options = {
+			options =
 				min: min,
 				max: max,
 				range: (type == 'range')
-			}
 			if type == 'scale'
 				options.value = med
 			else if type == 'range'
 				options.values = [min, max]
+
 			$slider.slider options
+
+			if type == 'range'
+				$handles = $slider.find('.ui-slider-handle')
+				$handles.first().attr('data-val', min)
+				$handles.last().attr('data-val', max)
 
 	changeSlider = (e, ui) ->
 		$slider = $(this)
