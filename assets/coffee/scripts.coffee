@@ -27,7 +27,7 @@ $ ->
 
 		map.on 'load', () ->
 			map.addLayer
-				'id': 'data',
+				'id': 'data-circle',
 				'type': 'circle'
 				'source':
 					type: 'vector'
@@ -35,11 +35,24 @@ $ ->
 				'source-layer': dataID
 				'zoom': 10
 				'paint':
-					'circle-radius':
-						'base': 1.75,
-						'stops': [[12, 5], [22, 10]]
+					'circle-color': 'rgb(21,53,84)'
+					'circle-radius': 4
 
-			dataLayer = map.getLayer('data')
+			map.addLayer
+				'id': 'data-outline',
+				'type': 'circle'
+				'source':
+					type: 'vector'
+					url: dataURI
+				'source-layer': dataID
+				'zoom': 10
+				'paint':
+					'circle-stroke-color': 'rgb(21,53,84)'
+					'circle-stroke-width': 2
+					'circle-radius': 5
+					'circle-color': 'transparent'
+
+			dataLayer = map.getLayer('data-circle')
 			dataBounds = map.getBounds(dataLayer).toArray()
 			# map.fitBounds dataBounds,
 			# 	padding:
@@ -73,16 +86,10 @@ $ ->
 			getQuery()
 
 	updatePaintProperty = (prop) ->
-		styles = 
+		fillStyles = 
 			property: prop,
 			type: 'categorical',
 			stops: [
-				# [0, '#ffffff'],
-				# [1, '#d1d2d4'],
-				# [2, '#a7a9ab'],
-				# [3, '#808284'],
-				# [4, '#58585b']
-				# [5, '#000000']
 				[0, '#795292'],
 				[1, '#795292'],
 				[2, '#795292'],
@@ -90,7 +97,19 @@ $ ->
 				[4, '#5fa990'],
 				[5, '#5fa990'],
 			]
-		map.setPaintProperty('data', 'circle-color', styles);
+		outlineStyles = 
+			property: prop,
+			type: 'categorical',
+			stops: [
+				[0, '#795292'],
+				[1, '#795292'],
+				[2, '#795292'],
+				[3, '#5fa990'],
+				[4, '#5fa990'],
+				[5, '#5fa990'],
+			]
+		map.setPaintProperty('data-circle', 'circle-color', fillStyles);
+		map.setPaintProperty('data-outline', 'circle-stroke-color', outlineStyles);
 
 	# whiteList = ['Income', 'Race', 'Age']
 	# addFilters = (filters, prop) ->
@@ -270,12 +289,13 @@ $ ->
 					filter.push(['<=', prop, parseInt(maxVal)])
 					current = '('+minVal+'-'+maxVal+')'
 			$val.text(current)
-		map.setFilter('data', filter)
+		map.setFilter('data-circle', filter)
+		map.setFilter('data-outline', filter)
 
 	clearFilter = (prop) ->
 		if !map.length
 			return
-		filter = map.getFilter('data')
+		filter = map.getFilter('data-circle')
 		if filter
 			arrs = filter.slice(0)
 			arrs.shift()
@@ -329,6 +349,18 @@ $ ->
 			$slider.attr('data-max-val', maxVal)
 		filterMarkers()
 
+	changeThresholds = (e) ->
+		$input = $(this)
+		$sibling = $input.siblings('input')
+		$option = $input.parents('.option')
+		val = $input.val()
+		sibVal = $sibling.val()
+		if $input.is('.min')
+			console.log val < sibVal
+		else
+			console.log val > sibVal
+
+
 	installKey = () ->
 		$options = $phenomena.find('ul')
 		$.ajax
@@ -358,7 +390,7 @@ $ ->
 						$options.append($li.addClass('option'))
 
 	updateUrl = () ->
-		filters = map.getFilter('data')
+		filters = map.getFilter('data-circle')
 		query = {}
 		if !filters
 			return
@@ -399,6 +431,7 @@ $ ->
 		$('body').on 'click', 'aside .label', toggleFieldset
 		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
+		$('.range-input input').on 'change', changeThresholds
 
 		$('body').on 'click', 'aside .close', toggleSide
 		$('body').on 'click', 'aside#phenomena ul li', selectSentence
@@ -409,7 +442,7 @@ $ ->
 			closeButton: false,
 			closeOnClick: false
 
-		map.on 'mouseenter', 'data', (e) ->
+		map.on 'mouseenter', 'data-circle', (e) ->
 			map.getCanvas().style.cursor = 'pointer'
 			marker = e.features[0]
 			props = marker.properties
@@ -436,7 +469,7 @@ $ ->
 				.attr('data-id', marker.id)
 
 
-		map.on 'mouseleave', 'data', (e) ->
+		map.on 'mouseleave', 'data-circle', (e) ->
 			$popup = $('.mapboxgl-popup')
 			oldId = $popup.attr('data-id')
 			setTimeout () ->

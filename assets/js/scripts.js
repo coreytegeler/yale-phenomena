@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, accessToken, changeSlider, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, startListening, styleURI, toggleFeature, toggleFieldset, toggleFilterTabs, toggleSide, updatePaintProperty, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, startListening, styleURI, toggleFeature, toggleFieldset, toggleFilterTabs, toggleSide, updatePaintProperty, updateUrl;
   accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg';
   mapboxgl.accessToken = accessToken;
   styleURI = 'mapbox://styles/mapbox/light-v9';
@@ -23,7 +23,7 @@ $(function() {
     return map.on('load', function() {
       var dataBounds, dataLayer;
       map.addLayer({
-        'id': 'data',
+        'id': 'data-circle',
         'type': 'circle',
         'source': {
           type: 'vector',
@@ -32,13 +32,27 @@ $(function() {
         'source-layer': dataID,
         'zoom': 10,
         'paint': {
-          'circle-radius': {
-            'base': 1.75,
-            'stops': [[12, 5], [22, 10]]
-          }
+          'circle-color': 'rgb(21,53,84)',
+          'circle-radius': 4
         }
       });
-      dataLayer = map.getLayer('data');
+      map.addLayer({
+        'id': 'data-outline',
+        'type': 'circle',
+        'source': {
+          type: 'vector',
+          url: dataURI
+        },
+        'source-layer': dataID,
+        'zoom': 10,
+        'paint': {
+          'circle-stroke-color': 'rgb(21,53,84)',
+          'circle-stroke-width': 2,
+          'circle-radius': 5,
+          'circle-color': 'transparent'
+        }
+      });
+      dataLayer = map.getLayer('data-circle');
       dataBounds = map.getBounds(dataLayer).toArray();
       map.addLayer({
         'id': 'counties',
@@ -64,13 +78,19 @@ $(function() {
     });
   };
   updatePaintProperty = function(prop) {
-    var styles;
-    styles = {
+    var fillStyles, outlineStyles;
+    fillStyles = {
       property: prop,
       type: 'categorical',
       stops: [[0, '#795292'], [1, '#795292'], [2, '#795292'], [3, '#5fa990'], [4, '#5fa990'], [5, '#5fa990']]
     };
-    return map.setPaintProperty('data', 'circle-color', styles);
+    outlineStyles = {
+      property: prop,
+      type: 'categorical',
+      stops: [[0, '#795292'], [1, '#795292'], [2, '#795292'], [3, '#5fa990'], [4, '#5fa990'], [5, '#5fa990']]
+    };
+    map.setPaintProperty('data-circle', 'circle-color', fillStyles);
+    return map.setPaintProperty('data-outline', 'circle-stroke-color', outlineStyles);
   };
   getUniqueFeatures = function(array, comparatorProperty) {
     var existingFeatureKeys, uniqueFeatures;
@@ -244,14 +264,15 @@ $(function() {
       }
       return $val.text(current);
     });
-    return map.setFilter('data', filter);
+    map.setFilter('data-circle', filter);
+    return map.setFilter('data-outline', filter);
   };
   clearFilter = function(prop) {
     var arr, arrs, filter, i, j, len;
     if (!map.length) {
       return;
     }
-    filter = map.getFilter('data');
+    filter = map.getFilter('data-circle');
     if (filter) {
       arrs = filter.slice(0);
       arrs.shift();
@@ -317,6 +338,19 @@ $(function() {
     }
     return filterMarkers();
   };
+  changeThresholds = function(e) {
+    var $input, $option, $sibling, sibVal, val;
+    $input = $(this);
+    $sibling = $input.siblings('input');
+    $option = $input.parents('.option');
+    val = $input.val();
+    sibVal = $sibling.val();
+    if ($input.is('.min')) {
+      return console.log(val < sibVal);
+    } else {
+      return console.log(val > sibVal);
+    }
+  };
   installKey = function() {
     var $options;
     $options = $phenomena.find('ul');
@@ -363,7 +397,7 @@ $(function() {
   };
   updateUrl = function() {
     var filter, filters, i, ii, j, k, location, prop, query, queryVal, queryVals, ref, ref1, url, vals;
-    filters = map.getFilter('data');
+    filters = map.getFilter('data-circle');
     query = {};
     if (!filters) {
       return;
@@ -425,6 +459,7 @@ $(function() {
     $('body').on('click', 'aside .label', toggleFieldset);
     $('body').on('click', 'aside#filters ul li', clickFilter);
     $('.slider').on('slidechange', changeSlider);
+    $('.range-input input').on('change', changeThresholds);
     $('body').on('click', 'aside .close', toggleSide);
     $('body').on('click', 'aside#phenomena ul li', selectSentence);
     $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
@@ -432,7 +467,7 @@ $(function() {
       closeButton: false,
       closeOnClick: false
     });
-    map.on('mouseenter', 'data', function(e) {
+    map.on('mouseenter', 'data-circle', function(e) {
       var i, j, len, marker, prop, prop_keys, props, ul;
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
@@ -459,7 +494,7 @@ $(function() {
       popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
       return $(popup._content).parent().addClass('show').attr('data-id', marker.id);
     });
-    return map.on('mouseleave', 'data', function(e) {
+    return map.on('mouseleave', 'data-circle', function(e) {
       var $popup, oldId;
       $popup = $('.mapboxgl-popup');
       oldId = $popup.attr('data-id');

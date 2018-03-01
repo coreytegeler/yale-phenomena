@@ -7,7 +7,8 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 		script(src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js')
 		script(src='./assets/js/jquery-ui.min.js')
 		script(src='./assets/js/scripts.js?v=1.2')
-		//- link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet')
+		//- link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet')	
+		link(href='./assets/css/bootstrap-grid.min.css' rel='stylesheet')
 		link(href='./assets/css/style.css?v=1.2' rel='stylesheet')
 	body
 
@@ -34,13 +35,13 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 						.shadow.bottom
 				aside#filters
 					.tabs
-						.tab.active(data-form='accept-reject')
+						.tab(data-form='accept-reject')
 							.label Accept/Reject
-						.tab(data-form='filters')
+						.tab.active(data-form='filters')
 							.label Filters
 					.inner
 						.scroller
-							.form.active(data-form='accept-reject')
+							.form(data-form='accept-reject')
 								.fieldset.filter.accept.open(data-prop='accept')
 									.label
 										.arrow
@@ -57,7 +58,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 										ul
 											//- li.sentence.selected.all(data-val=null) Reject All
 											
-							.form(data-form='filters')
+							.form.active(data-form='filters')
 								.fieldset.filter.race(data-prop='Race')
 									.label
 										.arrow
@@ -121,11 +122,20 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 										span Acceptability
 										span.val
 									.options
-										.slider(data-type='range' data-min='0' data-max='5')
 										ul
 											li.option.selected.all(data-val=null) Show All
-											li.option(data-val='3,4,5') 'Acceptable' Only
-											li.option(data-val='1,2') 'Unacceptable' Only
+											li.option(data-val='3,4,5').acceptable
+												span 'Acceptable' Only
+												.range-input
+													input.min(type='number' value='3' min='1' max='5')
+													span &ndash;
+													input.max(type='number' value='5' min='1' max='5')
+											li.option(data-val='1,2').unacceptable
+												span 'Unacceptable' Only
+												.range-input
+													input.min(type='number' value='1' min='1' max='5')
+													span &ndash;
+													input.max(type='number' value='2' min='1' max='5')
 
 								.fieldset.advanced(data-prop='advanced')
 									.label

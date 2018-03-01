@@ -1,15 +1,16 @@
 $white: #f9f9f9;
-$lighterGrey: #f2f2ef;
-$lightGrey: #dcdfe2;
+$lighterGrey: rgb(242,242,238);
+$lightGrey: rgb(220,223,226);
 $mediumGrey: #7e889b;
-$dark: #1f3155;
-$lightBlue: #afd7ed;
-$purple: #795292;
-$green: #5fa990;
+$dark: rgb(21,53,84);
+$lightBlue: rgb(168,215,238);
+$purple: rgb(120,85,138);
+$green: rgb(95,169,144);
 
+$frameWidth: 30px;
 
 @mixin baseText {
-	font-size: 15px;
+	font-size: 11px;
 	line-height: 1.2em;
 }
 
@@ -30,7 +31,7 @@ $green: #5fa990;
 }
 
 @mixin largeText {
-	font-size: 1.25em;
+	font-size: 1.16em;
 	line-height: 1.25em;
 }
 
@@ -54,4 +55,37 @@ $green: #5fa990;
 	&::-webkit-scrollbar-thumb {
 		display: none;
 	}
+}
+
+
+@font-face {
+  font-family: 'Mallory';
+  src: url('./../fonts/Mallory-Bold.woff2') format('woff2'),
+			 url('./../fonts/Mallory-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mallory';
+  src: url('./../fonts/Mallory-Medium.woff2') format('woff2'),
+			 url('./../fonts/Mallory-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mallory';
+  src: url('./../fonts/Mallory-Book.woff2') format('woff2'),
+			 url('./../fonts/Mallory-Book.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mallory';
+  src: url('./../fonts/Mallory-Light.woff2') format('woff2'),
+       url('./../fonts/Mallory-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
 }

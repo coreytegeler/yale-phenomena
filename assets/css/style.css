@@ -1,68 +1,93 @@
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-Bold.woff2") format("woff2"), url("./../fonts/Mallory-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-Medium.woff2") format("woff2"), url("./../fonts/Mallory-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-Book.woff2") format("woff2"), url("./../fonts/Mallory-Book.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Mallory';
+  src: url("./../fonts/Mallory-Light.woff2") format("woff2"), url("./../fonts/Mallory-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal; }
+
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
   overflow: hidden;
-  color: #1f3155;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 15px;
+  color: #153554;
+  font-family: 'Mallory', Helvetica, Arial, sans-serif;
+  font-size: 11px;
   line-height: 1.2em; }
 
 body {
   overflow-y: auto; }
 
 #embed {
-  width: 80vw;
-  height: 95vh;
-  margin: 2.5vh 10vw;
+  width: 100%;
+  height: 100%;
   display: block; }
 
 #frame {
-  width: calc(100% - 4em);
-  height: calc(100% - 4em);
-  padding: 2em;
-  background-color: #afd7ed;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  background-color: #a8d7ee;
   position: relative; }
 
 h1 {
   font-size: 1.5em;
-  line-height: 1.5em; }
+  line-height: 1.5em;
+  font-weight: 500; }
 
 h2 {
-  font-size: 1.25em;
-  line-height: 1.25em; }
+  font-size: 1.16em;
+  line-height: 1.25em;
+  font-weight: 500; }
 
 header {
-  color: #1f3155;
+  color: #153554;
   opacity: 1; }
   header .wrapper {
-    width: calc(100% - 2em);
-    padding: 1em 1em 0 1em;
+    width: 100%;
+    padding: 15px 15px 0 15px;
     display: table;
     background-color: #f9f9f9; }
   header h1 {
     display: inline;
-    margin: 0 0 2em 0;
+    margin: 0 0 30px 0;
     padding: 0 0 .125em 0;
-    border-bottom: 0.125em solid #1f3155; }
+    border-bottom: 0.125em solid #153554; }
   header.fixed {
-    width: calc(100% - 4em);
-    height: calc(100% - 4em);
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
     position: absolute;
-    left: 2em;
-    top: 2em;
+    left: 30px;
+    top: 30px;
     z-index: 500;
     overflow: hidden;
     pointer-events: none; }
     header.fixed .wrapper {
-      max-width: 16em;
+      max-width: calc(20em - 30px);
       border-radius: .5em;
       box-shadow: 0 0 4em 3em #f9f9f9; }
       header.fixed .wrapper h1 {
         pointer-events: all; }
       header.fixed .wrapper h2.sentence {
         margin: 0;
-        padding: 2em 0 0 0;
+        padding: 30px 0 0 0;
         pointer-events: all; }
   header.hide {
     display: none; }
@@ -73,8 +98,8 @@ aside {
   overflow: hidden;
   z-index: 400; }
   aside header {
-    width: 18em;
-    padding: 0 0 0 2em; }
+    width: 20em;
+    padding: 0 0 0 30px; }
   aside .inner {
     width: 100%;
     max-width: 20em;
@@ -99,7 +124,7 @@ aside {
       position: relative; }
     aside .inner .shadow {
       width: 100%;
-      height: 4em;
+      height: 60px;
       display: table; }
       aside .inner .shadow.top {
         position: absolute;
@@ -107,21 +132,21 @@ aside {
         top: 0; }
       aside .inner .shadow.bottom {
         position: relative;
-        margin-top: -4em; }
+        margin-top: -60px; }
   aside#phenomena {
-    height: calc(100% - 4em);
+    height: calc(100% - 60px);
     left: 0;
-    top: 2em;
-    color: #1f3155;
+    top: 30px;
+    color: #153554;
     pointer-events: none; }
     aside#phenomena .hamburger {
-      width: 2em;
-      height: 2em;
+      width: 30px;
+      height: 30px;
       position: absolute;
       left: 0em;
-      top: 3.5em;
+      top: 30px;
       z-index: 500;
-      background-color: #afd7ed;
+      background-color: #a8d7ee;
       background-image: url(./../img/hamburger.svg);
       background-position: center;
       background-size: 1.25em auto;
@@ -131,21 +156,21 @@ aside {
         cursor: pointer;
         opacity: .7; }
     aside#phenomena .inner {
-      box-shadow: 0 0 4em 3em #f9f9f9;
+      box-shadow: 0 0 60px 45px #f9f9f9;
       display: flex;
       flex-direction: column; }
     aside#phenomena .shadow.top {
       box-shadow: inset 0 2.5em 1.5em -1em #f9f9f9;
       position: relative;
-      margin: 0 0 -4em 2em;
+      margin: 0 0 -60px 30px;
       z-index: 500; }
     aside#phenomena .shadow.bottom {
       box-shadow: inset 0 -2.5em 1.5em -1em #f9f9f9;
-      width: calc(100% - 2em);
-      margin-left: 2em; }
+      width: calc(100% - $frameWidth);
+      margin-left: 30px; }
     aside#phenomena .phenomena {
-      padding: 1.5em 1em;
-      margin: 0 0 0 2em;
+      padding: 22.5px 15px;
+      margin: 0 0 0 30px;
       background-color: #f9f9f9;
       pointer-events: all;
       display: flex;
@@ -168,16 +193,16 @@ aside {
           aside#phenomena ul li:hover span, aside#phenomena ul li.selected span {
             font-weight: bold; }
     aside#phenomena.closed {
-      width: 2em;
+      width: 30px;
       left: 0; }
       aside#phenomena.closed .shadow {
         margin-left: 0; }
         aside#phenomena.closed .shadow.top {
           margin-top: 1em;
-          box-shadow: inset 0 2.5em 1.5em -1em #afd7ed; }
+          box-shadow: inset 0 2.5em 1.5em -1em #a8d7ee; }
         aside#phenomena.closed .shadow.bottom {
           width: 2em;
-          box-shadow: inset 0 -2.5em 1.5em -1em #afd7ed; }
+          box-shadow: inset 0 -2.5em 1.5em -1em #a8d7ee; }
       aside#phenomena.closed .phenomena {
         padding: 1.25em 0;
         margin: 0;
@@ -185,23 +210,23 @@ aside {
         aside#phenomena.closed .phenomena .options {
           width: 100%; }
         aside#phenomena.closed .phenomena ul li {
-          width: .5em;
-          height: .5em;
+          width: 10px;
+          height: 10px;
           padding: 0;
-          margin: .75em;
+          margin: 10px;
           border-radius: 50%;
           background: #f9f9f9; }
           aside#phenomena.closed .phenomena ul li span {
             display: none; }
   aside#filters {
-    height: calc(100% - 2em);
+    height: calc(100% - 30px);
     max-width: 20em;
-    right: 2em;
+    right: 30px;
     top: 0;
     user-select: none;
     pointer-events: none; }
     aside#filters .tabs {
-      height: 2em;
+      height: 30px;
       pointer-events: all; }
       aside#filters .tabs .tab {
         width: calc(50% - 1px);
@@ -215,12 +240,13 @@ aside {
           margin: auto;
           display: table-cell;
           vertical-align: middle;
-          text-align: center;
+          text-align: left;
+          text-indent: .5em;
           font-weight: bold;
           color: #7e889b;
           text-transform: uppercase; }
         aside#filters .tabs .tab.active {
-          background-color: #f2f2ef; }
+          background-color: #f2f2ee; }
           aside#filters .tabs .tab.active .label {
             opacity: 1; }
         aside#filters .tabs .tab:hover {
@@ -231,23 +257,23 @@ aside {
           margin-left: 1px; }
     aside#filters .inner {
       width: 100%;
-      height: calc(100% - 2em);
+      height: calc(100% - 30px);
       position: absolute;
       left: 0;
-      top: 2em; }
+      top: 30px; }
       aside#filters .inner .form {
-        width: calc(100% - 2em);
-        padding: 2em 1em;
-        background-color: #f2f2ef;
+        width: 100%;
+        padding: 30px 15px;
+        background-color: #f2f2ee;
         display: none; }
         aside#filters .inner .form.active {
           display: block; }
       aside#filters .inner .shadow.top {
-        box-shadow: inset 0 2.5em 1.5em -1em #f2f2ef;
-        margin-bottom: -4em;
+        box-shadow: inset 0 2.5em 1.5em -1em #f2f2ee;
+        margin-bottom: -60px;
         z-index: 500; }
       aside#filters .inner .shadow.bottom {
-        box-shadow: inset 0 -2.5em 1.5em -1em #f2f2ef;
+        box-shadow: inset 0 -2.5em 1.5em -1em #f2f2ee;
         width: 100%; }
     aside#filters .fieldset {
       margin: 0 0 1em 0; }
@@ -274,58 +300,58 @@ aside {
         height: 0;
         overflow: hidden; }
         aside#filters .fieldset .options ul {
-          padding: 0 0 0 1em; }
+          padding: 0 0 0 1.25em; }
           aside#filters .fieldset .options ul li {
-            padding: .25em 0;
-            margin: .75em 0 0 0;
-            font-weight: bold;
-            cursor: pointer; }
-            aside#filters .fieldset .options ul li.option {
-              padding-left: 1.25em; }
-              aside#filters .fieldset .options ul li.option::before, aside#filters .fieldset .options ul li.option::after {
-                position: absolute;
-                border-radius: 50%;
-                content: ''; }
-              aside#filters .fieldset .options ul li.option::before {
-                width: .8em;
-                height: .8em;
-                left: 0;
-                top: .25em;
-                border: 1px solid #1f3155; }
-              aside#filters .fieldset .options ul li.option::after {
-                width: calc(.8em - 2px);
-                height: calc(.8em - 2px);
-                left: 2px;
-                top: calc(2px + .25em);
-                content: '';
-                background: transparent; }
-              aside#filters .fieldset .options ul li.option:hover::after {
-                background: #f9f9f9; }
-              aside#filters .fieldset .options ul li.option.selected::after, aside#filters .fieldset .options ul li.option.selected:hover::after {
-                background: #1f3155 !important; }
-            aside#filters .fieldset .options ul li.sentence {
-              padding-left: .25em; }
+            padding: .25em 0 .25em 0;
+            margin: .25em 1em 0 0;
+            cursor: pointer;
+            background-image: url(./../img/x.svg);
+            background-position: 200% center;
+            background-repeat: no-repeat;
+            background-size: .75em; }
+      aside#filters .fieldset ul li:hover {
+        font-weight: bold; }
+      aside#filters .fieldset ul li.selected {
+        font-weight: bold;
+        background-position: right center; }
+      aside#filters .fieldset .range-input {
+        font-weight: normal;
+        display: inline;
+        float: right;
+        color: #f9f9f9; }
+        aside#filters .fieldset .range-input input {
+          width: 1.5em;
+          background-color: transparent;
+          border: none;
+          outline: none;
+          display: inline;
+          text-align: center;
+          color: #f9f9f9;
+          padding: 0 0 1px 0; }
+          aside#filters .fieldset .range-input input::-webkit-outer-spin-button, aside#filters .fieldset .range-input input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0; }
+      aside#filters .fieldset .acceptable .range-input {
+        background-color: #5fa990; }
+      aside#filters .fieldset .unacceptable .range-input {
+        background-color: #78558a; }
       aside#filters .fieldset .slider {
         width: calc(100% - 10px);
         height: 2px;
         margin: 1em 0;
         position: relative;
-        background: #1f3155;
-        border: 1px solid #f9f9f9; }
+        background: #dcdfe2; }
         aside#filters .fieldset .slider .ui-slider-handle {
           height: 10px;
           position: absolute;
           top: -5px;
-          background: #1f3155;
-          border: 1px solid #f9f9f9;
+          background: #153554;
           transition: transform 100ms ease-in-out;
           transform-origin: center; }
           aside#filters .fieldset .slider .ui-slider-handle.ui-state-hover, aside#filters .fieldset .slider .ui-slider-handle.ui-state-active {
             cursor: ew-resize;
-            transform: scale(1.5);
             z-index: 99999; }
           aside#filters .fieldset .slider .ui-slider-handle.ui-state-focus {
-            background: blue;
             outline: none; }
         aside#filters .fieldset .slider[data-type='scale'] .ui-slider-handle {
           width: 10px;
@@ -335,8 +361,7 @@ aside {
           height: 2px;
           position: absolute;
           top: -1px;
-          background: blue;
-          border: 1px solid #f9f9f9; }
+          background: #153554; }
         aside#filters .fieldset .slider[data-type='range'] .ui-slider-handle {
           width: 5px;
           left: 0px; }
@@ -385,7 +410,7 @@ main {
       pointer-events: none; }
       main #map .mapboxgl-popup .mapboxgl-popup-content {
         position: relative;
-        background-color: #795292;
+        background-color: #78558a;
         color: #f9f9f9;
         padding: 1.75em 2em;
         font-size: .75em;
