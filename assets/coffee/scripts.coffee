@@ -192,8 +192,10 @@ $ ->
 
 	toggleFilterTabs = (e) ->
 		$tab = $(this)
+		$filters = $tab.parents('#filters')
 		if $tab.is('.active')
-			return
+			return $filters.toggleClass('closed')
+		$filters.removeClass('closed')
 		formId = $tab.attr('data-form')
 		$form = $('.form[data-form="'+formId+'"]')
 		$('.tab.active').removeClass('active')

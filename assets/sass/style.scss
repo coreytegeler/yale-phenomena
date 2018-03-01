@@ -7,6 +7,7 @@ html, body {
 	color: $dark;
 	font-family: 'Mallory', Helvetica, Arial, sans-serif;
 	@include baseText;
+	font-weight: 200;
 }
 body {
 	overflow-y: auto;
@@ -19,52 +20,52 @@ body {
 #frame {
 	width: 100%;
 	height: 100%;
-	padding: $frameWidth;
+	padding: $gutter;
 	background-color: $lightBlue;
 	position: relative;
 }
 h1 {
 	@include xLargeText;
-	font-weight: 500;
+	font-weight: 400;
 }
 h2 {
 	@include largeText;
-	font-weight: 500;
+	font-weight: 400;
 }
 header {
 	color: $dark;
 	opacity: 1;
 	.wrapper {
 		width: 100%;
-		padding: #{$frameWidth/2} #{$frameWidth/2} 0 #{$frameWidth/2};
+		padding: #{$gutter/2} 0 0 #{$gutter/2};
 		display: table;
 		background-color: $white;
 	}
-	h1 {
+	h2 {
 		display: inline;
-		margin: 0 0 $frameWidth 0;
+		margin: 0 0 $gutter 0;
 		padding: 0 0 .125em 0;
 		border-bottom: .125em solid $dark;
 	}
 	&.fixed {
-		width: calc(100% - #{$frameWidth*2});
-		height: calc(100% - #{$frameWidth*2});
+		width: calc(100% - #{$gutter*2});
+		height: calc(100% - #{$gutter*2});
 		position: absolute;
-		left: $frameWidth;
-		top: $frameWidth;
+		left: $gutter;
+		top: $gutter;
 		z-index: 500;
 		overflow: hidden;
 		pointer-events: none;
 		.wrapper {
-			max-width: calc(20em - #{$frameWidth});
+			max-width: calc(#{$phen} - #{$gutter/2});
 			border-radius: .5em;
 			box-shadow: 0 0 4em 3em $white;
-			h1 {
+			h2 {
 				pointer-events: all;
 			}
-			h2.sentence {
+			h1.sentence {
 				margin: 0;
-				padding: $frameWidth 0 0 0;
+				padding: $gutter 0 0 0;
 				pointer-events: all;
 			}
 		}
@@ -79,12 +80,12 @@ aside {
 	overflow: hidden;
 	z-index: 400;
 	header {
-		width: 20em;
-		padding: 0 0 0 $frameWidth;
+		width: $phen;
+		padding: 0 0 0 $gutter;
 	}
 	.inner {
 		width: 100%;
-		max-width: 20em;
+		max-width: $phen;
 		height: 100%;
 		overflow: hidden;
 		ul {
@@ -107,7 +108,7 @@ aside {
 		}
 		.shadow {
 			width: 100%;
-			height: #{$frameWidth*2};
+			height: #{$gutter*2};
 			display: table;
 			&.top {
 				position: absolute;
@@ -116,22 +117,22 @@ aside {
 			}
 			&.bottom {
 				position: relative;
-				margin-top: -#{$frameWidth*2};
+				margin-top: -#{$gutter*2};
 			}
 		}
 	}
 	&#phenomena {
-		height: calc(100% - #{$frameWidth*2});
+		height: calc(100% - #{$gutter*2});
 		left: 0;
-		top: $frameWidth;
+		top: $gutter;
 		color: $dark;
 		pointer-events: none;
 		.hamburger {
-			width: $frameWidth;
-			height: $frameWidth;
+			width: $gutter;
+			height: $gutter;
 			position: absolute;
 			left: 0em;
-			top: $frameWidth;
+			top: $gutter;
 			z-index: 500;
 			background-color: $lightBlue;
 			background-image: url(./../img/hamburger.svg);
@@ -145,7 +146,7 @@ aside {
 			}
 		}
 		.inner {
-			box-shadow: 0 0 #{$frameWidth*2} #{$frameWidth*1.5} $white;
+			box-shadow: 0 0 #{$gutter*2} #{$gutter*1.5} $white;
 			display: flex;
 			flex-direction: column;
 		}
@@ -153,18 +154,18 @@ aside {
 			&.top {
 				@include topShadow($white);
 				position: relative;
-				margin: 0 0 -#{$frameWidth*2} $frameWidth;
+				margin: 0 0 -#{$gutter*2} $gutter;
 				z-index: 500;
 			}
 			&.bottom {
 				@include bottomShadow($white);
-				width: calc(100% - $frameWidth);
-				margin-left: $frameWidth;
+				width: calc(100% - $gutter);
+				margin-left: $gutter;
 			}
 		}
 		.phenomena {
-			padding: #{$frameWidth*.75} #{$frameWidth/2};
-			margin: 0 0 0 $frameWidth;
+			padding: #{$gutter*.75} #{$gutter/2};
+			margin: 0 0 0 $gutter;
 			background-color: $white;
 			pointer-events: all;
 			display: flex;
@@ -177,20 +178,20 @@ aside {
 				margin: 0 1em 1em 0;
 				transform-origin: left center;
 				span {
-					font-weight: normal;
+					font-weight: 200;
 					padding: 0;
 					margin: 0;
 				}
 				&:hover, &.selected {
 					cursor: pointer;
 					span {
-						font-weight: bold;
+						font-weight: 400;
 					}
 				}
 			}
 		}
 		&.closed {
-			width: $frameWidth;
+			width: $gutter;
 			left: 0;
 			.shadow {
 				margin-left: 0;
@@ -211,18 +212,21 @@ aside {
 					width: 100%;
 				}
 				ul {
-					li {
-						width: #{$frameWidth/3};
-						height: #{$frameWidth/3};
+					li.option {
+						width: #{$gutter/3};
+						height: #{$gutter/3};
 						padding: 0;
-						margin: #{$frameWidth/3};
+						margin: #{$gutter/3};
 						border-radius: 50%;
 						background: $white;
-						&.selected {
-
-						}
 						span {
 							display: none;
+						}
+						&:hover {
+							background: $mediumGrey;
+						}
+						&.selected {
+							background: $dark;
 						}
 					}
 				}
@@ -230,14 +234,17 @@ aside {
 		}
 	}
 	&#filters {
-		height: calc(100% - #{$frameWidth});
-		max-width: 20em;
-		right: $frameWidth;
+		height: calc(100% - #{$gutter});
+		max-width: $phen;
+		right: $gutter;
 		top: 0;
 		user-select: none;
 		pointer-events: none;
+		&.closed {
+			height: $gutter;
+		}
 		.tabs {
-			height: $frameWidth;
+			height: $gutter;
 			pointer-events: all;
 			.tab {
 				width: calc(50% - 1px);
@@ -260,11 +267,14 @@ aside {
 				&.active {
 					background-color: $lighterGrey;
 					.label {
-						opacity: 1;
+						color: $dark;
 					}
 				}
 				&:hover {
 					cursor: pointer;
+					.label {
+						color: $dark;
+					}
 				}
 				&:first-child {
 					margin-right: 1px;
@@ -276,13 +286,13 @@ aside {
 		}
 		.inner {
 			width: 100%;
-			height: calc(100% - #{$frameWidth});
+			height: calc(100% - #{$gutter});
 			position: absolute;
 			left: 0;
-			top: $frameWidth;
+			top: $gutter;
 			.form {
 				width: 100%;
-				padding: $frameWidth #{$frameWidth/2};
+				padding: $gutter #{$gutter/2};
 				background-color: $lighterGrey;
 				display: none;
 				&.active {
@@ -292,7 +302,7 @@ aside {
 			.shadow {
 				&.top {
 					@include topShadow($lighterGrey);
-					margin-bottom: -#{$frameWidth*2};
+					margin-bottom: -#{$gutter*2};
 					z-index: 500;
 				}
 				&.bottom {
@@ -305,7 +315,7 @@ aside {
 			margin: 0 0 1em 0;
 			.label {
 				padding-left: 1.25em;
-				font-weight: bold;
+				font-weight: 200;
 				position: relative;
 				.arrow {
 					width: 1em;
@@ -324,6 +334,7 @@ aside {
 				}
 				&:hover {
 					cursor: pointer;
+					font-weight: 400;
 				}
 			}
 			.options {
@@ -339,16 +350,17 @@ aside {
 						background-position: 200% center;
 						background-repeat: no-repeat;
 						background-size: .75em;
+						font-weight: 200;
 					}
 				}
 			}
 			ul {
 				li {
 					&:hover {
-						font-weight: bold;
+						font-weight: 400;
 					}
 					&.selected {
-						font-weight: bold;
+						font-weight: 400;
 						background-position: right center;
 					}
 				}
@@ -356,11 +368,11 @@ aside {
 			.range-input {
 				&:hover {
 					&.no-hover {
-						font-weight: normal;
+						font-weight: 200;
 					}
 				}
 				.inputs {
-					font-weight: normal;
+					font-weight: 200;
 					display: inline;
 					float: right;
 					color: $white;
@@ -468,7 +480,7 @@ main {
 	flex-direction: row;
 	position: relative;
 	.label {
-		font-weight: normal;
+		font-weight: 200;
 		margin: 0 0 .5em 0;
 		&:hover {
 			cursor: pointer;
@@ -485,7 +497,7 @@ main {
 			}
 		}
 		.mapboxgl-popup {
-			width: 18em;
+			width: $phen;
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -500,7 +512,6 @@ main {
 				background-color: $purple;
 				color: $white;
 				padding: 1.75em 2em;
-				@include xSmallText;
 				ul {
 					padding: 0;
 					margin: 0;

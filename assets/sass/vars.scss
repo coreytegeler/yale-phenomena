@@ -1,19 +1,19 @@
 $white: #f9f9f9;
 $lighterGrey: rgb(242,242,238);
 $lightGrey: rgb(220,223,226);
-$mediumGrey: #7e889b;
+$mediumGrey: rgb(122,145,173);
 $dark: rgb(21,53,84);
 $lightBlue: rgb(168,215,238);
 $purple: rgb(120,85,138);
 $green: rgb(95,169,144);
 
-$frameWidth: 30px;
+$gutter: 30px;
+$phen: 25em;
 
 @mixin baseText {
 	font-size: 11px;
 	line-height: 1.2em;
 }
-
 
 @mixin xSmallText {
 	font-size: .75em;
@@ -31,12 +31,12 @@ $frameWidth: 30px;
 }
 
 @mixin largeText {
-	font-size: 1.16em;
+	font-size: 16px;
 	line-height: 1.25em;
 }
 
 @mixin xLargeText {
-	font-size: 1.5em;
+	font-size: 21px;
 	line-height: 1.5em;
 }
 
@@ -61,7 +61,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-Light.woff2') format('woff2'),
        url('./../fonts/Mallory-Light.woff') format('woff');
-  font-weight: 300;
+  font-weight: 100;
   font-style: normal;
 }
 
@@ -69,7 +69,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-LightItalic.woff2') format('woff2'),
        url('./../fonts/Mallory-LightItalic.woff') format('woff');
-  font-weight: 300;
+  font-weight: 100;
   font-style: italic;
 }
 
@@ -77,7 +77,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-Book.woff2') format('woff2'),
 			 url('./../fonts/Mallory-Book.woff') format('woff');
-  font-weight: normal;
+  font-weight: 200;
   font-style: normal;
 }
 
@@ -85,7 +85,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-BookItalic.woff2') format('woff2'),
 			 url('./../fonts/Mallory-BookItalic.woff') format('woff');
-  font-weight: normal;
+  font-weight: 200;
   font-style: italic;
 }
 
@@ -93,7 +93,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-Medium.woff2') format('woff2'),
 			 url('./../fonts/Mallory-Medium.woff') format('woff');
-  font-weight: 500;
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -101,7 +101,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-MediumItalic.woff2') format('woff2'),
 			 url('./../fonts/Mallory-MediumItalic.woff') format('woff');
-  font-weight: 500;
+  font-weight: 300;
   font-style: italic;
 }
 
@@ -109,7 +109,7 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-Bold.woff2') format('woff2'),
 			 url('./../fonts/Mallory-Bold.woff') format('woff');
-  font-weight: bold;
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -117,6 +117,6 @@ $frameWidth: 30px;
   font-family: 'Mallory';
   src: url('./../fonts/Mallory-BoldItalic.woff2') format('woff2'),
 			 url('./../fonts/Mallory-BoldItalic.woff') format('woff');
-  font-weight: bold;
+  font-weight: 400;
   font-style: italic;
 }
