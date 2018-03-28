@@ -197,7 +197,7 @@ $ ->
 		$fieldset.addClass('open')
 		$selected = $fieldset.find('.selected')
 		$option = getOption(prop, val)
-		if !$option.length
+		if !$option || !$option.length
 			return
 		if $option.is('.all')
 			$selected.filter(':not(.all)').removeClass('selected')
@@ -375,7 +375,11 @@ $ ->
 			$handles = $slider.find('.ui-slider-handle')
 			$handles.first().attr('data-val', minVal)
 			$handles.last().attr('data-val', maxVal)
+			val = [minVal,maxVal].join(',')
+			$slider.attr('data-val', val)
+			$slider.attr('data-val-slug', val)
 		setFilter()
+		updateUrl()
 
 	changeThresholds = (e) ->
 		$input = $(this)
@@ -462,7 +466,10 @@ $ ->
 						queryVal = getValSlug(prop, filter[ii])
 						queryVals.push(queryVal)
 					vals = queryVals.join()
-					query[prop] = vals
+					if query[prop]
+						query[prop] = query[prop]+','+vals
+					else
+						query[prop] = vals
 		location =  window.location
 		url = location.href.replace(location.search,'')
 		if filter != 'all'
@@ -568,7 +575,12 @@ $ ->
 		
 	getVal = (prop, valSlug) ->
 		prop = getProp(prop)
-		$option = $('.fieldset[data-prop="'+prop+'"] .option[data-val-slug="'+valSlug+'"]')
+		$fieldset = $('.fieldset[data-prop="'+prop+'"]')
+		if $fieldset.find('.slider').length
+			return valSlug
+		$option = $fieldset.find('.option[data-val-slug="'+valSlug+'"]')
+		if !$option || !$option.length
+			$option = $fieldset.find('.slider[data-val-slug="'+valSlug+'"]')
 		if $option.length
 			val = $option.attr('data-val')
 			if val.length
@@ -577,7 +589,10 @@ $ ->
 
 	getValSlug = (prop, val) ->
 		prop = getPropSlug(prop)
-		$option = $('.fieldset[data-prop-slug="'+prop+'"] .option[data-val="'+val+'"]')
+		$fieldset = $('.fieldset[data-prop-slug="'+prop+'"]')
+		if $fieldset.find('.slider').length
+			return val
+		$option = $fieldset.find('.option[data-val="'+val+'"]')
 		if $option.length
 			valSlug = $option.attr('data-val-slug') || $option.attr('data-val')
 			if valSlug && valSlug.length
