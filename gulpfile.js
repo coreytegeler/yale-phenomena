@@ -29,10 +29,8 @@ var dest = {
 var mapboxVars = {
   accessToken: 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg',
   styleUri: 'mapbox://styles/ygdp/cjf9phmuh0t582rmoqk7dp2b3',
-  surveyUri: 'mapbox://ygdp.cjfa3l2xb1g6e2wqwm4zvufh6-82ryg',
+  surveyUri: 'mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1',
   surveyId: 'Survey_8',
-  spotsUri: 'mapbox://ygdp.cjf9viv0b0jl82qk0sn4o9qtn-7ryw2',
-  spotsId: 'Spots',
   coldspotsUri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q',
   coldspotsId: 'Coldspots_8',
   hotspotsUri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge',

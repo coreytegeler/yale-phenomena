@@ -305,13 +305,12 @@ $ ->
 					filter.push(['==', prop, val])
 					current = '('+val+')'
 			else if type == 'range'
-				minVal = $slider.attr('data-min-val')
-				maxVal = $slider.attr('data-max-val')
+				minVal = parseInt($slider.attr('data-min'))
+				maxVal = parseInt($slider.attr('data-max'))
 				$handles.first().attr('data-val', minVal)
 				$handles.last().attr('data-val', maxVal)
 				if minVal && maxVal
-					rangerFilter = ['in', prop]
-					filter.push(rangerFilter)
+					$slider.attr('data-val', [minVal,maxVal].join(','))
 					filter.push(['>=', prop, minVal])
 					filter.push(['<=', prop, maxVal])
 		map.setFilter('survey-data', filter)
@@ -362,7 +361,8 @@ $ ->
 
 	changeSlider = (e, ui) ->
 		$slider = $(this)
-		prop = $slider.attr('data-prop')
+		$fieldset = $slider.parents('.fieldset')
+		prop = $fieldset.attr('data-prop-slug')
 		type = $slider.attr('data-type')
 		if type == 'scale'
 			val = ui.value.toString()
@@ -371,8 +371,8 @@ $ ->
 			vals = ui.values
 			minVal = vals[0]
 			maxVal = vals[1]
-			$slider.attr('data-min-val', minVal)
-			$slider.attr('data-max-val', maxVal)
+			$slider.attr('data-min', minVal)
+			$slider.attr('data-max', maxVal)
 			$handles = $slider.find('.ui-slider-handle')
 			$handles.first().attr('data-val', minVal)
 			$handles.last().attr('data-val', maxVal)
