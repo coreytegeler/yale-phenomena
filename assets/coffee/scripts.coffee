@@ -1,86 +1,70 @@
 $ ->
-	accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg'
-	mapboxgl.accessToken = accessToken
-
-	styleURI = 'mapbox://styles/mapbox/light-v9'
-	styleURI = 'mapbox://styles/coreytegeler/cj5adbyws0g7l2sqnl74tvzoa'
-
-	dataURI = 'mapbox://coreytegeler.cj8yqu9o509q92wo4ybzg13xo-9ir7s'
-	dataID = 'survey8'
-
-	countURI = 'mapbox://coreytegeler.afjjqi6e'
-	countID = 'gz_2010_us_050_00_500k-c9lvkv'
-	
-	keyURI = 'data/key8.csv'
-
+	keyUri = 'data/key8.csv'
 	$filters = $('#filters')
 	$phenomena = $('#phenomena')
 	$fixedHeader = $('header.fixed')
 	$headerSentence = $('header.fixed .sentence')
 
+
+
 	createMap = () ->
+		mapboxAttr = $('#embed').attr('data-mapbox')
+		mapbox = JSON.parse(decodeURI(mapboxAttr))
+		mapboxgl.accessToken = mapbox.accessToken
+
+
 		window.map = new mapboxgl.Map
 			container: 'map',
-			style: styleURI,
+			style: mapbox.styleUri,
 			zoom: 3,
 			center: [-95.7129, 37.0902]
 
 		map.on 'load', () ->
 			map.addLayer
-				'id': 'data-circle',
+				'id': 'survey-data',
 				'type': 'circle'
 				'source':
 					type: 'vector'
-					url: dataURI
-				'source-layer': dataID
+					url: mapbox.surveyUri
+				'source-layer': mapbox.surveyId
 				'zoom': 10
 				'paint':
-					'circle-color': 'rgb(122,145,173)'
+					'circle-color': '#000'
 					'circle-radius': 4
 
-			map.addLayer
-				'id': 'data-outline',
-				'type': 'circle'
-				'source':
-					type: 'vector'
-					url: dataURI
-				'source-layer': dataID
-				'zoom': 10
-				'paint':
-					'circle-stroke-color': 'rgb(122,145,173)'
-					'circle-stroke-width': 2
-					'circle-radius': 5
-					'circle-color': 'transparent'
+			dataLayer = map.getLayer('survey-data')
 
-			dataLayer = map.getLayer('data-circle')
 			dataBounds = map.getBounds(dataLayer).toArray()
-			# map.fitBounds dataBounds,
-			# 	padding:
-			# 		top: 200
-			# 		bottom: 200
-			# 		left: 200
-			# 		right: 200
-			# 	animate: false
-
-			# paddedBounds = map.getBounds()
-			# map.setMaxBounds(paddedBounds)
-			
 
 			map.addLayer
-				'id': 'counties'
+				'id': 'coldspots'
 				'type': 'line'
 				'source':
-					type: 'vector'
-					url: countURI
-				'source-layer': countID
-				'layout':
-					'visibility': 'none'
+					'type': 'vector'
+					'url': mapbox.coldspotsUri
+				'source-layer': mapbox.coldspotsId
 				'minzoom': 0
 				'maxzoom': 24
+				'layout':
+					'visibility': 'none'
 				'paint':
 					'line-width': 1
-					'line-color': 'black'
-					'line-opacity': 0.1
+					'line-color': '#8ba9c4'
+
+			map.addLayer
+				'id': 'hotspots'
+				'type': 'line'
+				'source':
+					'type': 'vector'
+					'url': mapbox.hotspotsUri
+				'source-layer': mapbox.hotspotsId
+				'minzoom': 0
+				'maxzoom': 24
+				'layout':
+					'visibility': 'none'
+				'paint':
+					'line-width': 1
+					'line-color': '#c48f8f'
 
 			startListening(map)
 			getQuery()
@@ -100,21 +84,16 @@ $ ->
 
 		stops = []
 		for i in aRange
-			stops.push([i, aColor])
+			stops.push([i.toString(), aColor])
 		for i in uRange
-			stops.push([i, uColor])
+			stops.push([i.toString(), uColor])
 
-		fillStyles = 
-			property: prop,
-			type: 'categorical',
-			stops: stops
-		outlineStyles = 
-			property: prop,
-			type: 'categorical',
+		circleStyles = 
+			property: prop
+			type: 'categorical'
 			stops: stops
 
-		map.setPaintProperty('data-circle', 'circle-color', fillStyles);
-		map.setPaintProperty('data-outline', 'circle-stroke-color', outlineStyles);
+		map.setPaintProperty('survey-data', 'circle-color', circleStyles);
 
 	# whiteList = ['Income', 'Race', 'Age']
 	# addFilters = (filters, prop) ->
@@ -135,7 +114,7 @@ $ ->
 	# 			$filter.find('ul').append($filterItem)
 
 	# addPhenomena = (val) ->
-	# 	sentence = humanize(val)
+	# 	sentence = getSlug(val)
 	# 	if !sentence
 	# 		return
 	# 	$phenList = $('#phenomena .filter[data-prop="phenomena"]')
@@ -169,16 +148,23 @@ $ ->
 		if $side.is('#phenomena')
 			$fixedHeader.toggleClass('hide')
 
-	selectSentence = () ->	
+
+	clickSentence = (e) ->
 		$sentence = $(this)
+		val = $sentence.attr('data-val')
+		selectSentence(val)	
+		updateUrl()	
+
+	selectSentence = (val) ->	
+		$sentence = $('.option')
+		$sentence = $phenomena.find('.sentence[data-val="'+val+'"]')
 		$fieldset = $sentence.parents('.fieldset')
 		$side = $fieldset.parents('aside')
-		val = $sentence.attr('data-val')
 		text = $sentence.find('span').text()
 		$side.find('.selected').removeClass('selected')
 		$sentence.toggleClass('selected')
-		$accFieldset = $filters.find('.fieldset.acceptability')
-		$accLabel = $filters.find('.label.acceptability')
+		$accFieldset = $filters.find('.fieldset.accepted')
+		$accLabel = $filters.find('.label.accepted')
 		$accFieldset.attr('data-prop', val)
 		$accLabel.attr('data-prop', val)
 		if $sentence.is('.selected')
@@ -188,6 +174,70 @@ $ ->
 		else
 			$headerSentence.text('')
 			$accFieldset.addClass('disabled')
+
+	getSentence = (val) ->
+		if !val
+			return $phenomena.find('.sentence.selected')
+
+	clickFilter = (e) ->		
+		$option = $(this)
+		if $option.is('.range-input') && $(e.target).is('.inputs, .inputs *')
+			return false
+		$fieldset = $option.parents('.fieldset')
+		$side = $fieldset.parents('aside')
+		prop = $fieldset.attr('data-prop-slug') || $fieldset.attr('data-prop') 
+		val = $option.attr('data-val-slug') || $option.attr('data-val')
+		selectFilter(prop, val)
+		updateUrl()
+
+
+	selectFilter = (prop, val) ->
+		val = getValSlug(prop, val)
+		$fieldset = getFieldset(prop)
+		$fieldset.addClass('open')
+		$selected = $fieldset.find('.selected')
+		$option = getOption(prop, val)
+		if !$option.length
+			return
+		if $option.is('.all')
+			$selected.filter(':not(.all)').removeClass('selected')
+		else if $fieldset.is('.radio')
+			$selected.removeClass('selected')
+		else
+			$selected.filter('.all').removeClass('selected')
+
+		if $option.is('.selected:not(.all)')
+			$option.removeClass('selected')
+			if !$fieldset.find('.selected').length
+				$fieldset.find('.all').addClass('selected')
+		else
+			$option.addClass('selected')
+
+		if $fieldset.is('.layers')
+			toggleLayer(val)
+		else
+			setFilter()
+
+	getFieldset = (prop) ->
+		prop = getProp(prop)
+		$fieldset = $filters.find('.fieldset[data-prop="'+prop+'"]')
+		if !$fieldset.length
+			propSlug = getPropSlug(prop)
+			$fieldset = $filters.find('.fieldset[data-prop-slug="'+propSlug+'"]')
+		return $fieldset
+
+	getOption = (prop, val) ->
+		$fieldset = getFieldset(prop)
+		if !val
+			return $fieldset.find('.option.all')
+		val = getVal(prop, val)
+		$option = $fieldset.find('.option[data-val="'+val+'"]')
+		if $option.length
+			return $option
+		valSlug = getValSlug(prop, val)
+		$option = $fieldset.find('.option[data-val-slug="'+valSlug+'"]')
+		if $option.length
+			return $option
 
 
 	toggleFilterTabs = (e) ->
@@ -209,47 +259,7 @@ $ ->
 		$fieldset = $label.parents('.fieldset')
 		$fieldset.toggleClass('open')
 
-	clickFilter = (e) ->		
-		$option = $(this)
-		if $option.is('.range-input') && $(e.target).is('.inputs, .inputs *')
-			console.log 'false'
-			return false
-		$fieldset = $option.parents('.fieldset')
-		$side = $fieldset.parents('aside')
-		prop = $fieldset.attr('data-prop')
-		val = $option.attr('data-val')
-		selectFilter(prop, val)
-		updateUrl()
-
-	selectFilter = (prop, val) ->
-		$fieldset = $filters.find('.fieldset[data-prop="'+prop+'"]')
-		$selected = $fieldset.find('.selected')
-		if !val
-			$option = $fieldset.find('.option.all')
-		else
-			$option = $fieldset.find('.option[data-val="'+val+'"]')
-		if $option.is('.all')
-			$selected.filter(':not(.all)').removeClass('selected')
-		else if !$option.length
-			return
-		else if $fieldset.is('.radio')
-			$selected.removeClass('selected')
-		else
-			$selected.filter('.all').removeClass('selected')
-
-		if $option.is('.selected:not(.all)')
-			$option.removeClass('selected')
-			if !$fieldset.find('.selected').length
-				$fieldset.find('.all').addClass('selected')
-		else
-			$option.addClass('selected')
-
-		if $fieldset.is('.advanced')
-			toggleFeature($option)
-		else
-			filterMarkers()
-
-	filterMarkers = () ->
+	setFilter = () ->
 		vals = {}
 		$selected = $filters.find('.filter li.selected')
 		$selected.each (i, li) ->
@@ -264,6 +274,7 @@ $ ->
 			else
 				vals[_prop].push(_val)
 			filter = clearFilter(prop)
+
 		if !filter
 			filter = ['all']
 			cond = 'in'
@@ -274,11 +285,12 @@ $ ->
 				args = [cond, _prop]
 				for __val in _vals
 					if !isNaN(__val)
-						__val = parseInt(__val)
+						__val = __val
 					args.push(__val)
 				filter.push(args)
 		else
 			filter = clearFilter(prop)
+
 		$sliders = $filters.find('.slider')
 		$sliders.each (i, slider) ->
 			$slider = $(slider)
@@ -295,18 +307,19 @@ $ ->
 			else if type == 'range'
 				minVal = $slider.attr('data-min-val')
 				maxVal = $slider.attr('data-max-val')
+				$handles.first().attr('data-val', minVal)
+				$handles.last().attr('data-val', maxVal)
 				if minVal && maxVal
-					filter.push(['>=', prop, parseInt(minVal)])
-					filter.push(['<=', prop, parseInt(maxVal)])
-					$handles.first().attr('data-val', minVal)
-					$handles.last().attr('data-val', maxVal)
-		map.setFilter('data-circle', filter)
-		map.setFilter('data-outline', filter)
+					rangerFilter = ['in', prop]
+					filter.push(rangerFilter)
+					filter.push(['>=', prop, minVal])
+					filter.push(['<=', prop, maxVal])
+		map.setFilter('survey-data', filter)
 
 	clearFilter = (prop) ->
 		if !map.length
 			return
-		filter = map.getFilter('data-circle')
+		filter = map.getFilter('survey-data')
 		if filter
 			arrs = filter.slice(0)
 			arrs.shift()
@@ -315,17 +328,14 @@ $ ->
 					filter.splice(i+1)
 			return filter
 
-	toggleFeature = (option) ->
-		$option = $(option)
-		$fieldset = $option.parents('.fieldset')
-		layer = $option.attr('data-val')
-		if !map.getLayer(layer)
+	toggleLayer = (layerId) ->
+		if !map.getLayer(layerId)
 			return
-		visibility = map.getLayoutProperty(layer, 'visibility')
+		visibility = map.getLayoutProperty(layerId, 'visibility')
 		if visibility == 'visible'
-			map.setLayoutProperty(layer, 'visibility', 'none')
+			map.setLayoutProperty(layerId, 'visibility', 'none')
 		else
-			map.setLayoutProperty(layer, 'visibility', 'visible')
+			map.setLayoutProperty(layerId, 'visibility', 'visible')
 
 	setUpSliders = () ->
 		$('.slider').each (i, slider) ->
@@ -363,7 +373,10 @@ $ ->
 			maxVal = vals[1]
 			$slider.attr('data-min-val', minVal)
 			$slider.attr('data-max-val', maxVal)
-		filterMarkers()
+			$handles = $slider.find('.ui-slider-handle')
+			$handles.first().attr('data-val', minVal)
+			$handles.last().attr('data-val', maxVal)
+		setFilter()
 
 	changeThresholds = (e) ->
 		$input = $(this)
@@ -397,7 +410,7 @@ $ ->
 		$option.attr('data-val', rangeStr)
 
 		updateThresholdColors()
-		filterMarkers()
+		setFilter()
 
 	hoverThresholds = (e) ->
 		$(this).parents('.option').addClass('no-hover')
@@ -409,7 +422,7 @@ $ ->
 	installKey = () ->
 		$options = $phenomena.find('ul')
 		$.ajax
-			url: keyURI
+			url: keyUri
 			dataType: 'text'
 			success: (data) ->
 				data = data.split(/\r?\n|\r/)
@@ -435,19 +448,22 @@ $ ->
 						$options.append($li.addClass('option'))
 
 	updateUrl = () ->
-		filters = map.getFilter('data-circle')
+		filters = map.getFilter('survey-data')
 		query = {}
-		if !filters
-			return
-		for i in [1..filters.length-1]
-			if filter = filters[i]
-				prop = humanize(filter[1])
-				queryVals = []
-				for ii in [2..filter.length-1]
-					queryVal = humanize(filter[ii])
-					queryVals.push(queryVal)
-				vals = queryVals.join()
-				query[prop] = vals
+		$sentence = $phenomena.find('.sentence.selected')
+		if $sentence.length
+			sentenceVal = $sentence.attr('data-val')
+			query['s'] = sentenceVal
+		if filters
+			for i in [1..filters.length-1]
+				if filter = filters[i]
+					prop = getPropSlug(filter[1])
+					queryVals = []
+					for ii in [2..filter.length-1]
+						queryVal = getValSlug(prop, filter[ii])
+						queryVals.push(queryVal)
+					vals = queryVals.join()
+					query[prop] = vals
 		location =  window.location
 		url = location.href.replace(location.search,'')
 		if filter != 'all'
@@ -457,20 +473,28 @@ $ ->
 
 	getQuery = () ->
 		query = window.location.search.substring(1)
-		query = decodeURIComponent(query)
 		if !query
 			return
+		query = decodeURIComponent(query)
 		queryVars = query.split('&')
 		for queryVar, i in queryVars
 			pair = queryVar.split('=')
+			if pair[0] == 's'
+				selectSentence(pair[1])
+		for queryVar, i in queryVars
+			pair = queryVar.split('=')
 			prop = pair[0]
-			vals = pair[1].split(',')
-			if mechanize(prop)
-				prop = mechanize(prop)
-			for val in  vals
-				if mechanize(val)
-					val = mechanize(val)
-				selectFilter(prop, val)
+			if prop == 'show'
+				selectFilter(prop, pair[1])
+			else if prop != 's'
+				vals = pair[1].split(',')
+				for val in vals
+					selectFilter(prop, val)
+
+	toggleView = (e) ->
+		if (e.keyCode == 27)
+			$('body').toggleClass('embedded')
+			map.resize()
 
 	startListening = (map) ->
 		$('body').on 'click', 'aside .label', toggleFieldset
@@ -481,15 +505,17 @@ $ ->
 		$('.range-input .inputs').on 'mouseleave', unhoverThresholds
 
 		$('body').on 'click', 'aside .close', toggleSide
-		$('body').on 'click', 'aside#phenomena ul li', selectSentence
+		$('body').on 'click', 'aside#phenomena ul li', clickSentence
 
 		$('body').on 'click', 'aside#filters .tab', toggleFilterTabs
+
+		$('body').keyup toggleView
 
 		popup = new mapboxgl.Popup
 			closeButton: false,
 			closeOnClick: false
 
-		map.on 'mouseenter', 'data-circle', (e) ->
+		map.on 'mouseenter', 'survey-data', (e) ->
 			map.getCanvas().style.cursor = 'pointer'
 			marker = e.features[0]
 			props = marker.properties
@@ -516,7 +542,7 @@ $ ->
 				.attr('data-id', marker.id)
 
 
-		map.on 'mouseleave', 'data-circle', (e) ->
+		map.on 'mouseleave', 'survey-data', (e) ->
 			$popup = $('.mapboxgl-popup')
 			oldId = $popup.attr('data-id')
 			setTimeout () ->
@@ -529,10 +555,36 @@ $ ->
 	createMap()
 	setUpSliders()
 
-	humanize = (str) ->
-		if human[str]
-			str = human[str]
-		return str
+	getProp = (propSlug) ->
+		if $fieldset = $('.fieldset[data-prop-slug="'+propSlug+'"]')
+			if prop = $fieldset.attr('data-prop')
+				return prop
+		return propSlug
+
+	getPropSlug = (prop) ->
+		if $fieldset = $('.fieldset[data-prop="'+prop+'"]')
+			if propSlug = $fieldset.attr('data-prop-slug')
+				return propSlug
+		return prop
+		
+	getVal = (prop, valSlug) ->
+		prop = getProp(prop)
+		$option = $('.fieldset[data-prop="'+prop+'"] .option[data-val-slug="'+valSlug+'"]')
+		if $option.length
+			val = $option.attr('data-val')
+			if val.length
+				return val
+		return valSlug
+
+	getValSlug = (prop, val) ->
+		prop = getPropSlug(prop)
+		$option = $('.fieldset[data-prop-slug="'+prop+'"] .option[data-val="'+val+'"]')
+		if $option.length
+			valSlug = $option.attr('data-val-slug') || $option.attr('data-val')
+			if valSlug && valSlug.length
+				return valSlug
+		return val
+
 
 	mechanize = (str) ->
 		if machine[str]

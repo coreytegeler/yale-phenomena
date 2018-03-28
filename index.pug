@@ -12,7 +12,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 		link(href='./assets/css/style.css?v=1.2' rel='stylesheet')
 	body
 
-		#embed
+		#embed(data-mapbox='MAPBOX_VARS')
 			#frame
 				header.fixed
 					.wrapper
@@ -42,7 +42,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 					.inner
 						.scroller
 							.form(data-form='accept-reject')
-								.fieldset.filter.accept.open(data-prop='accept')
+								.fieldset.filter.accept.open(data-prop='accept' data-prop-slug='accept')
 									.label
 										.arrow
 										span Accept
@@ -50,7 +50,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 										ul
 											//- li.sentence.selected.all(data-val=null) Accept All
 
-								.fieldset.filter.reject.open(data-prop='reject')
+								.fieldset.filter.reject.open(data-prop='reject' data-prop-slug='reject')
 									.label
 										.arrow
 										span Reject
@@ -59,48 +59,48 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 											//- li.sentence.selected.all(data-val=null) Reject All
 											
 							.form.active(data-form='filters')
-								.fieldset.filter.race(data-prop='Race')
+								.fieldset.filter.race(data-prop='Race' data-prop-slug='race')
 									.label
 										.arrow
 										span Race/Ethnicity
 									.options
 										ul
 											li.option.selected.all(data-val=null) All Race
-											li.option(data-val='Amerindian') Amerindian
-											li.option(data-val='Asian') Asian
-											li.option(data-val='Black') Black
-											li.option(data-val='Hispanic') Hispanic
-											li.option(data-val='White') White
-											li.option(data-val='Other') Other
+											li.option(data-val='Amerindian' data-val-slug='amerindian') Amerindian
+											li.option(data-val='Asian' data-val-slug='asian') Asian
+											li.option(data-val='Black' data-val-slug='black') Black
+											li.option(data-val='Hispanic' data-val-slug='hispanic') Hispanic
+											li.option(data-val='White' data-val-slug='white') White
+											li.option(data-val='Other' data-val-slug='other') Other
 
-								.fieldset.filter.race(data-prop='Education')
+								.fieldset.filter.edu(data-prop='Education' data-prop-slug='edu')
 									.label
 										.arrow
 										span Education
 									.options
 										ul
 											li.option.selected.all(data-val=null) All Education
-											li.option(data-val='Associates degree') Associates degree
-											li.option(data-val='Bachelors degree') Bachelors degree
-											li.option(data-val='Graduate degree (masters doctorate etc.)') Graduate degree (masters doctorate etc.)
-											li.option(data-val='High school graduate') High school graduate
-											li.option(data-val='Some college no degree') Some college no degree
-											li.option(data-val='Other') Other
+											li.option(data-val='Associates degree' data-val-slug='ad') Associates degree
+											li.option(data-val='Bachelors degree' data-val-slug='bd') Bachelors degree
+											li.option(data-val='Graduate degree (masters doctorate etc.)' data-val-slug='gd') Graduate degree (masters doctorate etc.)
+											li.option(data-val='High school graduate' data-val-slug='hsg') High school graduate
+											li.option(data-val='Some college no degree' data-val-slug='scnd') Some college no degree
+											li.option(data-val='Other' data-val-slug='other') Other
 
-								.fieldset.filter.race(data-prop='Gender')
+								.fieldset.filter.gender(data-prop='Gender' data-prop-slug='gender')
 									.label
 										.arrow
 										span Gender
 									.options
 										ul
 											li.option.selected.all(data-val=null) All Gender
-											li.option(data-val='Female') Female
-											li.option(data-val='Male') Male
-											li.option(data-val='Transgender (FTM)') Transgender (FTM)
-											li.option(data-val='Transgender (MTF)') Transgender (MTF)
-											li.option(data-val='Other') Other
+											li.option(data-val='Female' data-val-slug='f') Female
+											li.option(data-val='Male' data-val-slug='m') Male
+											li.option(data-val='Transgender (FTM)' data-val-slug='ftm') Transgender (FTM)
+											li.option(data-val='Transgender (MTF)' data-val-slug='mtf') Transgender (MTF)
+											li.option(data-val='Other' data-val-slug='other') Other
 								
-								.fieldset.filter.age(data-prop='Age')
+								.fieldset.filter.age(data-prop='Age' data-prop-slug='age')
 									.label
 										.arrow
 										span Age Range
@@ -117,7 +117,7 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 										//- 	li.option(data-val='61_up') 61 &amp; Up
 
 
-								.fieldset.filter.acceptability.radio.open(data-prop=null)
+								.fieldset.filter.accepted.radio.disabled(data-prop='show', data-prop-slug='show')
 									.label
 										.arrow
 										span Acceptability
@@ -138,16 +138,23 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 													span &ndash;
 													input.max(type='number' value='2' min='1' max='5')
 
-								.fieldset.advanced(data-prop='advanced')
+								.fieldset.layers(data-prop='layers' data-prop-slug='layers')
 									.label
 										.arrow
 										span Advanced
 									.options
 										ul
-											li.option(data-val='counties') Counties
-											li.option(data-val='hot-spots') Hot Spots
-											li.option(data-val='cold-spots') Cold Spots
+											li.option(data-val='hotspots' data-val-slug='hotspots') Hot Spots
+											li.option(data-val='coldspots' data-val-slug='coldspots') Cold Spots
 						.shadow.bottom
 						.shadow.top
+				footer
+					a(href='https://ygdp.yale.edu/').logo
+						object(type='image/svg+xml' data='./assets/img/ygdp.svg') Yale Grammatical Diversity Project
+					.keys
+						.key.acceptable
+							span Acceptable
+						.key.unacceptable
+							span Unacceptable
 				main
 					#map

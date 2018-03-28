@@ -1,76 +1,73 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, countID, countURI, createMap, dataID, dataURI, filterMarkers, getQuery, getUniqueFeatures, hoverThresholds, human, humanize, installKey, keyURI, machine, mechanize, selectFilter, selectSentence, setUpSliders, startListening, styleURI, toggleFeature, toggleFieldset, toggleFilterTabs, toggleSide, unhoverThresholds, updateThresholdColors, updateUrl;
-  accessToken = 'pk.eyJ1IjoiY29yZXl0ZWdlbGVyIiwiYSI6ImNpd25xNjU0czAyeG0yb3A3cjdkc2NleHAifQ.EJAjj38qZXzIylzax3EMWg';
-  mapboxgl.accessToken = accessToken;
-  styleURI = 'mapbox://styles/mapbox/light-v9';
-  styleURI = 'mapbox://styles/coreytegeler/cj5adbyws0g7l2sqnl74tvzoa';
-  dataURI = 'mapbox://coreytegeler.cj8yqu9o509q92wo4ybzg13xo-9ir7s';
-  dataID = 'survey8';
-  countURI = 'mapbox://coreytegeler.afjjqi6e';
-  countID = 'gz_2010_us_050_00_500k-c9lvkv';
-  keyURI = 'data/key8.csv';
+  var $filters, $fixedHeader, $headerSentence, $phenomena, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, machine, mechanize, selectFilter, selectSentence, setFilter, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
+  keyUri = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
   $fixedHeader = $('header.fixed');
   $headerSentence = $('header.fixed .sentence');
   createMap = function() {
+    var mapbox, mapboxAttr;
+    mapboxAttr = $('#embed').attr('data-mapbox');
+    mapbox = JSON.parse(decodeURI(mapboxAttr));
+    mapboxgl.accessToken = mapbox.accessToken;
     window.map = new mapboxgl.Map({
       container: 'map',
-      style: styleURI,
+      style: mapbox.styleUri,
       zoom: 3,
       center: [-95.7129, 37.0902]
     });
     return map.on('load', function() {
       var dataBounds, dataLayer;
       map.addLayer({
-        'id': 'data-circle',
+        'id': 'survey-data',
         'type': 'circle',
         'source': {
           type: 'vector',
-          url: dataURI
+          url: mapbox.surveyUri
         },
-        'source-layer': dataID,
+        'source-layer': mapbox.surveyId,
         'zoom': 10,
         'paint': {
-          'circle-color': 'rgb(122,145,173)',
+          'circle-color': '#000',
           'circle-radius': 4
         }
       });
-      map.addLayer({
-        'id': 'data-outline',
-        'type': 'circle',
-        'source': {
-          type: 'vector',
-          url: dataURI
-        },
-        'source-layer': dataID,
-        'zoom': 10,
-        'paint': {
-          'circle-stroke-color': 'rgb(122,145,173)',
-          'circle-stroke-width': 2,
-          'circle-radius': 5,
-          'circle-color': 'transparent'
-        }
-      });
-      dataLayer = map.getLayer('data-circle');
+      dataLayer = map.getLayer('survey-data');
       dataBounds = map.getBounds(dataLayer).toArray();
       map.addLayer({
-        'id': 'counties',
+        'id': 'coldspots',
         'type': 'line',
         'source': {
-          type: 'vector',
-          url: countURI
+          'type': 'vector',
+          'url': mapbox.coldspotsUri
         },
-        'source-layer': countID,
+        'source-layer': mapbox.coldspotsId,
+        'minzoom': 0,
+        'maxzoom': 24,
         'layout': {
           'visibility': 'none'
         },
-        'minzoom': 0,
-        'maxzoom': 24,
         'paint': {
           'line-width': 1,
-          'line-color': 'black',
-          'line-opacity': 0.1
+          'line-color': '#8ba9c4'
+        }
+      });
+      map.addLayer({
+        'id': 'hotspots',
+        'type': 'line',
+        'source': {
+          'type': 'vector',
+          'url': mapbox.hotspotsUri
+        },
+        'source-layer': mapbox.hotspotsId,
+        'minzoom': 0,
+        'maxzoom': 24,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'line-width': 1,
+          'line-color': '#c48f8f'
         }
       });
       startListening(map);
@@ -78,7 +75,7 @@ $(function() {
     });
   };
   updateThresholdColors = function() {
-    var aColor, aRange, aVal, fillStyles, i, j, k, len, len1, outlineStyles, prop, stops, uColor, uRange, uVal;
+    var aColor, aRange, aVal, circleStyles, i, j, k, len, len1, prop, stops, uColor, uRange, uVal;
     prop = $('.fieldset.phenomena .sentence.selected').attr('data-val');
     if (!prop) {
       return;
@@ -92,24 +89,18 @@ $(function() {
     stops = [];
     for (j = 0, len = aRange.length; j < len; j++) {
       i = aRange[j];
-      stops.push([i, aColor]);
+      stops.push([i.toString(), aColor]);
     }
     for (k = 0, len1 = uRange.length; k < len1; k++) {
       i = uRange[k];
-      stops.push([i, uColor]);
+      stops.push([i.toString(), uColor]);
     }
-    fillStyles = {
+    circleStyles = {
       property: prop,
       type: 'categorical',
       stops: stops
     };
-    outlineStyles = {
-      property: prop,
-      type: 'categorical',
-      stops: stops
-    };
-    map.setPaintProperty('data-circle', 'circle-color', fillStyles);
-    return map.setPaintProperty('data-outline', 'circle-stroke-color', outlineStyles);
+    return map.setPaintProperty('survey-data', 'circle-color', circleStyles);
   };
   getUniqueFeatures = function(array, comparatorProperty) {
     var existingFeatureKeys, uniqueFeatures;
@@ -132,17 +123,24 @@ $(function() {
       return $fixedHeader.toggleClass('hide');
     }
   };
-  selectSentence = function() {
-    var $accFieldset, $accLabel, $fieldset, $sentence, $side, text, val;
+  clickSentence = function(e) {
+    var $sentence, val;
     $sentence = $(this);
+    val = $sentence.attr('data-val');
+    selectSentence(val);
+    return updateUrl();
+  };
+  selectSentence = function(val) {
+    var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
+    $sentence = $('.option');
+    $sentence = $phenomena.find('.sentence[data-val="' + val + '"]');
     $fieldset = $sentence.parents('.fieldset');
     $side = $fieldset.parents('aside');
-    val = $sentence.attr('data-val');
     text = $sentence.find('span').text();
     $side.find('.selected').removeClass('selected');
     $sentence.toggleClass('selected');
-    $accFieldset = $filters.find('.fieldset.acceptability');
-    $accLabel = $filters.find('.label.acceptability');
+    $accFieldset = $filters.find('.fieldset.accepted');
+    $accLabel = $filters.find('.label.accepted');
     $accFieldset.attr('data-prop', val);
     $accLabel.attr('data-prop', val);
     if ($sentence.is('.selected')) {
@@ -152,6 +150,82 @@ $(function() {
     } else {
       $headerSentence.text('');
       return $accFieldset.addClass('disabled');
+    }
+  };
+  getSentence = function(val) {
+    if (!val) {
+      return $phenomena.find('.sentence.selected');
+    }
+  };
+  clickFilter = function(e) {
+    var $fieldset, $option, $side, prop, val;
+    $option = $(this);
+    if ($option.is('.range-input') && $(e.target).is('.inputs, .inputs *')) {
+      return false;
+    }
+    $fieldset = $option.parents('.fieldset');
+    $side = $fieldset.parents('aside');
+    prop = $fieldset.attr('data-prop-slug') || $fieldset.attr('data-prop');
+    val = $option.attr('data-val-slug') || $option.attr('data-val');
+    selectFilter(prop, val);
+    return updateUrl();
+  };
+  selectFilter = function(prop, val) {
+    var $fieldset, $option, $selected;
+    val = getValSlug(prop, val);
+    $fieldset = getFieldset(prop);
+    $fieldset.addClass('open');
+    $selected = $fieldset.find('.selected');
+    $option = getOption(prop, val);
+    if (!$option.length) {
+      return;
+    }
+    if ($option.is('.all')) {
+      $selected.filter(':not(.all)').removeClass('selected');
+    } else if ($fieldset.is('.radio')) {
+      $selected.removeClass('selected');
+    } else {
+      $selected.filter('.all').removeClass('selected');
+    }
+    if ($option.is('.selected:not(.all)')) {
+      $option.removeClass('selected');
+      if (!$fieldset.find('.selected').length) {
+        $fieldset.find('.all').addClass('selected');
+      }
+    } else {
+      $option.addClass('selected');
+    }
+    if ($fieldset.is('.layers')) {
+      return toggleLayer(val);
+    } else {
+      return setFilter();
+    }
+  };
+  getFieldset = function(prop) {
+    var $fieldset, propSlug;
+    prop = getProp(prop);
+    $fieldset = $filters.find('.fieldset[data-prop="' + prop + '"]');
+    if (!$fieldset.length) {
+      propSlug = getPropSlug(prop);
+      $fieldset = $filters.find('.fieldset[data-prop-slug="' + propSlug + '"]');
+    }
+    return $fieldset;
+  };
+  getOption = function(prop, val) {
+    var $fieldset, $option, valSlug;
+    $fieldset = getFieldset(prop);
+    if (!val) {
+      return $fieldset.find('.option.all');
+    }
+    val = getVal(prop, val);
+    $option = $fieldset.find('.option[data-val="' + val + '"]');
+    if ($option.length) {
+      return $option;
+    }
+    valSlug = getValSlug(prop, val);
+    $option = $fieldset.find('.option[data-val-slug="' + valSlug + '"]');
+    if ($option.length) {
+      return $option;
     }
   };
   toggleFilterTabs = function(e) {
@@ -175,53 +249,7 @@ $(function() {
     $fieldset = $label.parents('.fieldset');
     return $fieldset.toggleClass('open');
   };
-  clickFilter = function(e) {
-    var $fieldset, $option, $side, prop, val;
-    $option = $(this);
-    if ($option.is('.range-input') && $(e.target).is('.inputs, .inputs *')) {
-      console.log('false');
-      return false;
-    }
-    $fieldset = $option.parents('.fieldset');
-    $side = $fieldset.parents('aside');
-    prop = $fieldset.attr('data-prop');
-    val = $option.attr('data-val');
-    selectFilter(prop, val);
-    return updateUrl();
-  };
-  selectFilter = function(prop, val) {
-    var $fieldset, $option, $selected;
-    $fieldset = $filters.find('.fieldset[data-prop="' + prop + '"]');
-    $selected = $fieldset.find('.selected');
-    if (!val) {
-      $option = $fieldset.find('.option.all');
-    } else {
-      $option = $fieldset.find('.option[data-val="' + val + '"]');
-    }
-    if ($option.is('.all')) {
-      $selected.filter(':not(.all)').removeClass('selected');
-    } else if (!$option.length) {
-      return;
-    } else if ($fieldset.is('.radio')) {
-      $selected.removeClass('selected');
-    } else {
-      $selected.filter('.all').removeClass('selected');
-    }
-    if ($option.is('.selected:not(.all)')) {
-      $option.removeClass('selected');
-      if (!$fieldset.find('.selected').length) {
-        $fieldset.find('.all').addClass('selected');
-      }
-    } else {
-      $option.addClass('selected');
-    }
-    if ($fieldset.is('.advanced')) {
-      return toggleFeature($option);
-    } else {
-      return filterMarkers();
-    }
-  };
-  filterMarkers = function() {
+  setFilter = function() {
     var $selected, $sliders, __val, _prop, _vals, args, cond, filter, j, k, len, len1, ref, vals;
     vals = {};
     $selected = $filters.find('.filter li.selected');
@@ -255,7 +283,7 @@ $(function() {
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
           if (!isNaN(__val)) {
-            __val = parseInt(__val);
+            __val = __val;
           }
           args.push(__val);
         }
@@ -266,7 +294,7 @@ $(function() {
     }
     $sliders = $filters.find('.slider');
     $sliders.each(function(i, slider) {
-      var $fieldset, $handles, $slider, current, maxVal, minVal, prop, type, val;
+      var $fieldset, $handles, $slider, current, maxVal, minVal, prop, rangerFilter, type, val;
       $slider = $(slider);
       $handles = $slider.find('.ui-slider-handle');
       $fieldset = $slider.parents('.fieldset');
@@ -281,23 +309,24 @@ $(function() {
       } else if (type === 'range') {
         minVal = $slider.attr('data-min-val');
         maxVal = $slider.attr('data-max-val');
+        $handles.first().attr('data-val', minVal);
+        $handles.last().attr('data-val', maxVal);
         if (minVal && maxVal) {
-          filter.push(['>=', prop, parseInt(minVal)]);
-          filter.push(['<=', prop, parseInt(maxVal)]);
-          $handles.first().attr('data-val', minVal);
-          return $handles.last().attr('data-val', maxVal);
+          rangerFilter = ['in', prop];
+          filter.push(rangerFilter);
+          filter.push(['>=', prop, minVal]);
+          return filter.push(['<=', prop, maxVal]);
         }
       }
     });
-    map.setFilter('data-circle', filter);
-    return map.setFilter('data-outline', filter);
+    return map.setFilter('survey-data', filter);
   };
   clearFilter = function(prop) {
     var arr, arrs, filter, i, j, len;
     if (!map.length) {
       return;
     }
-    filter = map.getFilter('data-circle');
+    filter = map.getFilter('survey-data');
     if (filter) {
       arrs = filter.slice(0);
       arrs.shift();
@@ -310,19 +339,16 @@ $(function() {
       return filter;
     }
   };
-  toggleFeature = function(option) {
-    var $fieldset, $option, layer, visibility;
-    $option = $(option);
-    $fieldset = $option.parents('.fieldset');
-    layer = $option.attr('data-val');
-    if (!map.getLayer(layer)) {
+  toggleLayer = function(layerId) {
+    var visibility;
+    if (!map.getLayer(layerId)) {
       return;
     }
-    visibility = map.getLayoutProperty(layer, 'visibility');
+    visibility = map.getLayoutProperty(layerId, 'visibility');
     if (visibility === 'visible') {
-      return map.setLayoutProperty(layer, 'visibility', 'none');
+      return map.setLayoutProperty(layerId, 'visibility', 'none');
     } else {
-      return map.setLayoutProperty(layer, 'visibility', 'visible');
+      return map.setLayoutProperty(layerId, 'visibility', 'visible');
     }
   };
   setUpSliders = function() {
@@ -352,7 +378,7 @@ $(function() {
     });
   };
   changeSlider = function(e, ui) {
-    var $slider, maxVal, minVal, prop, type, val, vals;
+    var $handles, $slider, maxVal, minVal, prop, type, val, vals;
     $slider = $(this);
     prop = $slider.attr('data-prop');
     type = $slider.attr('data-type');
@@ -365,8 +391,11 @@ $(function() {
       maxVal = vals[1];
       $slider.attr('data-min-val', minVal);
       $slider.attr('data-max-val', maxVal);
+      $handles = $slider.find('.ui-slider-handle');
+      $handles.first().attr('data-val', minVal);
+      $handles.last().attr('data-val', maxVal);
     }
-    return filterMarkers();
+    return setFilter();
   };
   changeThresholds = function(e) {
     var $input, $option, $sibInput, $sibOption, allowed, i, j, max, min, range, rangeStr, ref, ref1, sibMaxVal, sibMinVal, sibVal, val;
@@ -400,7 +429,7 @@ $(function() {
     rangeStr = JSON.stringify(range).replace(/[\[\]']+/g, '');
     $option.attr('data-val', rangeStr);
     updateThresholdColors();
-    return filterMarkers();
+    return setFilter();
   };
   hoverThresholds = function(e) {
     return $(this).parents('.option').addClass('no-hover');
@@ -412,7 +441,7 @@ $(function() {
     var $options;
     $options = $phenomena.find('ul');
     return $.ajax({
-      url: keyURI,
+      url: keyUri,
       dataType: 'text',
       success: function(data) {
         var $li, i, j, len, num, parsedRow, prefix, results, row, sentence, type, val;
@@ -453,22 +482,26 @@ $(function() {
     });
   };
   updateUrl = function() {
-    var filter, filters, i, ii, j, k, location, prop, query, queryVal, queryVals, ref, ref1, url, vals;
-    filters = map.getFilter('data-circle');
+    var $sentence, filter, filters, i, ii, j, k, location, prop, query, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
+    filters = map.getFilter('survey-data');
     query = {};
-    if (!filters) {
-      return;
+    $sentence = $phenomena.find('.sentence.selected');
+    if ($sentence.length) {
+      sentenceVal = $sentence.attr('data-val');
+      query['s'] = sentenceVal;
     }
-    for (i = j = 1, ref = filters.length - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-      if (filter = filters[i]) {
-        prop = humanize(filter[1]);
-        queryVals = [];
-        for (ii = k = 2, ref1 = filter.length - 1; 2 <= ref1 ? k <= ref1 : k >= ref1; ii = 2 <= ref1 ? ++k : --k) {
-          queryVal = humanize(filter[ii]);
-          queryVals.push(queryVal);
+    if (filters) {
+      for (i = j = 1, ref = filters.length - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+        if (filter = filters[i]) {
+          prop = getPropSlug(filter[1]);
+          queryVals = [];
+          for (ii = k = 2, ref1 = filter.length - 1; 2 <= ref1 ? k <= ref1 : k >= ref1; ii = 2 <= ref1 ? ++k : --k) {
+            queryVal = getValSlug(prop, filter[ii]);
+            queryVals.push(queryVal);
+          }
+          vals = queryVals.join();
+          query[prop] = vals;
         }
-        vals = queryVals.join();
-        query[prop] = vals;
       }
     }
     location = window.location;
@@ -480,36 +513,49 @@ $(function() {
     return history.pushState(queryVals, '', url);
   };
   getQuery = function() {
-    var i, j, len, pair, prop, query, queryVar, queryVars, results, val, vals;
+    var i, j, k, len, len1, pair, prop, query, queryVar, queryVars, results, val, vals;
     query = window.location.search.substring(1);
-    query = decodeURIComponent(query);
     if (!query) {
       return;
     }
+    query = decodeURIComponent(query);
     queryVars = query.split('&');
-    results = [];
     for (i = j = 0, len = queryVars.length; j < len; i = ++j) {
       queryVar = queryVars[i];
       pair = queryVar.split('=');
-      prop = pair[0];
-      vals = pair[1].split(',');
-      if (mechanize(prop)) {
-        prop = mechanize(prop);
+      if (pair[0] === 's') {
+        selectSentence(pair[1]);
       }
-      results.push((function() {
-        var k, len1, results1;
-        results1 = [];
-        for (k = 0, len1 = vals.length; k < len1; k++) {
-          val = vals[k];
-          if (mechanize(val)) {
-            val = mechanize(val);
+    }
+    results = [];
+    for (i = k = 0, len1 = queryVars.length; k < len1; i = ++k) {
+      queryVar = queryVars[i];
+      pair = queryVar.split('=');
+      prop = pair[0];
+      if (prop === 'show') {
+        results.push(selectFilter(prop, pair[1]));
+      } else if (prop !== 's') {
+        vals = pair[1].split(',');
+        results.push((function() {
+          var l, len2, results1;
+          results1 = [];
+          for (l = 0, len2 = vals.length; l < len2; l++) {
+            val = vals[l];
+            results1.push(selectFilter(prop, val));
           }
-          results1.push(selectFilter(prop, val));
-        }
-        return results1;
-      })());
+          return results1;
+        })());
+      } else {
+        results.push(void 0);
+      }
     }
     return results;
+  };
+  toggleView = function(e) {
+    if (e.keyCode === 27) {
+      $('body').toggleClass('embedded');
+      return map.resize();
+    }
   };
   startListening = function(map) {
     var popup;
@@ -520,13 +566,14 @@ $(function() {
     $('.range-input .inputs').on('mouseenter', hoverThresholds);
     $('.range-input .inputs').on('mouseleave', unhoverThresholds);
     $('body').on('click', 'aside .close', toggleSide);
-    $('body').on('click', 'aside#phenomena ul li', selectSentence);
+    $('body').on('click', 'aside#phenomena ul li', clickSentence);
     $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
+    $('body').keyup(toggleView);
     popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false
     });
-    map.on('mouseenter', 'data-circle', function(e) {
+    map.on('mouseenter', 'survey-data', function(e) {
       var i, j, len, marker, prop, prop_keys, props, ul;
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
@@ -553,7 +600,7 @@ $(function() {
       popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
       return $(popup._content).parent().addClass('show').attr('data-id', marker.id);
     });
-    return map.on('mouseleave', 'data-circle', function(e) {
+    return map.on('mouseleave', 'survey-data', function(e) {
       var $popup, oldId;
       $popup = $('.mapboxgl-popup');
       oldId = $popup.attr('data-id');
@@ -569,11 +616,47 @@ $(function() {
   installKey();
   createMap();
   setUpSliders();
-  humanize = function(str) {
-    if (human[str]) {
-      str = human[str];
+  getProp = function(propSlug) {
+    var $fieldset, prop;
+    if ($fieldset = $('.fieldset[data-prop-slug="' + propSlug + '"]')) {
+      if (prop = $fieldset.attr('data-prop')) {
+        return prop;
+      }
     }
-    return str;
+    return propSlug;
+  };
+  getPropSlug = function(prop) {
+    var $fieldset, propSlug;
+    if ($fieldset = $('.fieldset[data-prop="' + prop + '"]')) {
+      if (propSlug = $fieldset.attr('data-prop-slug')) {
+        return propSlug;
+      }
+    }
+    return prop;
+  };
+  getVal = function(prop, valSlug) {
+    var $option, val;
+    prop = getProp(prop);
+    $option = $('.fieldset[data-prop="' + prop + '"] .option[data-val-slug="' + valSlug + '"]');
+    if ($option.length) {
+      val = $option.attr('data-val');
+      if (val.length) {
+        return val;
+      }
+    }
+    return valSlug;
+  };
+  getValSlug = function(prop, val) {
+    var $option, valSlug;
+    prop = getPropSlug(prop);
+    $option = $('.fieldset[data-prop-slug="' + prop + '"] .option[data-val="' + val + '"]');
+    if ($option.length) {
+      valSlug = $option.attr('data-val-slug') || $option.attr('data-val');
+      if (valSlug && valSlug.length) {
+        return valSlug;
+      }
+    }
+    return val;
   };
   mechanize = function(str) {
     if (machine[str]) {

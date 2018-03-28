@@ -26,13 +26,26 @@ var dest = {
   imgs: './assets/imgs'
 }
 
+var mapboxVars = {
+  accessToken: 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg',
+  styleUri: 'mapbox://styles/ygdp/cjf9phmuh0t582rmoqk7dp2b3',
+  surveyUri: 'mapbox://ygdp.cjfa3l2xb1g6e2wqwm4zvufh6-82ryg',
+  surveyId: 'Survey_8',
+  spotsUri: 'mapbox://ygdp.cjf9viv0b0jl82qk0sn4o9qtn-7ryw2',
+  spotsId: 'Spots',
+  coldspotsUri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q',
+  coldspotsId: 'Coldspots_8',
+  hotspotsUri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge',
+  hotspotsId: 'Hotspots_8'
+}
+
 gulp.task('compile-pug', function() {
   return gulp.src(paths.pug)
     .pipe(plumber())
     .pipe(pug())
     .pipe(gulpif(argv.prod, htmlmin({ collapseWhitespace: true })))
     .pipe(gulpif(argv.prod, htmlreplace({ css: 'style.min.css' })))
-    .pipe(gulpif(argv.prod, htmlreplace({ css: 'script.min.js' })))
+    .pipe(replace('MAPBOX_VARS', encodeURI(JSON.stringify(mapboxVars))))
     .pipe(replace('imgs/', dest.imgs))
     .pipe(gulp.dest(dest.html))
   .on('end', function() {
