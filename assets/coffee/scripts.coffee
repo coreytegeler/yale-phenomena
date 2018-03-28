@@ -84,9 +84,9 @@ $ ->
 
 		stops = []
 		for i in aRange
-			stops.push([i.toString(), aColor])
+			stops.push([i, aColor])
 		for i in uRange
-			stops.push([i.toString(), uColor])
+			stops.push([i, uColor])
 
 		circleStyles = 
 			property: prop
@@ -285,7 +285,7 @@ $ ->
 				args = [cond, _prop]
 				for __val in _vals
 					if !isNaN(__val)
-						__val = __val
+						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
 		else
@@ -296,7 +296,6 @@ $ ->
 			$slider = $(slider)
 			$handles = $slider.find('.ui-slider-handle')
 			$fieldset = $slider.parents('.fieldset')
-			# $val = $fieldset.find('.label .val')
 			prop = $fieldset.attr('data-prop')
 			type = $slider.attr('data-type')
 			current = ''

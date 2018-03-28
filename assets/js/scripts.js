@@ -89,11 +89,11 @@ $(function() {
     stops = [];
     for (j = 0, len = aRange.length; j < len; j++) {
       i = aRange[j];
-      stops.push([i.toString(), aColor]);
+      stops.push([i, aColor]);
     }
     for (k = 0, len1 = uRange.length; k < len1; k++) {
       i = uRange[k];
-      stops.push([i.toString(), uColor]);
+      stops.push([i, uColor]);
     }
     circleStyles = {
       property: prop,
@@ -283,7 +283,7 @@ $(function() {
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
           if (!isNaN(__val)) {
-            __val = __val;
+            __val = parseInt(__val);
           }
           args.push(__val);
         }
