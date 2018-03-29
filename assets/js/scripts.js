@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, machine, mechanize, selectFilter, selectSentence, setFilter, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, machine, mechanize, selectFilter, selectSentence, setFilter, setSlider, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
   keyUri = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
@@ -201,6 +201,13 @@ $(function() {
       return setFilter();
     }
   };
+  setSlider = function(prop, vals) {
+    var $fieldset, $slider;
+    $fieldset = getFieldset(prop);
+    $slider = $fieldset.find('.slider');
+    $fieldset.addClass('open');
+    return $slider.slider('values', vals);
+  };
   getFieldset = function(prop) {
     var $fieldset, propSlug;
     prop = getProp(prop);
@@ -282,7 +289,7 @@ $(function() {
         args = [cond, _prop];
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
-          if (!isNaN(__val)) {
+          if (Number.isInteger(__val)) {
             __val = parseInt(__val);
           }
           args.push(__val);
@@ -294,7 +301,7 @@ $(function() {
     }
     $sliders = $filters.find('.slider');
     $sliders.each(function(i, slider) {
-      var $fieldset, $handles, $slider, current, maxVal, minVal, prop, type, val;
+      var $fieldset, $handles, $slider, current, prop, type, val;
       $slider = $(slider);
       $handles = $slider.find('.ui-slider-handle');
       $fieldset = $slider.parents('.fieldset');
@@ -307,14 +314,11 @@ $(function() {
           return current = '(' + val + ')';
         }
       } else if (type === 'range') {
-        minVal = parseInt($slider.attr('data-min'));
-        maxVal = parseInt($slider.attr('data-max'));
-        $handles.first().attr('data-val', minVal);
-        $handles.last().attr('data-val', maxVal);
-        if (minVal && maxVal) {
-          $slider.attr('data-val', [minVal, maxVal].join(','));
-          filter.push(['>=', prop, minVal]);
-          return filter.push(['<=', prop, maxVal]);
+        vals = $slider.slider('values');
+        if (vals.length) {
+          $slider.attr('data-val', vals.join(','));
+          filter.push(['>=', prop, vals[0]]);
+          return filter.push(['<=', prop, vals[1]]);
         }
       }
     });
@@ -521,7 +525,7 @@ $(function() {
     return history.pushState(queryVals, '', url);
   };
   getQuery = function() {
-    var i, j, k, len, len1, pair, prop, query, queryVar, queryVars, results, val, vals;
+    var i, j, k, l, len, len1, len2, pair, prop, query, queryVar, queryVars, val, vals;
     query = window.location.search.substring(1);
     if (!query) {
       return;
@@ -535,29 +539,24 @@ $(function() {
         selectSentence(pair[1]);
       }
     }
-    results = [];
     for (i = k = 0, len1 = queryVars.length; k < len1; i = ++k) {
       queryVar = queryVars[i];
       pair = queryVar.split('=');
       prop = pair[0];
       if (prop === 'show') {
-        results.push(selectFilter(prop, pair[1]));
+        selectFilter(prop, pair[1]);
+        return;
+      }
+      vals = pair[1].split(',');
+      if (prop === 'age') {
+        setSlider(prop, vals);
       } else if (prop !== 's') {
-        vals = pair[1].split(',');
-        results.push((function() {
-          var l, len2, results1;
-          results1 = [];
-          for (l = 0, len2 = vals.length; l < len2; l++) {
-            val = vals[l];
-            results1.push(selectFilter(prop, val));
-          }
-          return results1;
-        })());
-      } else {
-        results.push(void 0);
+        for (l = 0, len2 = vals.length; l < len2; l++) {
+          val = vals[l];
+          selectFilter(prop, val);
+        }
       }
     }
-    return results;
   };
   toggleView = function(e) {
     if (e.keyCode === 27) {

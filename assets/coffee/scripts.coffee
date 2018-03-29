@@ -218,6 +218,12 @@ $ ->
 		else
 			setFilter()
 
+	setSlider = (prop, vals) ->
+		$fieldset = getFieldset(prop)
+		$slider = $fieldset.find('.slider')
+		$fieldset.addClass('open')
+		$slider.slider('values', vals)
+
 	getFieldset = (prop) ->
 		prop = getProp(prop)
 		$fieldset = $filters.find('.fieldset[data-prop="'+prop+'"]')
@@ -284,7 +290,7 @@ $ ->
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
-					if !isNaN(__val)
+					if Number.isInteger(__val)
 						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
@@ -304,14 +310,11 @@ $ ->
 					filter.push(['==', prop, val])
 					current = '('+val+')'
 			else if type == 'range'
-				minVal = parseInt($slider.attr('data-min'))
-				maxVal = parseInt($slider.attr('data-max'))
-				$handles.first().attr('data-val', minVal)
-				$handles.last().attr('data-val', maxVal)
-				if minVal && maxVal
-					$slider.attr('data-val', [minVal,maxVal].join(','))
-					filter.push(['>=', prop, minVal])
-					filter.push(['<=', prop, maxVal])
+				vals = $slider.slider('values')
+				if vals.length
+					$slider.attr('data-val', vals.join(','))
+					filter.push(['>=', prop, vals[0]])
+					filter.push(['<=', prop, vals[1]])
 		map.setFilter('survey-data', filter)
 
 	clearFilter = (prop) ->
@@ -492,8 +495,11 @@ $ ->
 			prop = pair[0]
 			if prop == 'show'
 				selectFilter(prop, pair[1])
+				return
+			vals = pair[1].split(',')
+			if prop == 'age'
+				setSlider(prop, vals)
 			else if prop != 's'
-				vals = pair[1].split(',')
 				for val in vals
 					selectFilter(prop, val)
 
