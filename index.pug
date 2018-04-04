@@ -100,10 +100,13 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 											li.option(data-val='Transgender (MTF)' data-val-slug='mtf') Transgender (MTF)
 											li.option(data-val='Other' data-val-slug='other') Other
 								
-								.fieldset.filter.age(data-prop='Age' data-prop-slug='age')
+								.fieldset.filter.age.multi(data-prop='Age' data-prop-slug='age')
 									.label
 										.arrow
-										span Age Range
+										span Age
+										.multi-toggle
+											.multi-label Range
+											.multi-label Group
 									.options
 										.slider(data-type='range' data-min='0' data-max='100' data-val='0,100' data-val-slug='0,100')
 											.handle-label.min
@@ -152,9 +155,9 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 					a(href='https://ygdp.yale.edu/').logo
 						object(type='image/svg+xml' data='./assets/img/ygdp.svg') Yale Grammatical Diversity Project
 					.keys
-						.key.acceptable
-							span Acceptable
 						.key.unacceptable
 							span Unacceptable
+						.key.acceptable
+							span Acceptable
 				main
 					#map

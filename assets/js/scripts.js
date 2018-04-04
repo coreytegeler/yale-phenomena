@@ -638,6 +638,7 @@ $(function() {
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
       props = marker.properties;
+      console.log(marker);
       props = {
         'Age': props['Age'],
         'Gender': props['Gender'],

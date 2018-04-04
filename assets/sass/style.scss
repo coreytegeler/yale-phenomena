@@ -135,7 +135,7 @@ aside {
 			top: $gutter;
 			z-index: 500;
 			background-color: $lightBlue;
-			background-image: url(./../img/hamburger.svg);
+			background-image: url(./../img/x.svg);
 			background-position: center;
 			background-size: 1.25em auto;
 			background-repeat: no-repeat;
@@ -194,6 +194,9 @@ aside {
 		&.closed {
 			width: $gutter;
 			left: 0;
+			.hamburger {
+				background-image: url(./../img/hamburger.svg);
+			}
 			.shadow {
 				margin-left: 0;
 				&.top {
@@ -214,10 +217,10 @@ aside {
 				}
 				ul {
 					li.option {
-						width: #{$gutter/3};
-						height: #{$gutter/3};
+						width: #{$gutter/4};
+						height: #{$gutter/4};
 						padding: 0;
-						margin: #{$gutter/3};
+						margin: #{$gutter/2.5};
 						border-radius: 50%;
 						background: $white;
 						span {
@@ -344,11 +347,13 @@ aside {
 						padding: .25em 1.25em .25em 0;
 						margin: .25em 0 0 0;
 						cursor: pointer;
-						background-image: url(./../img/x.svg);
-						background-position: 200% center;
-						background-repeat: no-repeat;
-						background-size: .75em;
 						font-weight: 200;
+						&:not(.all) {
+							background-image: url(./../img/x.svg);
+							background-position: 200% center;
+							background-repeat: no-repeat;
+							background-size: .75em;
+						}
 					}
 				}
 			}
@@ -359,7 +364,7 @@ aside {
 					}
 					&.selected {
 						font-weight: 400;
-						background-position: right center;
+						background-position: right center !important;
 					}
 				}
 			}
@@ -472,6 +477,16 @@ aside {
 					height: 0 !important;
 				}
 			}
+			&.multi {
+				.multi-toggle {
+					display: inline-block;
+					.multi-label {
+						display: inline-block;
+						margin-left: 1em;
+						font-weight: 200;
+					}
+				}
+			}
 		}
 		&.closed {
 			.close .arrow {
@@ -537,17 +552,17 @@ main {
 }
 footer {
 	width: calc(100% - #{$gutter*2});
-	height: calc(#{$gutter} - 10px);
+	height: calc(#{$gutter} - 14px);
 	position: absolute;
 	left: $gutter;
-	bottom: 5px;
+	bottom: 7px;
 	display: flex;
 	justify-content: space-between;
 	.logo {
 		height: 100%;
 		object {
 			width: auto;
-			height: calc(#{$gutter} - 10px);
+			height: calc(#{$gutter} - 14px);
 		}
 	}
 	.keys {
