@@ -365,7 +365,7 @@ aside {
 			}
 			.range-input {
 				&:hover {
-					&.no-hover {
+					&:not(.selected).no-hover {
 						font-weight: 200;
 					}
 				}

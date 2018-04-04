@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, machine, mechanize, selectFilter, selectSentence, setFilter, setSlider, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, limitThresholds, machine, mechanize, selectFilter, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
   keyUri = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
@@ -28,7 +28,7 @@ $(function() {
         'source-layer': mapbox.surveyId,
         'zoom': 10,
         'paint': {
-          'circle-color': '#000',
+          'circle-color': 'transparent',
           'circle-radius': 4
         }
       });
@@ -71,36 +71,9 @@ $(function() {
         }
       });
       startListening(map);
-      return getQuery();
+      getQuery();
+      return selectSentence();
     });
-  };
-  updateThresholdColors = function() {
-    var aColor, aRange, aVal, circleStyles, i, j, k, len, len1, prop, stops, uColor, uRange, uVal;
-    prop = $('.fieldset.phenomena .sentence.selected').attr('data-val');
-    if (!prop) {
-      return;
-    }
-    aColor = '#5fa990';
-    uColor = '#795292';
-    aVal = $('.option.acceptable').attr('data-val');
-    aRange = JSON.parse('[' + aVal + ']');
-    uVal = $('.option.unacceptable').attr('data-val');
-    uRange = JSON.parse('[' + uVal + ']');
-    stops = [];
-    for (j = 0, len = aRange.length; j < len; j++) {
-      i = aRange[j];
-      stops.push([i, aColor]);
-    }
-    for (k = 0, len1 = uRange.length; k < len1; k++) {
-      i = uRange[k];
-      stops.push([i, uColor]);
-    }
-    circleStyles = {
-      property: prop,
-      type: 'categorical',
-      stops: stops
-    };
-    return map.setPaintProperty('survey-data', 'circle-color', circleStyles);
   };
   getUniqueFeatures = function(array, comparatorProperty) {
     var existingFeatureKeys, uniqueFeatures;
@@ -132,8 +105,11 @@ $(function() {
   };
   selectSentence = function(val) {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
-    $sentence = $('.option');
-    $sentence = $phenomena.find('.sentence[data-val="' + val + '"]');
+    $sentence = $phenomena.find('.option[data-val="' + val + '"]');
+    if (!$sentence.length) {
+      $sentence = $phenomena.find('.option').first();
+      val = $sentence.attr('data-val');
+    }
     $fieldset = $sentence.parents('.fieldset');
     $side = $fieldset.parents('aside');
     text = $sentence.find('span').text();
@@ -289,7 +265,7 @@ $(function() {
         args = [cond, _prop];
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
-          if (Number.isInteger(__val)) {
+          if (Number.isInteger(parseInt(__val))) {
             __val = parseInt(__val);
           }
           args.push(__val);
@@ -405,29 +381,79 @@ $(function() {
     setFilter();
     return updateUrl();
   };
+  MIN = 1;
+  MAX = 5;
+  limitThresholds = function(e) {
+    var $input, $option, val;
+    $input = $(this);
+    $option = $input.parents('.option');
+    val = parseInt(this.value);
+    if (!val) {
+      if ($option.is('.acceptable')) {
+        val = MAX;
+      } else {
+        val = MIN;
+      }
+    } else if (val < MIN) {
+      val = MIN;
+    } else if (val > MAX) {
+      val = MAX;
+    }
+    return $(this).val(val);
+  };
   changeThresholds = function(e) {
-    var $input, $option, $sibInput, $sibOption, allowed, i, j, max, min, range, rangeStr, ref, ref1, sibMaxVal, sibMinVal, sibVal, val;
+    var $altMaxInput, $altMinInput, $altOption, $input, $option, $sibInput, altMaxVal, altMinVal, newAltMax, newAltMin, sibVal, val;
     $input = $(this);
     $sibInput = $input.siblings('input');
     $option = $input.parents('.option');
-    $sibOption = $option.siblings('.option.range-input');
+    $altOption = $option.siblings('.option.range-input');
     val = $input.val();
     sibVal = $sibInput.val();
     if ($input.is('.min')) {
-      allowed = val <= sibVal;
-    } else {
-      allowed = val >= sibVal;
+      if (val > sibVal) {
+        val = sibVal;
+      }
+    } else if ($input.is('.max')) {
+      if (val < sibVal) {
+        val = sibVal;
+      }
     }
-    if (!allowed) {
-      $input.val(sibVal);
+    if (val > MAX) {
+      val = MAX;
+    } else if (val < MIN) {
+      val = MIN;
     }
-    sibMinVal = $sibOption.find('.min').val();
-    sibMaxVal = $sibOption.find('.max').val();
-    if ($option.is('.acceptable') && $input.is('.min') && val <= sibMaxVal) {
-      $input.val(Math.abs(sibMaxVal) + 1);
-    } else if ($option.is('.unacceptable') && $input.is('.max') && val >= sibMinVal) {
-      $input.val(Math.abs(sibMinVal) - 1);
+    $input.val(val);
+    altMinVal = $altOption.find('.min').val();
+    altMaxVal = $altOption.find('.max').val();
+    if ($option.is('.acceptable') && $input.is('.min') && val <= altMaxVal) {
+      newAltMax = Math.abs(val) - 1;
+      if (newAltMax < $altOption.find('.max').val()) {
+        newAltMax += 1;
+      }
+      $altMaxInput = $altOption.find('.max');
+      if (newAltMax < MIN) {
+        newAltMax = MIN;
+      }
+      $altMaxInput.val(newAltMax);
+    } else if ($option.is('.unacceptable') && $input.is('.max') && val >= altMinVal) {
+      newAltMin = Math.abs(val) + 1;
+      if (newAltMin > $altOption.find('.min').val()) {
+        newAltMin -= 1;
+      }
+      $altMinInput = $altOption.find('.min');
+      if (newAltMin > MAX) {
+        newAltMax = MAX;
+      }
+      $altMinInput.val(newAltMin);
     }
+    setThresholdVal($option);
+    setThresholdVal($altOption);
+    updateThresholdColors();
+    return setFilter();
+  };
+  setThresholdVal = function($option) {
+    var i, j, max, min, range, rangeStr, ref, ref1;
     min = $option.find('input.min').val();
     max = $option.find('input.max').val();
     range = [];
@@ -435,15 +461,42 @@ $(function() {
       range.push(Math.abs(i));
     }
     rangeStr = JSON.stringify(range).replace(/[\[\]']+/g, '');
-    $option.attr('data-val', rangeStr);
-    updateThresholdColors();
-    return setFilter();
+    return $option.attr('data-val', rangeStr);
   };
   hoverThresholds = function(e) {
     return $(this).parents('.option').addClass('no-hover');
   };
   unhoverThresholds = function(e) {
     return $(this).parents('.option').removeClass('no-hover');
+  };
+  updateThresholdColors = function() {
+    var aColor, aRange, aVal, circleStyles, i, j, prop, ref, ref1, stops, uColor, uRange, uVal;
+    prop = $('.fieldset.phenomena .sentence.selected').attr('data-val');
+    if (!prop) {
+      return;
+    }
+    aColor = '#5fa990';
+    uColor = '#795292';
+    aVal = $('.option.acceptable').attr('data-val');
+    aRange = JSON.parse('[' + aVal + ']');
+    uVal = $('.option.unacceptable').attr('data-val');
+    uRange = JSON.parse('[' + uVal + ']');
+    stops = [];
+    for (i = j = ref = MIN, ref1 = MAX; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
+      if (aRange[i]) {
+        stops.push([i, aColor]);
+      } else if (uRange[i]) {
+        stops.push([i, uColor]);
+      } else {
+        stops.push([i, 'transparent']);
+      }
+    }
+    circleStyles = {
+      property: prop,
+      type: 'categorical',
+      stops: stops
+    };
+    return map.setPaintProperty('survey-data', 'circle-color', circleStyles);
   };
   installKey = function() {
     var $options;
@@ -527,33 +580,32 @@ $(function() {
   getQuery = function() {
     var i, j, k, l, len, len1, len2, pair, prop, query, queryVar, queryVars, val, vals;
     query = window.location.search.substring(1);
-    if (!query) {
-      return;
-    }
-    query = decodeURIComponent(query);
-    queryVars = query.split('&');
-    for (i = j = 0, len = queryVars.length; j < len; i = ++j) {
-      queryVar = queryVars[i];
-      pair = queryVar.split('=');
-      if (pair[0] === 's') {
-        selectSentence(pair[1]);
+    if (query) {
+      query = decodeURIComponent(query);
+      queryVars = query.split('&');
+      for (i = j = 0, len = queryVars.length; j < len; i = ++j) {
+        queryVar = queryVars[i];
+        pair = queryVar.split('=');
+        if (pair[0] === 's') {
+          selectSentence(pair[1]);
+        }
       }
-    }
-    for (i = k = 0, len1 = queryVars.length; k < len1; i = ++k) {
-      queryVar = queryVars[i];
-      pair = queryVar.split('=');
-      prop = pair[0];
-      if (prop === 'show') {
-        selectFilter(prop, pair[1]);
-        return;
-      }
-      vals = pair[1].split(',');
-      if (prop === 'age') {
-        setSlider(prop, vals);
-      } else if (prop !== 's') {
-        for (l = 0, len2 = vals.length; l < len2; l++) {
-          val = vals[l];
-          selectFilter(prop, val);
+      for (i = k = 0, len1 = queryVars.length; k < len1; i = ++k) {
+        queryVar = queryVars[i];
+        pair = queryVar.split('=');
+        prop = pair[0];
+        if (prop === 'show') {
+          selectFilter(prop, pair[1]);
+          return;
+        }
+        vals = pair[1].split(',');
+        if (prop === 'age') {
+          setSlider(prop, vals);
+        } else if (prop !== 's') {
+          for (l = 0, len2 = vals.length; l < len2; l++) {
+            val = vals[l];
+            selectFilter(prop, val);
+          }
         }
       }
     }
@@ -569,6 +621,7 @@ $(function() {
     $('body').on('click', 'aside .label', toggleFieldset);
     $('body').on('click', 'aside#filters ul li', clickFilter);
     $('.slider').on('slidechange', changeSlider);
+    $('.range-input input').on('keyup', limitThresholds);
     $('.range-input input').on('change', changeThresholds);
     $('.range-input .inputs').on('mouseenter', hoverThresholds);
     $('.range-input .inputs').on('mouseleave', unhoverThresholds);

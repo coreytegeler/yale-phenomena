@@ -346,7 +346,7 @@ aside {
       aside#filters .fieldset ul li.selected {
         font-weight: 400;
         background-position: right center; }
-      aside#filters .fieldset .range-input:hover.no-hover {
+      aside#filters .fieldset .range-input:hover:not(.selected).no-hover {
         font-weight: 200; }
       aside#filters .fieldset .range-input .inputs {
         font-weight: 200;

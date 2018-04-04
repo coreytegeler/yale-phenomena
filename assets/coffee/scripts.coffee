@@ -12,7 +12,6 @@ $ ->
 		mapbox = JSON.parse(decodeURI(mapboxAttr))
 		mapboxgl.accessToken = mapbox.accessToken
 
-
 		window.map = new mapboxgl.Map
 			container: 'map',
 			style: mapbox.styleUri,
@@ -29,7 +28,7 @@ $ ->
 				'source-layer': mapbox.surveyId
 				'zoom': 10
 				'paint':
-					'circle-color': '#000'
+					'circle-color': 'transparent'
 					'circle-radius': 4
 
 			dataLayer = map.getLayer('survey-data')
@@ -68,32 +67,8 @@ $ ->
 
 			startListening(map)
 			getQuery()
+			selectSentence()
 
-	updateThresholdColors = () ->
-		prop = $('.fieldset.phenomena .sentence.selected').attr('data-val')
-		if !prop
-			return
-
-		aColor = '#5fa990'
-		uColor = '#795292'
-
-		aVal = $('.option.acceptable').attr('data-val')
-		aRange = JSON.parse('['+aVal+']')
-		uVal = $('.option.unacceptable').attr('data-val')
-		uRange = JSON.parse('['+uVal+']')
-
-		stops = []
-		for i in aRange
-			stops.push([i, aColor])
-		for i in uRange
-			stops.push([i, uColor])
-
-		circleStyles = 
-			property: prop
-			type: 'categorical'
-			stops: stops
-
-		map.setPaintProperty('survey-data', 'circle-color', circleStyles);
 
 	# whiteList = ['Income', 'Race', 'Age']
 	# addFilters = (filters, prop) ->
@@ -155,9 +130,11 @@ $ ->
 		selectSentence(val)	
 		updateUrl()	
 
-	selectSentence = (val) ->	
-		$sentence = $('.option')
-		$sentence = $phenomena.find('.sentence[data-val="'+val+'"]')
+	selectSentence = (val) ->
+		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
+		if !$sentence.length
+			$sentence = $phenomena.find('.option').first()
+			val = $sentence.attr('data-val')
 		$fieldset = $sentence.parents('.fieldset')
 		$side = $fieldset.parents('aside')
 		text = $sentence.find('span').text()
@@ -245,7 +222,6 @@ $ ->
 		if $option.length
 			return $option
 
-
 	toggleFilterTabs = (e) ->
 		$tab = $(this)
 		$filters = $tab.parents('#filters')
@@ -258,7 +234,6 @@ $ ->
 		$('.form.active').removeClass('active')
 		$tab.addClass('active')
 		$form.addClass('active')
-
 
 	toggleFieldset = (e) ->
 		$label = $(this)
@@ -290,7 +265,7 @@ $ ->
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
-					if Number.isInteger(__val)
+					if Number.isInteger(parseInt(__val))
 						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
@@ -361,6 +336,7 @@ $ ->
 				$handles.first().attr('data-val', min)
 				$handles.last().attr('data-val', max)
 
+
 	changeSlider = (e, ui) ->
 		$slider = $(this)
 		$fieldset = $slider.parents('.fieldset')
@@ -384,45 +360,114 @@ $ ->
 		setFilter()
 		updateUrl()
 
+	MIN = 1
+	MAX = 5
+
+	limitThresholds = (e) ->
+		$input = $(this)
+		$option = $input.parents('.option')
+		val = parseInt(this.value)
+		if !val
+			if $option.is('.acceptable')
+				val = MAX
+			else
+				val = MIN
+		else if val < MIN
+			val = MIN
+		else if val > MAX
+			val = MAX
+		$(this).val(val)
+
 	changeThresholds = (e) ->
 		$input = $(this)
 		$sibInput = $input.siblings('input')
 		$option = $input.parents('.option')
-		$sibOption = $option.siblings('.option.range-input')
+		$altOption = $option.siblings('.option.range-input')
 		val = $input.val()
 		sibVal = $sibInput.val()
 
 		if $input.is('.min')
-			allowed = val <= sibVal
-		else
-			allowed = val >= sibVal
-		if !allowed
-			$input.val(sibVal)
+			if val > sibVal
+				val = sibVal
+		else if $input.is('.max')
+			if val < sibVal
+				val = sibVal
+		if val > MAX
+			val = MAX
+		else if val < MIN
+			val = MIN
+		$input.val(val)
 
-		sibMinVal = $sibOption.find('.min').val()
-		sibMaxVal = $sibOption.find('.max').val()
-		if $option.is('.acceptable') && $input.is('.min') && val <= sibMaxVal
-			$input.val(Math.abs(sibMaxVal) + 1)
-		else if $option.is('.unacceptable') && $input.is('.max') && val >= sibMinVal
-			$input.val(Math.abs(sibMinVal) - 1)
+		altMinVal = $altOption.find('.min').val()
+		altMaxVal = $altOption.find('.max').val()
 
+		if $option.is('.acceptable') && $input.is('.min') && val <= altMaxVal
+			newAltMax = Math.abs(val) - 1
+			if newAltMax < $altOption.find('.max').val()
+				newAltMax += 1
+			$altMaxInput = $altOption.find('.max')
+			if newAltMax < MIN
+				newAltMax = MIN
+			$altMaxInput.val(newAltMax)
+		else if $option.is('.unacceptable') && $input.is('.max') && val >= altMinVal
+			newAltMin = Math.abs(val) + 1
+			if newAltMin > $altOption.find('.min').val()
+				newAltMin -= 1
+			$altMinInput = $altOption.find('.min')
+			if newAltMin > MAX
+				newAltMax = MAX
+			$altMinInput.val(newAltMin)
+
+
+		setThresholdVal($option)
+		setThresholdVal($altOption)
+
+		updateThresholdColors()
+		setFilter()
+
+	setThresholdVal = ($option) ->
 		min = $option.find('input.min').val()
 		max = $option.find('input.max').val()
-
 		range = []
 		for i in [min..max]
 			range.push(Math.abs(i))
 		rangeStr = JSON.stringify(range).replace(/[\[\]']+/g,'')
 		$option.attr('data-val', rangeStr)
 
-		updateThresholdColors()
-		setFilter()
-
 	hoverThresholds = (e) ->
 		$(this).parents('.option').addClass('no-hover')
 
 	unhoverThresholds = (e) ->
 		$(this).parents('.option').removeClass('no-hover')
+
+	updateThresholdColors = () ->
+		prop = $('.fieldset.phenomena .sentence.selected').attr('data-val')
+		if !prop
+			return
+
+		aColor = '#5fa990'
+		uColor = '#795292'
+
+		aVal = $('.option.acceptable').attr('data-val')
+		aRange = JSON.parse('['+aVal+']')
+		uVal = $('.option.unacceptable').attr('data-val')
+		uRange = JSON.parse('['+uVal+']')
+
+		stops = []
+		for i in [MIN..MAX]
+			if aRange[i]
+				stops.push([i, aColor])
+			else if uRange[i]
+				stops.push([i, uColor])
+			else
+				stops.push([i, 'transparent'])
+
+		circleStyles = 
+			property: prop
+			type: 'categorical'
+			stops: stops
+
+		map.setPaintProperty('survey-data', 'circle-color', circleStyles);
 
 
 	installKey = () ->
@@ -482,26 +527,25 @@ $ ->
 
 	getQuery = () ->
 		query = window.location.search.substring(1)
-		if !query
-			return
-		query = decodeURIComponent(query)
-		queryVars = query.split('&')
-		for queryVar, i in queryVars
-			pair = queryVar.split('=')
-			if pair[0] == 's'
-				selectSentence(pair[1])
-		for queryVar, i in queryVars
-			pair = queryVar.split('=')
-			prop = pair[0]
-			if prop == 'show'
-				selectFilter(prop, pair[1])
-				return
-			vals = pair[1].split(',')
-			if prop == 'age'
-				setSlider(prop, vals)
-			else if prop != 's'
-				for val in vals
-					selectFilter(prop, val)
+		if query
+			query = decodeURIComponent(query)
+			queryVars = query.split('&')
+			for queryVar, i in queryVars
+				pair = queryVar.split('=')
+				if pair[0] == 's'
+					selectSentence(pair[1])
+			for queryVar, i in queryVars
+				pair = queryVar.split('=')
+				prop = pair[0]
+				if prop == 'show'
+					selectFilter(prop, pair[1])
+					return
+				vals = pair[1].split(',')
+				if prop == 'age'
+					setSlider(prop, vals)
+				else if prop != 's'
+					for val in vals
+						selectFilter(prop, val)
 
 	toggleView = (e) ->
 		if (e.keyCode == 27)
@@ -512,6 +556,7 @@ $ ->
 		$('body').on 'click', 'aside .label', toggleFieldset
 		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
+		$('.range-input input').on 'keyup', limitThresholds
 		$('.range-input input').on 'change', changeThresholds
 		$('.range-input .inputs').on 'mouseenter', hoverThresholds
 		$('.range-input .inputs').on 'mouseleave', unhoverThresholds
