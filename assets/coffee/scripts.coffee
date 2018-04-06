@@ -270,7 +270,7 @@ $ ->
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
-					if Number.isInteger(parseInt(__val)) && __val.indexOf('_') > -1
+					if Number.isInteger(parseInt(__val)) && __val.indexOf('-') < 0
 						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
@@ -674,8 +674,10 @@ $ ->
 	mechanize = (str) ->
 		if machine[str]
 			str = machine[str]
-		return str					
+		return str				
 
+	echo = (x) ->
+		console.log(x)
 
 	human =
 		'PR_1125': 'The car needs washed'

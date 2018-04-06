@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, limitThresholds, machine, mechanize, openMulti, selectFilter, selectMulti, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, echo, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, limitThresholds, machine, mechanize, openMulti, selectFilter, selectMulti, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
   keyUri = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
@@ -297,7 +297,7 @@ $(function() {
         args = [cond, _prop];
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
-          if (Number.isInteger(parseInt(__val)) && __val.indexOf('_') > -1) {
+          if (Number.isInteger(parseInt(__val)) && __val.indexOf('-') < 0) {
             __val = parseInt(__val);
           }
           args.push(__val);
@@ -781,6 +781,9 @@ $(function() {
       str = machine[str];
     }
     return str;
+  };
+  echo = function(x) {
+    return console.log(x);
   };
   human = {
     'PR_1125': 'The car needs washed',
