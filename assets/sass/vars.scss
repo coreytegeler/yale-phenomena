@@ -7,38 +7,32 @@ $lightBlue: rgb(168,215,238);
 $purple: rgb(120,85,138);
 $green: rgb(95,169,144);
 
-$gutter: 30px;
+$mdSpace: 30px;
+$smSpace: #{$mdSpace/2};
+$lgSpace: #{$mdSpace*2};
+
 $left: 228px;
 $right: 206px;
 
-@mixin baseText {
+
+@mixin xsText {
+	font-size: 8px;
+	line-height: 10px;
+}
+
+@mixin smText {
 	font-size: 11px;
-	line-height: 1.2em;
+  line-height: 13px;
 }
 
-@mixin xSmallText {
-	font-size: .75em;
-	line-height: 1.2em;
-}
-
-@mixin smallText {
-	font-size: 1em;
-	line-height: 1.2em;
-}
-
-@mixin mediumText {
-	font-size: 1.25em;
-	line-height: 1.2em;
-}
-
-@mixin largeText {
+@mixin mdText {
 	font-size: 16px;
-	line-height: 1.25em;
+	line-height: 19px;
 }
 
-@mixin xLargeText {
+@mixin lgText {
 	font-size: 20px;
-	line-height: 1.5em;
+	line-height: 25px;
 }
 
 @mixin bottomShadow($color) {

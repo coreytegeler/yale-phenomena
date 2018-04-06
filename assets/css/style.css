@@ -54,7 +54,7 @@ html, body {
   color: #153554;
   font-family: 'Mallory', Helvetica, Arial, sans-serif;
   font-size: 11px;
-  line-height: 1.2em;
+  line-height: 13px;
   font-weight: 200; }
 
 body {
@@ -74,12 +74,12 @@ body {
 
 h1 {
   font-size: 20px;
-  line-height: 1.5em;
+  line-height: 25px;
   font-weight: 400; }
 
 h2 {
   font-size: 16px;
-  line-height: 1.25em;
+  line-height: 19px;
   font-weight: 400; }
 
 header {
@@ -87,9 +87,9 @@ header {
   opacity: 1; }
   header .wrapper {
     width: 100%;
-    padding: 15px 0 0 15px;
+    padding: 15px 0 15px 15px;
     display: table;
-    background-color: #f9f9f9; }
+    background-color: rgba(249, 249, 249, 0.8); }
   header h2 {
     display: inline;
     margin: 0 0 30px 0;
@@ -110,7 +110,7 @@ header {
         pointer-events: all; }
       header.fixed .wrapper h1.sentence {
         margin: 0;
-        padding: 30px 0;
+        padding: 30px 0 50px 0;
         pointer-events: all; }
   header.hide {
     display: none; }
@@ -188,7 +188,7 @@ aside {
       z-index: 500; }
     aside#phenomena .shadow.bottom {
       box-shadow: inset 0 -2.5em 1.5em -1em #f9f9f9;
-      width: calc(100% - $gutter);
+      width: calc(100% - $mdSpace);
       margin-left: 30px; }
     aside#phenomena .phenomena {
       padding: 22.5px 15px;
@@ -197,7 +197,7 @@ aside {
       pointer-events: all;
       display: flex;
       overflow-y: auto;
-      background-color: #f9f9f9; }
+      background-color: rgba(249, 249, 249, 0.8); }
       aside#phenomena .phenomena::-webkit-scrollbar {
         display: none; }
       aside#phenomena .phenomena::-webkit-scrollbar-thumb {
@@ -235,10 +235,10 @@ aside {
         aside#phenomena.closed .phenomena .options {
           width: 100%; }
         aside#phenomena.closed .phenomena ul li.option {
-          width: 7.5px;
-          height: 7.5px;
+          width: 5px;
+          height: 5px;
           padding: 0;
-          margin: 12px;
+          margin: calc(15px - 2.5px);
           border-radius: 50%;
           background: #f9f9f9; }
           aside#phenomena.closed .phenomena ul li.option span {
@@ -331,8 +331,8 @@ aside {
               font-weight: 400; }
         aside#filters .fieldset .head .note {
           color: #7a91ad;
-          font-size: .75em;
-          line-height: 1.2em;
+          font-size: 8px;
+          line-height: 10px;
           position: absolute;
           display: inline;
           padding-left: 5px;
@@ -403,7 +403,9 @@ aside {
             margin-left: -1.5em;
             content: attr(data-val);
             color: #7a91ad;
-            text-align: center; }
+            text-align: center;
+            font-size: 8px;
+            line-height: 10px; }
           aside#filters .fieldset .slider .ui-slider-handle.ui-state-hover, aside#filters .fieldset .slider .ui-slider-handle.ui-state-active {
             cursor: ew-resize;
             z-index: 99999; }
@@ -442,7 +444,8 @@ aside {
             font-weight: 400;
             text-decoration: underline; }
           aside#filters .fieldset.multi .head .multi-toggle .multi-label:hover {
-            font-weight: 400; }
+            font-weight: 400;
+            cursor: pointer; }
       aside#filters .fieldset.multi .multi-field {
         display: none; }
         aside#filters .fieldset.multi .multi-field.open {
@@ -485,7 +488,7 @@ main {
         position: relative;
         background-color: #78558a;
         color: #f9f9f9;
-        padding: 1.75em 2em; }
+        padding: 20px; }
         main #map .mapboxgl-popup .mapboxgl-popup-content ul {
           padding: 0;
           margin: 0;

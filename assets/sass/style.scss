@@ -6,7 +6,7 @@ html, body {
 	overflow: hidden;
 	color: $dark;
 	font-family: 'Mallory', Helvetica, Arial, sans-serif;
-	@include baseText;
+	@include smText;
 	font-weight: 200;
 }
 body {
@@ -20,16 +20,16 @@ body {
 #frame {
 	width: 100%;
 	height: 100%;
-	padding: $gutter;
+	padding: $mdSpace;
 	background-color: $lightBlue;
 	position: relative;
 }
 h1 {
-	@include xLargeText;
+	@include lgText;
 	font-weight: 400;
 }
 h2 {
-	@include largeText;
+	@include mdText;
 	font-weight: 400;
 }
 header {
@@ -37,22 +37,22 @@ header {
 	opacity: 1;
 	.wrapper {
 		width: 100%;
-		padding: #{$gutter/2} 0 0 #{$gutter/2};
+		padding: $smSpace 0 $smSpace $smSpace;
 		display: table;
-		background-color: $white;
+		background-color: rgba($white,.8);
 	}
 	h2 {
 		display: inline;
-		margin: 0 0 $gutter 0;
+		margin: 0 0 $mdSpace 0;
 		padding: 0 0 .125em 0;
 		border-bottom: .125em solid $dark;
 	}
 	&.fixed {
-		width: calc(100% - #{$gutter*2});
-		height: calc(100% - #{$gutter*2});
+		width: calc(100% - #{$lgSpace});
+		height: calc(100% - #{$lgSpace});
 		position: absolute;
-		left: $gutter;
-		top: $gutter;
+		left: $mdSpace;
+		top: $mdSpace;
 		z-index: 500;
 		overflow: hidden;
 		pointer-events: none;
@@ -63,7 +63,7 @@ header {
 			}
 			h1.sentence {
 				margin: 0;
-				padding: $gutter 0;
+				padding: $mdSpace 0 50px 0;
 				pointer-events: all;
 			}
 		}
@@ -79,7 +79,7 @@ aside {
 	z-index: 400;
 	header {
 		width: $left;
-		margin: 0 0 0 $gutter;
+		margin: 0 0 0 $mdSpace;
 	}
 	.inner {
 		width: 100%;
@@ -105,7 +105,7 @@ aside {
 		}
 		.shadow {
 			width: 100%;
-			height: #{$gutter*2};
+			height: #{$lgSpace};
 			display: table;
 			&.top {
 				position: absolute;
@@ -114,22 +114,22 @@ aside {
 			}
 			&.bottom {
 				position: relative;
-				margin-top: -#{$gutter*2};
+				margin-top: -#{$lgSpace};
 			}
 		}
 	}
 	&#phenomena {
-		height: calc(100% - #{$gutter*2});
+		height: calc(100% - #{$lgSpace});
 		left: 0;
-		top: $gutter;
+		top: $mdSpace;
 		color: $dark;
 		pointer-events: none;
 		.hamburger {
-			width: $gutter;
-			height: $gutter;
+			width: $mdSpace;
+			height: $mdSpace;
 			position: absolute;
 			left: 0em;
-			top: $gutter;
+			top: $mdSpace;
 			z-index: 500;
 			background-color: $lightBlue;
 			background-image: url(./../img/x.svg);
@@ -143,7 +143,7 @@ aside {
 			}
 		}
 		.inner {
-			width: #{$left+$gutter};
+			width: #{$left+$mdSpace};
 			display: flex;
 			flex-direction: column;
 		}
@@ -151,23 +151,23 @@ aside {
 			&.top {
 				@include topShadow($white);
 				position: relative;
-				margin: 0 0 -#{$gutter*2} $gutter;
+				margin: 0 0 -#{$lgSpace} $mdSpace;
 				z-index: 500;
 			}
 			&.bottom {
 				@include bottomShadow($white);
-				width: calc(100% - $gutter);
-				margin-left: $gutter;
+				width: calc(100% - $mdSpace);
+				margin-left: $mdSpace;
 			}
 		}
 		.phenomena {
-			padding: #{$gutter*.75} #{$gutter/2};
-			margin: 0 0 0 $gutter;
+			padding: #{$mdSpace*.75} $smSpace;
+			margin: 0 0 0 $mdSpace;
 			background-color: $white;
 			pointer-events: all;
 			display: flex;
 			overflow-y: auto;
-			background-color: $white;
+			background-color: rgba($white,.8);
 			@include hideScroll;
 		}
 		ul {
@@ -189,7 +189,7 @@ aside {
 			}
 		}
 		&.closed {
-			width: $gutter;
+			width: $mdSpace;
 			left: 0;
 			.hamburger {
 				background-image: url(./../img/hamburger.svg);
@@ -214,10 +214,10 @@ aside {
 				}
 				ul {
 					li.option {
-						width: #{$gutter/4};
-						height: #{$gutter/4};
+						width: 5px;
+						height: 5px;
 						padding: 0;
-						margin: #{$gutter/2.5};
+						margin: calc(#{$mdSpace/2} - 2.5px);
 						border-radius: 50%;
 						background: $white;
 						span {
@@ -235,17 +235,17 @@ aside {
 		}
 	}
 	&#filters {
-		height: calc(100% - #{$gutter});
+		height: calc(100% - #{$mdSpace});
 		max-width: $right;
-		right: $gutter;
+		right: $mdSpace;
 		top: 0;
 		user-select: none;
 		pointer-events: none;
 		&.closed {
-			height: $gutter;
+			height: $mdSpace;
 		}
 		.tabs {
-			height: $gutter;
+			height: $mdSpace;
 			display: flex;
 			flex-direction: row;
 	    justify-content: space-between;
@@ -283,13 +283,13 @@ aside {
 		}
 		.inner {
 			width: 100%;
-			height: calc(100% - #{$gutter});
+			height: calc(100% - #{$mdSpace});
 			position: absolute;
 			left: 0;
-			top: $gutter;
+			top: $mdSpace;
 			.form {
 				width: 100%;
-				padding: $gutter #{$gutter/2};
+				padding: $mdSpace $smSpace;
 				background-color: $lighterGrey;
 				display: none;
 				&.active {
@@ -299,7 +299,7 @@ aside {
 			.shadow {
 				&.top {
 					@include topShadow($lighterGrey);
-					margin-bottom: -#{$gutter*2};
+					margin-bottom: -#{$lgSpace};
 					z-index: 500;
 				}
 				&.bottom {
@@ -337,7 +337,7 @@ aside {
 				}
 				.note {
 					color: $mediumGrey;
-					@include xSmallText;
+					@include xsText;
 					position: absolute;
 			    display: inline;
 			    padding-left: 5px;
@@ -432,6 +432,7 @@ aside {
 						content: attr(data-val);
 						color: $mediumGrey;
 						text-align: center;
+						@include xsText;
 					}
 					&.ui-state-hover, &.ui-state-active {
 						cursor: ew-resize;
@@ -504,6 +505,7 @@ aside {
 						}
 						&:hover {
 							font-weight: 400;
+							cursor: pointer;
 						}
 					}
 				}
@@ -565,7 +567,7 @@ main {
 				position: relative;
 				background-color: $purple;
 				color: $white;
-				padding: 1.75em 2em;
+				padding: 20px;
 				ul {
 					padding: 0;
 					margin: 0;
@@ -583,10 +585,10 @@ main {
 	}
 }
 footer {
-	width: calc(100% - #{$gutter*2});
-	height: calc(#{$gutter} - 14px);
+	width: calc(100% - #{$lgSpace});
+	height: calc(#{$mdSpace} - 14px);
 	position: absolute;
-	left: $gutter;
+	left: $mdSpace;
 	bottom: 7px;
 	display: flex;
 	justify-content: space-between;
@@ -594,13 +596,13 @@ footer {
 		height: 100%;
 		object {
 			width: auto;
-			height: calc(#{$gutter} - 14px);
+			height: calc(#{$mdSpace} - 14px);
 		}
 	}
 	.keys {
 		display: flex;
 		.key {
-			padding-left: calc(#{$gutter});
+			padding-left: calc(#{$mdSpace});
 			background-position: 5px center;
 			background-repeat: no-repeat;
 			background-size: contain;
