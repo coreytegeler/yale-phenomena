@@ -73,7 +73,7 @@ body {
   position: relative; }
 
 h1 {
-  font-size: 21px;
+  font-size: 20px;
   line-height: 1.5em;
   font-weight: 400; }
 
@@ -105,7 +105,7 @@ header {
     overflow: hidden;
     pointer-events: none; }
     header.fixed .wrapper {
-      max-width: calc(25em - 30px); }
+      max-width: 228px; }
       header.fixed .wrapper h2 {
         pointer-events: all; }
       header.fixed .wrapper h1.sentence {
@@ -121,11 +121,10 @@ aside {
   overflow: hidden;
   z-index: 400; }
   aside header {
-    width: 25em;
-    padding: 0 0 0 30px; }
+    width: 228px;
+    margin: 0 0 0 30px; }
   aside .inner {
     width: 100%;
-    max-width: 25em;
     height: 100%;
     overflow: hidden; }
     aside .inner ul {
@@ -179,6 +178,7 @@ aside {
         cursor: pointer;
         opacity: .7; }
     aside#phenomena .inner {
+      width: 258px;
       display: flex;
       flex-direction: column; }
     aside#phenomena .shadow.top {
@@ -249,7 +249,7 @@ aside {
             background: #153554; }
   aside#filters {
     height: calc(100% - 30px);
-    max-width: 25em;
+    max-width: 206px;
     right: 30px;
     top: 0;
     user-select: none;
@@ -308,26 +308,35 @@ aside {
         width: 100%; }
     aside#filters .fieldset {
       margin: 0 0 1em 0; }
-      aside#filters .fieldset .label {
+      aside#filters .fieldset .head {
+        width: 100%;
         padding-left: 1.25em;
         font-weight: 200;
         position: relative; }
-        aside#filters .fieldset .label .arrow {
-          width: 1em;
-          height: 1em;
-          left: 0;
-          top: 0;
+        aside#filters .fieldset .head .label {
+          display: inline; }
+          aside#filters .fieldset .head .label .arrow {
+            width: 1em;
+            height: 1em;
+            left: 0;
+            top: 0;
+            position: absolute;
+            background-image: url("./../img/arrows.svg");
+            background-position: left -1em;
+            background-repeat: no-repeat;
+            background-size: 1em auto; }
+          aside#filters .fieldset .head .label:hover {
+            cursor: pointer; }
+            aside#filters .fieldset .head .label:hover span {
+              font-weight: 400; }
+        aside#filters .fieldset .head .note {
+          color: #7a91ad;
+          font-size: .75em;
+          line-height: 1.2em;
           position: absolute;
-          background-image: url("./../img/arrows.svg");
-          background-position: left -1em;
-          background-repeat: no-repeat;
-          background-size: 1em auto; }
-        aside#filters .fieldset .label .val {
-          margin-left: .5em;
-          opacity: .5; }
-        aside#filters .fieldset .label:hover {
-          cursor: pointer;
-          font-weight: 400; }
+          display: inline;
+          padding-left: 5px;
+          visibility: hidden; }
       aside#filters .fieldset .options {
         height: 0;
         padding: 0 0 0 2em;
@@ -335,7 +344,7 @@ aside {
         aside#filters .fieldset .options ul {
           padding: 0; }
           aside#filters .fieldset .options ul li {
-            padding: .25em 1.25em .25em 0;
+            padding: .25em 0;
             margin: .25em 0 0 0;
             cursor: pointer;
             font-weight: 200; }
@@ -408,8 +417,10 @@ aside {
           height: 2px;
           position: absolute;
           background: #153554; }
-      aside#filters .fieldset.open .label .arrow {
+      aside#filters .fieldset.open .head .label .arrow {
         background-position: left -2em; }
+      aside#filters .fieldset.open .head .note {
+        visibility: visible; }
       aside#filters .fieldset.open .options {
         height: auto;
         overflow: visible; }
@@ -420,12 +431,24 @@ aside {
           background-position: left -1em !important; }
         aside#filters .fieldset.disabled .options {
           height: 0 !important; }
-      aside#filters .fieldset.multi .multi-toggle {
+      aside#filters .fieldset.multi .head .multi-toggle {
+        visibility: hidden;
         display: inline-block; }
-        aside#filters .fieldset.multi .multi-toggle .multi-label {
+        aside#filters .fieldset.multi .head .multi-toggle .multi-label {
           display: inline-block;
           margin-left: 1em;
           font-weight: 200; }
+          aside#filters .fieldset.multi .head .multi-toggle .multi-label.selected {
+            font-weight: 400;
+            text-decoration: underline; }
+          aside#filters .fieldset.multi .head .multi-toggle .multi-label:hover {
+            font-weight: 400; }
+      aside#filters .fieldset.multi .multi-field {
+        display: none; }
+        aside#filters .fieldset.multi .multi-field.open {
+          display: block; }
+      aside#filters .fieldset.multi.open .head .multi-toggle {
+        visibility: visible; }
     aside#filters.closed .close .arrow {
       background-position: left -3.75em; }
 
@@ -448,7 +471,7 @@ main {
     main #map .mapboxgl-canvas-container canvas {
       width: 100% !important; }
     main #map .mapboxgl-popup {
-      width: 25em;
+      width: 228px;
       position: absolute;
       bottom: 0;
       left: 0;

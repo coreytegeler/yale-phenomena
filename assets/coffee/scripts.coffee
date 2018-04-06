@@ -67,44 +67,7 @@ $ ->
 
 			startListening(map)
 			getQuery()
-			selectSentence()
-
-
-	# whiteList = ['Income', 'Race', 'Age']
-	# addFilters = (filters, prop) ->
-	# 	vals = filters[prop]
-	# 	$filterList = $('#filters .filter[data-prop="'+prop+'"]')
-	# 	if !$filterList.length
-	# 		$filter = $('<div></div>')
-	# 		$filter.attr('data-prop', prop)
-	# 		$filterList = $('<ul></ul>')
-	# 		$filter.append('<h3>'+prop+'</h3>')
-	# 		$filter.append($filterList)
-	# 		$('#filters').append($filter)
-	# 	for val in vals
-	# 		$filterItem = $filterList.find('li[data-value="'+val+'"]')
-	# 		if !$filterItem.length
-	# 			$filterItem = $('<li></li>')
-	# 			$filterItem.attr('data-val', val).html(val)
-	# 			$filter.find('ul').append($filterItem)
-
-	# addPhenomena = (val) ->
-	# 	sentence = getSlug(val)
-	# 	if !sentence
-	# 		return
-	# 	$phenList = $('#phenomena .filter[data-prop="phenomena"]')
-	# 	if !$filterList.length
-	# 		$phen = $('<div></div>')
-	# 		$phen.attr('data-prop', prop)
-	# 		$phenList = $('<ul></ul>')
-	# 		$phen.append('<h3>'+prop+'</h3>')
-	# 		$phen.append($phenList)
-	# 		$('#filters').append($phen)
-	# 	$phenItem = $phenList.find('li[data-val="'+val+'"]')
-	# 	if !$phenItem.length
-	# 		$phenItem = $('<li></li>')
-	# 		$phenItem.attr('data-val', val).html(sentence)
-	# 		$phen.find('ul').append($phenItem)				
+			selectSentence()	
 
 	getUniqueFeatures = (array, comparatorProperty) ->
 		existingFeatureKeys = {}
@@ -240,10 +203,36 @@ $ ->
 		$fieldset = $label.parents('.fieldset')
 		$fieldset.toggleClass('open')
 
+	selectMulti = (e) ->
+		$label = $(this)
+		if $label.is('.selected')
+			return
+		propSlug = $label.attr('data-prop-slug')
+		openMulti(propSlug)
+
+	openMulti = (propSlug) ->
+		$multi = $('.multi-field[data-prop="'+propSlug+'"]')
+		if !$multi.length
+			return
+		$fieldset = $multi.parents('.fieldset')
+		$label = $fieldset.find('.multi-label[data-prop-slug="'+propSlug+'"]')
+		prop = $label.attr('data-prop')
+		$fieldset = $label.parents('.fieldset')
+		prop = $label.attr('data-prop')
+		$label.siblings().removeClass('selected')
+		$label.addClass('selected')
+		$field = $fieldset.find('[data-prop="'+propSlug+'"]')
+		$field.siblings().removeClass('open').addClass('disabled')
+		$field.addClass('open').removeClass('disabled')
+		$fieldset.attr('data-prop', prop)
+		$fieldset.attr('data-prop-slug', propSlug)
+		
 	setFilter = () ->
 		vals = {}
 		$selected = $filters.find('.filter li.selected')
 		$selected.each (i, li) ->
+			if $(li).parents('.disabled').length
+				return
 			$filter = $(li).parents('.filter')
 			prop = $filter.attr('data-prop')
 			_val = $(li).attr('data-val')
@@ -265,7 +254,7 @@ $ ->
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
-					if Number.isInteger(parseInt(__val))
+					if Number.isInteger(parseInt(__val)) && _prop != 'Age_Bin'
 						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
@@ -275,6 +264,8 @@ $ ->
 		$sliders = $filters.find('.slider')
 		$sliders.each (i, slider) ->
 			$slider = $(slider)
+			if $slider.parents('.disabled').length
+				return
 			$handles = $slider.find('.ui-slider-handle')
 			$fieldset = $slider.parents('.fieldset')
 			prop = $fieldset.attr('data-prop')
@@ -290,6 +281,7 @@ $ ->
 					$slider.attr('data-val', vals.join(','))
 					filter.push(['>=', prop, vals[0]])
 					filter.push(['<=', prop, vals[1]])
+		
 		map.setFilter('survey-data', filter)
 
 	clearFilter = (prop) ->
@@ -455,9 +447,9 @@ $ ->
 
 		stops = []
 		for i in [MIN..MAX]
-			if aRange[i]
+			if aRange.indexOf(i) > -1
 				stops.push([i, aColor])
-			else if uRange[i]
+			else if uRange.indexOf(i) > -1
 				stops.push([i, uColor])
 			else
 				stops.push([i, 'transparent'])
@@ -537,6 +529,7 @@ $ ->
 			for queryVar, i in queryVars
 				pair = queryVar.split('=')
 				prop = pair[0]
+				openMulti(prop)
 				if prop == 'show'
 					selectFilter(prop, pair[1])
 					return
@@ -554,6 +547,7 @@ $ ->
 
 	startListening = (map) ->
 		$('body').on 'click', 'aside .label', toggleFieldset
+		$('body').on 'click', 'aside .multi-label', selectMulti
 		$('body').on 'click', 'aside#filters ul li', clickFilter
 		$('.slider').on 'slidechange', changeSlider
 		$('.range-input input').on 'keyup', limitThresholds
@@ -576,7 +570,6 @@ $ ->
 			map.getCanvas().style.cursor = 'pointer'
 			marker = e.features[0]
 			props = marker.properties
-			console.log marker
 			props =
 				'Age': props['Age']
 				'Gender': props['Gender']

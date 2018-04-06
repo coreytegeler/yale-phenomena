@@ -1,5 +1,5 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, limitThresholds, machine, mechanize, selectFilter, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
+  var $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, limitThresholds, machine, mechanize, openMulti, selectFilter, selectMulti, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
   keyUri = 'data/key8.csv';
   $filters = $('#filters');
   $phenomena = $('#phenomena');
@@ -232,12 +232,43 @@ $(function() {
     $fieldset = $label.parents('.fieldset');
     return $fieldset.toggleClass('open');
   };
+  selectMulti = function(e) {
+    var $label, propSlug;
+    $label = $(this);
+    if ($label.is('.selected')) {
+      return;
+    }
+    propSlug = $label.attr('data-prop-slug');
+    return openMulti(propSlug);
+  };
+  openMulti = function(propSlug) {
+    var $field, $fieldset, $label, $multi, prop;
+    $multi = $('.multi-field[data-prop="' + propSlug + '"]');
+    if (!$multi.length) {
+      return;
+    }
+    $fieldset = $multi.parents('.fieldset');
+    $label = $fieldset.find('.multi-label[data-prop-slug="' + propSlug + '"]');
+    prop = $label.attr('data-prop');
+    $fieldset = $label.parents('.fieldset');
+    prop = $label.attr('data-prop');
+    $label.siblings().removeClass('selected');
+    $label.addClass('selected');
+    $field = $fieldset.find('[data-prop="' + propSlug + '"]');
+    $field.siblings().removeClass('open').addClass('disabled');
+    $field.addClass('open').removeClass('disabled');
+    $fieldset.attr('data-prop', prop);
+    return $fieldset.attr('data-prop-slug', propSlug);
+  };
   setFilter = function() {
     var $selected, $sliders, __val, _prop, _vals, args, cond, filter, j, k, len, len1, ref, vals;
     vals = {};
     $selected = $filters.find('.filter li.selected');
     $selected.each(function(i, li) {
       var $filter, _prop, _val, filter, prop;
+      if ($(li).parents('.disabled').length) {
+        return;
+      }
       $filter = $(li).parents('.filter');
       prop = $filter.attr('data-prop');
       _val = $(li).attr('data-val');
@@ -265,7 +296,7 @@ $(function() {
         args = [cond, _prop];
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
-          if (Number.isInteger(parseInt(__val))) {
+          if (Number.isInteger(parseInt(__val)) && _prop !== 'Age_Bin') {
             __val = parseInt(__val);
           }
           args.push(__val);
@@ -279,6 +310,9 @@ $(function() {
     $sliders.each(function(i, slider) {
       var $fieldset, $handles, $slider, current, prop, type, val;
       $slider = $(slider);
+      if ($slider.parents('.disabled').length) {
+        return;
+      }
       $handles = $slider.find('.ui-slider-handle');
       $fieldset = $slider.parents('.fieldset');
       prop = $fieldset.attr('data-prop');
@@ -483,9 +517,9 @@ $(function() {
     uRange = JSON.parse('[' + uVal + ']');
     stops = [];
     for (i = j = ref = MIN, ref1 = MAX; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
-      if (aRange[i]) {
+      if (aRange.indexOf(i) > -1) {
         stops.push([i, aColor]);
-      } else if (uRange[i]) {
+      } else if (uRange.indexOf(i) > -1) {
         stops.push([i, uColor]);
       } else {
         stops.push([i, 'transparent']);
@@ -594,6 +628,7 @@ $(function() {
         queryVar = queryVars[i];
         pair = queryVar.split('=');
         prop = pair[0];
+        openMulti(prop);
         if (prop === 'show') {
           selectFilter(prop, pair[1]);
           return;
@@ -619,6 +654,7 @@ $(function() {
   startListening = function(map) {
     var popup;
     $('body').on('click', 'aside .label', toggleFieldset);
+    $('body').on('click', 'aside .multi-label', selectMulti);
     $('body').on('click', 'aside#filters ul li', clickFilter);
     $('.slider').on('slidechange', changeSlider);
     $('.range-input input').on('keyup', limitThresholds);
@@ -638,7 +674,6 @@ $(function() {
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
       props = marker.properties;
-      console.log(marker);
       props = {
         'Age': props['Age'],
         'Gender': props['Gender'],

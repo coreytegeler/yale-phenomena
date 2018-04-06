@@ -43,26 +43,29 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 						.scroller
 							.form(data-form='accept-reject')
 								.fieldset.filter.accept.open(data-prop='accept' data-prop-slug='accept')
-									.label
-										.arrow
-										span Accept
+									.head
+										.label
+											.arrow
+											span Accept
 									.options
 										ul
 											//- li.sentence.selected.all(data-val=null) Accept All
 
 								.fieldset.filter.reject.open(data-prop='reject' data-prop-slug='reject')
-									.label
-										.arrow
-										span Reject
+									.head
+										.label
+											.arrow
+											span Reject
 									.options
 										ul
 											//- li.sentence.selected.all(data-val=null) Reject All
 											
 							.form.active(data-form='filters')
 								.fieldset.filter.race(data-prop='Race' data-prop-slug='race')
-									.label
-										.arrow
-										span Race/Ethnicity
+									.head
+										.label
+											.arrow
+											span Race/Ethnicity
 									.options
 										ul
 											li.option.selected.all(data-val=null) All Race
@@ -74,9 +77,10 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 											li.option(data-val='Other' data-val-slug='other') Other
 
 								.fieldset.filter.edu(data-prop='Education' data-prop-slug='edu')
-									.label
-										.arrow
-										span Education
+									.head
+										.label
+											.arrow
+											span Education
 									.options
 										ul
 											li.option.selected.all(data-val=null) All Education
@@ -88,9 +92,10 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 											li.option(data-val='Other' data-val-slug='other') Other
 
 								.fieldset.filter.gender(data-prop='Gender' data-prop-slug='gender')
-									.label
-										.arrow
-										span Gender
+									.head
+										.label
+											.arrow
+											span Gender
 									.options
 										ul
 											li.option.selected.all(data-val=null) All Gender
@@ -101,34 +106,38 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 											li.option(data-val='Other' data-val-slug='other') Other
 								
 								.fieldset.filter.age.multi(data-prop='Age' data-prop-slug='age')
-									.label
-										.arrow
-										span Age
+									.head
+										.label
+											.arrow
+											span Age
 										.multi-toggle
-											.multi-label Range
-											.multi-label Group
+											.multi-label.selected(data-prop='Age' data-prop-slug='age') Range
+											.multi-label(data-prop='Age_Bin' data-prop-slug='age-group') Group
 									.options
-										.slider(data-type='range' data-min='0' data-max='100' data-val='0,100' data-val-slug='0,100')
-											.handle-label.min
-											.handle-label.max
-										//- ul
-										//- 	li.option.selected.all(data-val=null) All Ages
-										//- 	li.option(data-val='18-30') 18-30
-										//- 	li.option(data-val='31-40') 31-40
-										//- 	li.option(data-val='41-50') 41-50
-										//- 	li.option(data-val='51-60') 51-60
-										//- 	li.option(data-val='61_up') 61 &amp; Up
+										.multi-field.open(data-prop='age')
+											.slider(data-type='range' data-min='0' data-max='100' data-val='0,100' data-val-slug='0,100')
+												.handle-label.min
+												.handle-label.max
+										.multi-field(data-prop='age-group')
+												ul
+													li.option.selected.all(data-val=null) All Ages
+													li.option(data-val='18-30' data-val-slug='18-30') 18-30
+													li.option(data-val='31-40' data-val-slug='31-40') 31-40
+													li.option(data-val='41-50' data-val-slug='41-50') 41-50
+													li.option(data-val='51-60' data-val-slug='51-60') 51-60
+													li.option(data-val='61_up' data-val-slug='61') 61 &amp; Up
 
 
-								.fieldset.filter.accepted.radio.open(data-prop='show', data-prop-slug='show')
-									.label
-										.arrow
-										span Acceptability
-										span.val
+								.fieldset.filter.accepted.radio(data-prop='show', data-prop-slug='show')
+									.head
+										.label
+											.arrow
+											span Acceptability
+										.note Change threshold by modifying values
 									.options
 										ul
 											li.option.selected.all(data-val=null) Show All
-											li.option.range-input(data-val='3,4,5').acceptable
+											li.option.range-input(data-val='4,5').acceptable
 												span 'Acceptable' Only
 												.inputs
 													input.min(type='number' value='4' min='1' max='5')
@@ -142,9 +151,10 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 													input.max(type='number' value='2' min='1' max='5')
 
 								.fieldset.layers(data-prop='layers' data-prop-slug='layers')
-									.label
-										.arrow
-										span Advanced
+									.head
+										.label
+											.arrow
+											span Advanced
 									.options
 										ul
 											li.option(data-val='hotspots' data-val-slug='hotspots') Hot Spots

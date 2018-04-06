@@ -8,7 +8,8 @@ $purple: rgb(120,85,138);
 $green: rgb(95,169,144);
 
 $gutter: 30px;
-$phen: 25em;
+$left: 228px;
+$right: 206px;
 
 @mixin baseText {
 	font-size: 11px;
@@ -36,7 +37,7 @@ $phen: 25em;
 }
 
 @mixin xLargeText {
-	font-size: 21px;
+	font-size: 20px;
 	line-height: 1.5em;
 }
 
