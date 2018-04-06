@@ -486,7 +486,6 @@ main {
       pointer-events: none; }
       main #map .mapboxgl-popup .mapboxgl-popup-content {
         position: relative;
-        background-color: #78558a;
         color: #f9f9f9;
         padding: 20px; }
         main #map .mapboxgl-popup .mapboxgl-popup-content ul {

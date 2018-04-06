@@ -20,56 +20,19 @@ $(function() {
       var dataBounds, dataLayer;
       map.addLayer({
         'id': 'survey-data',
-        'type': 'circle',
+        'type': 'symbol',
         'source': {
-          type: 'vector',
-          url: mapbox.surveyUri
+          'type': 'vector',
+          'url': mapbox.surveyUri
         },
         'source-layer': mapbox.surveyId,
         'zoom': 10,
-        'paint': {
-          'circle-color': 'transparent',
-          'circle-radius': 4
+        'layout': {
+          'icon-size': 0.5
         }
       });
       dataLayer = map.getLayer('survey-data');
       dataBounds = map.getBounds(dataLayer).toArray();
-      map.addLayer({
-        'id': 'coldspots',
-        'type': 'line',
-        'source': {
-          'type': 'vector',
-          'url': mapbox.coldspotsUri
-        },
-        'source-layer': mapbox.coldspotsId,
-        'minzoom': 0,
-        'maxzoom': 24,
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-width': 1,
-          'line-color': '#8ba9c4'
-        }
-      });
-      map.addLayer({
-        'id': 'hotspots',
-        'type': 'line',
-        'source': {
-          'type': 'vector',
-          'url': mapbox.hotspotsUri
-        },
-        'source-layer': mapbox.hotspotsId,
-        'minzoom': 0,
-        'maxzoom': 24,
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-width': 1,
-          'line-color': '#c48f8f'
-        }
-      });
       startListening(map);
       getQuery();
       return selectSentence();
@@ -119,6 +82,7 @@ $(function() {
     $accLabel = $filters.find('.label.accepted');
     $accFieldset.attr('data-prop', val);
     $accLabel.attr('data-prop', val);
+    $side.attr('data-selected', val);
     if ($sentence.is('.selected')) {
       $headerSentence.text(text);
       updateThresholdColors();
@@ -352,7 +316,7 @@ $(function() {
       return filter;
     }
   };
-  toggleLayer = function(layerId) {
+  toggleLayer = function(layerIds) {
     var visibility;
     if (!map.getLayer(layerId)) {
       return;
@@ -504,13 +468,11 @@ $(function() {
     return $(this).parents('.option').removeClass('no-hover');
   };
   updateThresholdColors = function() {
-    var aColor, aRange, aVal, circleStyles, i, j, prop, ref, ref1, stops, uColor, uRange, uVal;
+    var aRange, aVal, i, j, markerProps, prop, ref, ref1, stops, uRange, uVal;
     prop = $('.fieldset.phenomena .sentence.selected').attr('data-val');
     if (!prop) {
       return;
     }
-    aColor = '#5fa990';
-    uColor = '#795292';
     aVal = $('.option.acceptable').attr('data-val');
     aRange = JSON.parse('[' + aVal + ']');
     uVal = $('.option.unacceptable').attr('data-val');
@@ -518,19 +480,19 @@ $(function() {
     stops = [];
     for (i = j = ref = MIN, ref1 = MAX; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
       if (aRange.indexOf(i) > -1) {
-        stops.push([i, aColor]);
+        stops.push([i, 'marker-accepted']);
       } else if (uRange.indexOf(i) > -1) {
-        stops.push([i, uColor]);
+        stops.push([i, 'marker-rejected']);
       } else {
-        stops.push([i, 'transparent']);
+        stops.push([i, '']);
       }
     }
-    circleStyles = {
+    markerProps = {
       property: prop,
       type: 'categorical',
       stops: stops
     };
-    return map.setPaintProperty('survey-data', 'circle-color', circleStyles);
+    return map.setLayoutProperty('survey-data', 'icon-image', markerProps);
   };
   installKey = function() {
     var $options;
@@ -670,10 +632,19 @@ $(function() {
       closeOnClick: false
     });
     map.on('mouseenter', 'survey-data', function(e) {
-      var i, j, len, marker, prop, prop_keys, props, ul;
+      var $content, $popup, aVals, color, i, j, len, marker, prop, prop_keys, props, sentence, uVals, ul, val;
+      sentence = $phenomena.attr('data-selected');
       map.getCanvas().style.cursor = 'pointer';
       marker = e.features[0];
       props = marker.properties;
+      val = props[sentence];
+      aVals = $filters.find('.option.acceptable').data('val');
+      uVals = $filters.find('.option.unacceptable').data('val');
+      if (aVals.indexOf(val) > -1) {
+        color = '#5fa990';
+      } else if (uVals.indexOf(val) > -1) {
+        color = '#795292';
+      }
       props = {
         'Age': props['Age'],
         'Gender': props['Gender'],
@@ -694,7 +665,10 @@ $(function() {
         }
       }
       popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
-      return $(popup._content).parent().addClass('show').attr('data-id', marker.id);
+      $content = $(popup._content);
+      $popup = $content.parent();
+      $popup.addClass('show').attr('data-id', marker.id);
+      return $content.css('background', color);
     });
     return map.on('mouseleave', 'survey-data', function(e) {
       var $popup, oldId;

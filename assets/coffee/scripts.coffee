@@ -19,51 +19,65 @@ $ ->
 			center: [-95.7129, 37.0902]
 
 		map.on 'load', () ->
+			# map.addLayer
+			# 	'id': 'survey-data',
+			# 	'type': 'circle'
+			# 	'source':
+			# 		type: 'vector'
+			# 		url: mapbox.surveyUri
+			# 	'source-layer': mapbox.surveyId
+			# 	'zoom': 10
+			# 	'paint':
+			# 		'circle-color': 'transparent'
+			# 		'circle-radius': 4
+
+			# iconSrc = '/assets/img/marker.svg'
+			# map.loadImage iconSrc, (error, svg) ->
+				# if (error) throw error
+					# map.addImage('marker', svg)
 			map.addLayer
-				'id': 'survey-data',
-				'type': 'circle'
+				'id': 'survey-data'
+				'type': 'symbol'
 				'source':
-					type: 'vector'
-					url: mapbox.surveyUri
+					'type': 'vector'
+					'url': mapbox.surveyUri
 				'source-layer': mapbox.surveyId
 				'zoom': 10
-				'paint':
-					'circle-color': 'transparent'
-					'circle-radius': 4
+				'layout':
+					'icon-size': 0.5
 
 			dataLayer = map.getLayer('survey-data')
-
 			dataBounds = map.getBounds(dataLayer).toArray()
 
-			map.addLayer
-				'id': 'coldspots'
-				'type': 'line'
-				'source':
-					'type': 'vector'
-					'url': mapbox.coldspotsUri
-				'source-layer': mapbox.coldspotsId
-				'minzoom': 0
-				'maxzoom': 24
-				'layout':
-					'visibility': 'none'
-				'paint':
-					'line-width': 1
-					'line-color': '#8ba9c4'
+			# map.addLayer
+			# 	'id': 'coldspots'
+			# 	'type': 'line'
+			# 	'source':
+			# 		'type': 'vector'
+			# 		'url': mapbox.coldspotsUri
+			# 	'source-layer': mapbox.coldspotsId
+			# 	'minzoom': 0
+			# 	'maxzoom': 24
+			# 	'layout':
+			# 		'visibility': 'none'
+			# 	'paint':
+			# 		'line-width': 1
+			# 		'line-color': '#8ba9c4'
 
-			map.addLayer
-				'id': 'hotspots'
-				'type': 'line'
-				'source':
-					'type': 'vector'
-					'url': mapbox.hotspotsUri
-				'source-layer': mapbox.hotspotsId
-				'minzoom': 0
-				'maxzoom': 24
-				'layout':
-					'visibility': 'none'
-				'paint':
-					'line-width': 1
-					'line-color': '#c48f8f'
+			# map.addLayer
+			# 	'id': 'hotspots'
+			# 	'type': 'line'
+			# 	'source':
+			# 		'type': 'vector'
+			# 		'url': mapbox.hotspotsUri
+			# 	'source-layer': mapbox.hotspotsId
+			# 	'minzoom': 0
+			# 	'maxzoom': 24
+			# 	'layout':
+			# 		'visibility': 'none'
+			# 	'paint':
+			# 		'line-width': 1
+			# 		'line-color': '#c48f8f'
 
 			startListening(map)
 			getQuery()
@@ -107,6 +121,7 @@ $ ->
 		$accLabel = $filters.find('.label.accepted')
 		$accFieldset.attr('data-prop', val)
 		$accLabel.attr('data-prop', val)
+		$side.attr('data-selected', val)
 		if $sentence.is('.selected')
 			$headerSentence.text(text)
 			updateThresholdColors()
@@ -296,7 +311,9 @@ $ ->
 					filter.splice(i+1)
 			return filter
 
-	toggleLayer = (layerId) ->
+	toggleLayer = (layerIds) ->
+		# layerIds = layerIds.split(',')
+		# for layerId in layerIds
 		if !map.getLayer(layerId)
 			return
 		visibility = map.getLayoutProperty(layerId, 'visibility')
@@ -437,9 +454,6 @@ $ ->
 		if !prop
 			return
 
-		aColor = '#5fa990'
-		uColor = '#795292'
-
 		aVal = $('.option.acceptable').attr('data-val')
 		aRange = JSON.parse('['+aVal+']')
 		uVal = $('.option.unacceptable').attr('data-val')
@@ -448,18 +462,18 @@ $ ->
 		stops = []
 		for i in [MIN..MAX]
 			if aRange.indexOf(i) > -1
-				stops.push([i, aColor])
+				stops.push([i, 'marker-accepted'])
 			else if uRange.indexOf(i) > -1
-				stops.push([i, uColor])
+				stops.push([i, 'marker-rejected'])
 			else
-				stops.push([i, 'transparent'])
+				stops.push([i, ''])
 
-		circleStyles = 
+		markerProps = 
 			property: prop
 			type: 'categorical'
 			stops: stops
 
-		map.setPaintProperty('survey-data', 'circle-color', circleStyles);
+		map.setLayoutProperty('survey-data', 'icon-image', markerProps);
 
 
 	installKey = () ->
@@ -567,9 +581,18 @@ $ ->
 			closeOnClick: false
 
 		map.on 'mouseenter', 'survey-data', (e) ->
+			sentence = $phenomena.attr('data-selected')
 			map.getCanvas().style.cursor = 'pointer'
 			marker = e.features[0]
 			props = marker.properties
+			val = props[sentence]
+			aVals = $filters.find('.option.acceptable').data('val')
+			uVals = $filters.find('.option.unacceptable').data('val')
+			if aVals.indexOf(val) > -1
+				color = '#5fa990'
+			else if uVals.indexOf(val) > -1
+				color = '#795292'
+
 			props =
 				'Age': props['Age']
 				'Gender': props['Gender']
@@ -588,9 +611,13 @@ $ ->
 			popup.setLngLat(marker.geometry.coordinates)
 				.setHTML(ul)
 				.addTo(map)
-			$(popup._content).parent()
+
+			$content = $(popup._content)
+			$popup = $content.parent()	
+			$popup
 				.addClass('show')
 				.attr('data-id', marker.id)
+			$content.css('background', color)
 
 
 		map.on 'mouseleave', 'survey-data', (e) ->
