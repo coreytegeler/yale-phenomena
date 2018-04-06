@@ -33,6 +33,42 @@ $(function() {
       });
       dataLayer = map.getLayer('survey-data');
       dataBounds = map.getBounds(dataLayer).toArray();
+      map.addLayer({
+        'id': 'coldspots',
+        'type': 'line',
+        'source': {
+          'type': 'vector',
+          'url': mapbox.coldspotsUri
+        },
+        'source-layer': mapbox.coldspotsId,
+        'minzoom': 0,
+        'maxzoom': 24,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'line-width': 1,
+          'line-color': '#8ba9c4'
+        }
+      });
+      map.addLayer({
+        'id': 'hotspots',
+        'type': 'line',
+        'source': {
+          'type': 'vector',
+          'url': mapbox.hotspotsUri
+        },
+        'source-layer': mapbox.hotspotsId,
+        'minzoom': 0,
+        'maxzoom': 24,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'line-width': 1,
+          'line-color': '#c48f8f'
+        }
+      });
       startListening(map);
       getQuery();
       return selectSentence();
@@ -222,7 +258,8 @@ $(function() {
     $field.siblings().removeClass('open').addClass('disabled');
     $field.addClass('open').removeClass('disabled');
     $fieldset.attr('data-prop', prop);
-    return $fieldset.attr('data-prop-slug', propSlug);
+    $fieldset.attr('data-prop-slug', propSlug);
+    return setFilter();
   };
   setFilter = function() {
     var $selected, $sliders, __val, _prop, _vals, args, cond, filter, j, k, len, len1, ref, vals;
@@ -260,7 +297,7 @@ $(function() {
         args = [cond, _prop];
         for (k = 0, len1 = _vals.length; k < len1; k++) {
           __val = _vals[k];
-          if (Number.isInteger(parseInt(__val)) && _prop !== 'Age_Bin') {
+          if (Number.isInteger(parseInt(__val)) && __val.indexOf('_') > -1) {
             __val = parseInt(__val);
           }
           args.push(__val);
@@ -316,7 +353,7 @@ $(function() {
       return filter;
     }
   };
-  toggleLayer = function(layerIds) {
+  toggleLayer = function(layerId) {
     var visibility;
     if (!map.getLayer(layerId)) {
       return;

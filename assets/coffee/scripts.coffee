@@ -49,35 +49,35 @@ $ ->
 			dataLayer = map.getLayer('survey-data')
 			dataBounds = map.getBounds(dataLayer).toArray()
 
-			# map.addLayer
-			# 	'id': 'coldspots'
-			# 	'type': 'line'
-			# 	'source':
-			# 		'type': 'vector'
-			# 		'url': mapbox.coldspotsUri
-			# 	'source-layer': mapbox.coldspotsId
-			# 	'minzoom': 0
-			# 	'maxzoom': 24
-			# 	'layout':
-			# 		'visibility': 'none'
-			# 	'paint':
-			# 		'line-width': 1
-			# 		'line-color': '#8ba9c4'
+			map.addLayer
+				'id': 'coldspots'
+				'type': 'line'
+				'source':
+					'type': 'vector'
+					'url': mapbox.coldspotsUri
+				'source-layer': mapbox.coldspotsId
+				'minzoom': 0
+				'maxzoom': 24
+				'layout':
+					'visibility': 'none'
+				'paint':
+					'line-width': 1
+					'line-color': '#8ba9c4'
 
-			# map.addLayer
-			# 	'id': 'hotspots'
-			# 	'type': 'line'
-			# 	'source':
-			# 		'type': 'vector'
-			# 		'url': mapbox.hotspotsUri
-			# 	'source-layer': mapbox.hotspotsId
-			# 	'minzoom': 0
-			# 	'maxzoom': 24
-			# 	'layout':
-			# 		'visibility': 'none'
-			# 	'paint':
-			# 		'line-width': 1
-			# 		'line-color': '#c48f8f'
+			map.addLayer
+				'id': 'hotspots'
+				'type': 'line'
+				'source':
+					'type': 'vector'
+					'url': mapbox.hotspotsUri
+				'source-layer': mapbox.hotspotsId
+				'minzoom': 0
+				'maxzoom': 24
+				'layout':
+					'visibility': 'none'
+				'paint':
+					'line-width': 1
+					'line-color': '#c48f8f'
 
 			startListening(map)
 			getQuery()
@@ -241,6 +241,7 @@ $ ->
 		$field.addClass('open').removeClass('disabled')
 		$fieldset.attr('data-prop', prop)
 		$fieldset.attr('data-prop-slug', propSlug)
+		setFilter()
 		
 	setFilter = () ->
 		vals = {}
@@ -269,7 +270,7 @@ $ ->
 					_vals = _vals[0].split(',')
 				args = [cond, _prop]
 				for __val in _vals
-					if Number.isInteger(parseInt(__val)) && _prop != 'Age_Bin'
+					if Number.isInteger(parseInt(__val)) && __val.indexOf('_') > -1
 						__val = parseInt(__val)
 					args.push(__val)
 				filter.push(args)
@@ -311,9 +312,7 @@ $ ->
 					filter.splice(i+1)
 			return filter
 
-	toggleLayer = (layerIds) ->
-		# layerIds = layerIds.split(',')
-		# for layerId in layerIds
+	toggleLayer = (layerId) ->
 		if !map.getLayer(layerId)
 			return
 		visibility = map.getLayoutProperty(layerId, 'visibility')
