@@ -1,87 +1,89 @@
 $ ->
 	keyUri = 'data/key8.csv'
+	$embed = $('#embed')
 	$filters = $('#filters')
 	$phenomena = $('#phenomena')
+	$creation = $('#creation')
 	$fixedHeader = $('header.fixed')
 	$headerSentence = $('header.fixed .sentence')
+	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
+	styleUri = 'mapbox://styles/ygdp/cjgmk0hdk001z2rtariytjl77'
 
-
+	window.mapdata =
+		survey:
+			uri: 'mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1'
+			id: 'Survey_8'
+		coldspots:
+			uri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q'
+			id: 'Coldspots_8'
+		hotspots:
+			uri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge'
+			id: 'Hotspots_8'
 
 	createMap = () ->
-		mapboxAttr = $('#embed').attr('data-mapbox')
-		mapbox = JSON.parse(decodeURI(mapboxAttr))
-		mapboxgl.accessToken = mapbox.accessToken
-
+		$embed.removeClass('pre form')
+		mapboxgl.accessToken = accessToken
 		window.map = new mapboxgl.Map
 			container: 'map',
-			style: mapbox.styleUri,
+			style: styleUri,
 			zoom: 3,
 			center: [-95.7129, 37.0902]
+		map.on 'load', initMap
 
-		map.on 'load', () ->
-			# map.addLayer
-			# 	'id': 'survey-data',
-			# 	'type': 'circle'
-			# 	'source':
-			# 		type: 'vector'
-			# 		url: mapbox.surveyUri
-			# 	'source-layer': mapbox.surveyId
-			# 	'zoom': 10
-			# 	'paint':
-			# 		'circle-color': 'transparent'
-			# 		'circle-radius': 4
+	initMap = () ->
+		map.addLayer
+			'id': 'survey-data'
+			'type': 'symbol'
+			'source':
+				'type': 'vector'
+				'url': mapdata.survey.uri
+			'source-layer': mapdata.survey.id
+			'zoom': 10
+			'layout':
+				'icon-allow-overlap': true
+				'icon-size': 0.5
 
-			# iconSrc = '/assets/img/marker.svg'
-			# map.loadImage iconSrc, (error, svg) ->
-				# if (error) throw error
-					# map.addImage('marker', svg)
-			map.addLayer
-				'id': 'survey-data'
-				'type': 'symbol'
-				'source':
-					'type': 'vector'
-					'url': mapbox.surveyUri
-				'source-layer': mapbox.surveyId
-				'zoom': 10
-				'layout':
-					'icon-size': 0.5
+		dataLayer = map.getLayer('survey-data')
+		dataBounds = map.getBounds(dataLayer).toArray()
 
-			dataLayer = map.getLayer('survey-data')
-			dataBounds = map.getBounds(dataLayer).toArray()
+		map.addLayer
+			'id': 'coldspots'
+			'type': 'line'
+			'source':
+				'type': 'vector'
+				'url': mapdata.coldspots.uri
+			'source-layer': mapdata.coldspots.id
+			'minzoom': 0
+			'maxzoom': 24
+			'layout':
+				'visibility': 'none'
+			'paint':
+				'line-width': 1
+				'line-color': '#8ba9c4'
 
-			map.addLayer
-				'id': 'coldspots'
-				'type': 'line'
-				'source':
-					'type': 'vector'
-					'url': mapbox.coldspotsUri
-				'source-layer': mapbox.coldspotsId
-				'minzoom': 0
-				'maxzoom': 24
-				'layout':
-					'visibility': 'none'
-				'paint':
-					'line-width': 1
-					'line-color': '#8ba9c4'
+		map.addLayer
+			'id': 'hotspots'
+			'type': 'line'
+			'source':
+				'type': 'vector'
+				'url': mapdata.hotspots.uri
+			'source-layer': mapdata.hotspots.id
+			'minzoom': 0
+			'maxzoom': 24
+			'layout':
+				'visibility': 'none'
+			'paint':
+				'line-width': 1
+				'line-color': '#c48f8f'
 
-			map.addLayer
-				'id': 'hotspots'
-				'type': 'line'
-				'source':
-					'type': 'vector'
-					'url': mapbox.hotspotsUri
-				'source-layer': mapbox.hotspotsId
-				'minzoom': 0
-				'maxzoom': 24
-				'layout':
-					'visibility': 'none'
-				'paint':
-					'line-width': 1
-					'line-color': '#c48f8f'
+		window.popup = new mapboxgl.Popup
+			closeButton: false,
+			closeOnClick: false
 
-			startListening(map)
-			getQuery()
-			selectSentence()	
+		$embed.removeClass('pre')
+		startListening()
+		getFilterQuery()
+		selectSentence()	
 
 	getUniqueFeatures = (array, comparatorProperty) ->
 		existingFeatureKeys = {}
@@ -105,7 +107,7 @@ $ ->
 		$sentence = $(this)
 		val = $sentence.attr('data-val')
 		selectSentence(val)	
-		updateUrl()	
+		setUrl()	
 
 	selectSentence = (val) ->
 		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
@@ -143,15 +145,20 @@ $ ->
 		prop = $fieldset.attr('data-prop-slug') || $fieldset.attr('data-prop') 
 		val = $option.attr('data-val-slug') || $option.attr('data-val')
 		selectFilter(prop, val)
-		updateUrl()
+		setUrl()
 
 
 	selectFilter = (prop, val) ->
 		val = getValSlug(prop, val)
-		$fieldset = getFieldset(prop)
+		if ['accept','reject'].includes(val)
+			$fieldset = getFieldset(val)
+			$option = getOption(val, prop)
+		else	
+			$fieldset = getFieldset(prop)
+			$option = getOption(prop, val)
 		$fieldset.addClass('open')
 		$selected = $fieldset.find('.selected')
-		$option = getOption(prop, val)
+		$options = $fieldset.find('.options')
 		if !$option || !$option.length
 			return
 		if $option.is('.all')
@@ -163,7 +170,7 @@ $ ->
 
 		if $option.is('.selected:not(.all)')
 			$option.removeClass('selected')
-			if !$fieldset.find('.selected').length
+			if !$options.find('.selected').length
 				$fieldset.find('.all').addClass('selected')
 		else
 			$option.addClass('selected')
@@ -260,7 +267,6 @@ $ ->
 			else
 				vals[_prop].push(_val)
 			filter = clearFilter(prop)
-
 		if !filter
 			filter = ['all']
 			cond = 'in'
@@ -268,12 +274,20 @@ $ ->
 				_vals = vals[_prop]
 				if _prop.indexOf('_') > -1 && _vals[0] && _prop != 'Age_Bin'
 					_vals = _vals[0].split(',')
-				args = [cond, _prop]
-				for __val in _vals
-					if Number.isInteger(parseInt(__val)) && __val.indexOf('-') < 0
-						__val = parseInt(__val)
-					args.push(__val)
-				filter.push(args)
+				if ['accept','reject'].includes(_prop)
+					for __val in _vals
+						__vals = getThresholdVal(_prop).split(',')
+						args = [cond, __val]
+						for ___val in __vals
+							args.push(parseInt(___val))
+						filter.push(args)
+				else
+					args = [cond, _prop]
+					for __val in _vals
+						if Number.isInteger(parseInt(__val)) && __val.indexOf('-') < 0
+							__val = parseInt(__val)
+						args.push(__val)
+					filter.push(args)
 		else
 			filter = clearFilter(prop)
 
@@ -366,7 +380,7 @@ $ ->
 			$slider.attr('data-val', val)
 			$slider.attr('data-val-slug', val)
 		setFilter()
-		updateUrl()
+		setUrl()
 
 	MIN = 1
 	MAX = 5
@@ -376,7 +390,7 @@ $ ->
 		$option = $input.parents('.option')
 		val = parseInt(this.value)
 		if !val
-			if $option.is('.acceptable')
+			if $option.is('.accept')
 				val = MAX
 			else
 				val = MIN
@@ -408,8 +422,8 @@ $ ->
 
 		altMinVal = $altOption.find('.min').val()
 		altMaxVal = $altOption.find('.max').val()
-
-		if $option.is('.acceptable') && $input.is('.min') && val <= altMaxVal
+		type = $option.attr('data-type')
+		if type == 'accept' && $input.is('.min') && val <= altMaxVal
 			newAltMax = Math.abs(val) - 1
 			if newAltMax < $altOption.find('.max').val()
 				newAltMax += 1
@@ -417,7 +431,7 @@ $ ->
 			if newAltMax < MIN
 				newAltMax = MIN
 			$altMaxInput.val(newAltMax)
-		else if $option.is('.unacceptable') && $input.is('.max') && val >= altMinVal
+		else if type == 'reject' && $input.is('.max') && val >= altMinVal
 			newAltMin = Math.abs(val) + 1
 			if newAltMin > $altOption.find('.min').val()
 				newAltMin -= 1
@@ -442,6 +456,20 @@ $ ->
 		rangeStr = JSON.stringify(range).replace(/[\[\]']+/g,'')
 		$option.attr('data-val', rangeStr)
 
+	getThresholdVal = (prop) ->
+		if prop == 'accept'
+			$option = $filters.find('.option.accept')
+		else if prop == 'reject'
+			$option = $filters.find('.option.reject')
+		else
+			$option = $filters.find('.option[data-val="'+prop+'"]')
+			if $option.length
+				return $option.attr('data-type')
+			else
+				return null
+		return $option.attr('data-val')
+
+
 	hoverThresholds = (e) ->
 		$(this).parents('.option').addClass('no-hover')
 
@@ -453,9 +481,9 @@ $ ->
 		if !prop
 			return
 
-		aVal = $('.option.acceptable').attr('data-val')
+		aVal = $('.option.accept').attr('data-val')
 		aRange = JSON.parse('['+aVal+']')
-		uVal = $('.option.unacceptable').attr('data-val')
+		uVal = $('.option.reject').attr('data-val')
 		uRange = JSON.parse('['+uVal+']')
 
 		stops = []
@@ -471,9 +499,7 @@ $ ->
 			property: prop
 			type: 'categorical'
 			stops: stops
-
 		map.setLayoutProperty('survey-data', 'icon-image', markerProps);
-
 
 	installKey = () ->
 		$options = $phenomena.find('ul')
@@ -497,13 +523,14 @@ $ ->
 						val = prefix + '_' + num
 						$li = $('<li></li>')
 							.addClass('sentence')
-							.attr('data-val', val)
 							.append('<span>'+sentence+'</span>')
-						$filters.find('.fieldset.accept ul').append($li.clone())
-						$filters.find('.fieldset.reject ul').append($li.clone())
 						$options.append($li.addClass('option'))
 
-	updateUrl = () ->
+						$li = $li.attr('data-val', val)
+						$filters.find('.fieldset.accept ul').append($li.clone())
+						$filters.find('.fieldset.reject ul').append($li.clone())
+
+	setUrl = () ->
 		filters = map.getFilter('survey-data')
 		query = {}
 		$sentence = $phenomena.find('.sentence.selected')
@@ -515,8 +542,8 @@ $ ->
 				if filter = filters[i]
 					prop = getPropSlug(filter[1])
 					queryVals = []
-					for ii in [2..filter.length-1]
-						queryVal = getValSlug(prop, filter[ii])
+					for j in [2..filter.length-1]
+						queryVal = getValSlug(prop, filter[j])
 						queryVals.push(queryVal)
 					vals = queryVals.join()
 					if query[prop]
@@ -530,7 +557,25 @@ $ ->
 		url = decodeURIComponent(url)
 		history.pushState queryVals, '', url
 
-	getQuery = () ->
+	getMapQuery = () ->
+		query = window.location.search.substring(1)
+		if query
+			query = decodeURIComponent(query)
+			queryVars = query.split('&')
+			# window.mapdata = {}
+			for queryVar, i in queryVars
+				pair = queryVar.split('=')
+				val = pair[1]
+				props = pair[0].split('.')
+				layer = props[0]
+				type = props[1]
+				# if !mapdata[layer]
+				# 	mapdata[layer] = {}
+				# mapdata[layer][type] = val
+		createMap()
+
+
+	getFilterQuery = () ->
 		query = window.location.search.substring(1)
 		if query
 			query = decodeURIComponent(query)
@@ -543,10 +588,15 @@ $ ->
 				pair = queryVar.split('=')
 				prop = pair[0]
 				openMulti(prop)
-				if prop == 'show'
-					selectFilter(prop, pair[1])
+				if pair[0].indexOf('map') > -1
 					return
-				vals = pair[1].split(',')
+				if prop == 'show'
+					return selectFilter(prop, pair[1])
+				vals = pair[1]
+				if pair[0].indexOf('_') < 0
+					vals = vals.split(',')
+				else
+					vals = [getThresholdVal(vals)]
 				if prop == 'age'
 					setSlider(prop, vals)
 				else if prop != 's'
@@ -558,67 +608,47 @@ $ ->
 			$('body').toggleClass('embedded')
 			map.resize()
 
-	startListening = (map) ->
-		$('body').on 'click', 'aside .label', toggleFieldset
-		$('body').on 'click', 'aside .multi-label', selectMulti
-		$('body').on 'click', 'aside#filters ul li', clickFilter
-		$('.slider').on 'slidechange', changeSlider
-		$('.range-input input').on 'keyup', limitThresholds
-		$('.range-input input').on 'change', changeThresholds
-		$('.range-input .inputs').on 'mouseenter', hoverThresholds
-		$('.range-input .inputs').on 'mouseleave', unhoverThresholds
+	hoverMarker = (e) ->
+		sentence = $phenomena.attr('data-selected')
+		map.getCanvas().style.cursor = 'pointer'
+		marker = e.features[0]
+		props = marker.properties
+		val = props[sentence]
+		aVals = $filters.find('.option.accept').attr('data-val')
+		uVals = $filters.find('.option.reject').attr('data-val')
+		if aVals.indexOf(val) > -1
+			color = '#5fa990'
+		else if uVals.indexOf(val) > -1
+			color = '#795292'
 
-		$('body').on 'click', 'aside .close', toggleSide
-		$('body').on 'click', 'aside#phenomena ul li', clickSentence
+		props =
+			'Age': props['Age']
+			'Gender': props['Gender']
+			'Education': props['Education']
+			'Race': props['Race']
+			'Place Raised': props['RaisedPlace']
+			'Current Place': props['CurrentCity']+', '+props['CurrentState']
+			'Father Raised Place': props['DadCity']+', '+props['DadState']
+			'Mother Raised Place': props['MomCity']+', '+props['MomState']
+		ul = '<ul>'
+		prop_keys = Object.keys(props)
+		for prop, i in prop_keys
+			ul += '<li>'+prop+': '+props[prop]+'</li>'
+			if i > prop_keys.length - 1
+				description += '</ul>'
+		popup.setLngLat(marker.geometry.coordinates)
+			.setHTML(ul)
+			.addTo(map)
 
-		$('body').on 'click', 'aside#filters .tab', toggleFilterTabs
+		$content = $(popup._content)
+		$popup = $content.parent()	
+		$popup
+			.addClass('show')
+			.attr('data-id', marker.id)
+		$content.css('background', color)
 
-		$('body').keyup toggleView
-
-		popup = new mapboxgl.Popup
-			closeButton: false,
-			closeOnClick: false
-
-		map.on 'mouseenter', 'survey-data', (e) ->
-			sentence = $phenomena.attr('data-selected')
-			map.getCanvas().style.cursor = 'pointer'
-			marker = e.features[0]
-			props = marker.properties
-			val = props[sentence]
-			aVals = $filters.find('.option.acceptable').data('val')
-			uVals = $filters.find('.option.unacceptable').data('val')
-			if aVals.indexOf(val) > -1
-				color = '#5fa990'
-			else if uVals.indexOf(val) > -1
-				color = '#795292'
-
-			props =
-				'Age': props['Age']
-				'Gender': props['Gender']
-				'Education': props['Education']
-				'Race': props['Race']
-				'Place Raised': props['RaisedPlace']
-				'Current Place': props['CurrentCity']+', '+props['CurrentState']
-				'Father Raised Place': props['DadCity']+', '+props['DadState']
-				'Mother Raised Place': props['MomCity']+', '+props['MomState']
-			ul = '<ul>'
-			prop_keys = Object.keys(props)
-			for prop, i in prop_keys
-				ul += '<li>'+prop+': '+props[prop]+'</li>'
-				if i > prop_keys.length - 1
-					description += '</ul>'
-			popup.setLngLat(marker.geometry.coordinates)
-				.setHTML(ul)
-				.addTo(map)
-
-			$content = $(popup._content)
-			$popup = $content.parent()	
-			$popup
-				.addClass('show')
-				.attr('data-id', marker.id)
-			$content.css('background', color)
-
-
+	startListening = () ->
+		map.on 'mouseenter', 'survey-data', hoverMarker
 		map.on 'mouseleave', 'survey-data', (e) ->
 			$popup = $('.mapboxgl-popup')
 			oldId = $popup.attr('data-id')
@@ -628,9 +658,6 @@ $ ->
 					$popup.removeClass('show')
 			, 500
 
-	installKey()
-	createMap()
-	setUpSliders()
 
 	getProp = (propSlug) ->
 		if $fieldset = $('.fieldset[data-prop-slug="'+propSlug+'"]')
@@ -671,41 +698,25 @@ $ ->
 		return val
 
 
-	mechanize = (str) ->
-		if machine[str]
-			str = machine[str]
-		return str				
+	installKey()
+	getMapQuery()
+	setUpSliders()
 
-	echo = (x) ->
-		console.log(x)
+	$('body').on 'click', 'aside .label', toggleFieldset
+	$('body').on 'click', 'aside .multi-label', selectMulti
+	$('body').on 'click', 'aside#filters ul li', clickFilter
+	$('.slider').on 'slidechange', changeSlider
+	$('.range-input input').on 'keyup', limitThresholds
+	$('.range-input input').on 'change', changeThresholds
+	$('.range-input .inputs').on 'mouseenter', hoverThresholds
+	$('.range-input .inputs').on 'mouseleave', unhoverThresholds
+	$('body').on 'click', 'aside .close', toggleSide
+	$('body').on 'click', 'aside#phenomena ul li', clickSentence
+	$('body').on 'click', 'aside#filters .tab', toggleFilterTabs
+	$('body').keyup toggleView
 
-	human =
-		'PR_1125': 'The car needs washed'
-		'CG_1025.1': 'I was afraid you might couldn’t find it'
-		'PI_1160': 'John plays guitar, but so don’t I'
-		'PI_1171': 'Here’s you a piece of pizza'
-		'CG_1026.1': 'This seat reclines hella'
-		'PI_1161': 'When I don\'t have hockey and I\'m done my homework, I go there and skate'
-		'PI_1172': 'I’m SO not going to study tonight'
-		'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder'
-		'Age_Bin': 'age'
-		'Race': 'race'
-		'Income': 'income'
-		'Age': 'age'
-		'Asian': 'asian'
-		'Black': 'black'
-		'White': 'white'
-		'Hispanic': 'hispanic'
-		'Amerindian': 'amerindian'
 
-	machine =
-		'age': 'Age_Bin'
-		'income': 'Income'
-		'race': 'Race'
-		'asian': 'Asian'
-		'black': 'Black'
-		'white': 'White'
-		'hispanic': 'Hispanic'
-		'amerindian': 'Amerindian'
+
+
 
 		

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="93.75px" height="93.75px" viewBox="0 0 93.75 93.75" enable-background="new 0 0 93.75 93.75" xml:space="preserve">
-<path fill="#5FA88F" d="M46.875,75C62.5,75,75,62.5,75,46.875S62.5,18.75,46.875,18.75S18.75,31.25,18.75,46.875S31.25,75,46.875,75
-	"/>
-<path fill="#5FA88F" d="M46.875,93.75C21.25,93.75,0,72.5,0,46.875S21.25,0,46.875,0S93.75,21.25,93.75,46.875
-	S72.5,93.75,46.875,93.75z M46.875,12.5C28.125,12.5,12.5,28.125,12.5,46.875S28.125,81.25,46.875,81.25S81.25,65.625,81.25,46.875
-	S65.625,12.5,46.875,12.5z"/>
+<svg version="1.1" id="marker" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#5FA88F" d="M10,4c-3.334,0-6,2.666-6,6c0,3.332,2.666,6,6,6c3.332,0,6-2.668,6-6C16,6.666,13.332,4,10,4z"/>
+<path fill="#5FA88F" d="M10,0C4.532,0,0,4.532,0,10c0,5.467,4.532,10,10,10c5.467,0,10-4.533,10-10C20,4.532,15.465,0,10,0z
+	 M10,17.332C6,17.332,2.666,14,2.666,10S6,2.666,10,2.666S17.332,6,17.332,10S14,17.332,10,17.332z"/>
 </svg>

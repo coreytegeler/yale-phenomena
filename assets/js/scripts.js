@@ -1,78 +1,101 @@
 $(function() {
-  var $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, echo, getFieldset, getOption, getProp, getPropSlug, getQuery, getSentence, getUniqueFeatures, getVal, getValSlug, hoverThresholds, human, installKey, keyUri, limitThresholds, machine, mechanize, openMulti, selectFilter, selectMulti, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, startListening, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors, updateUrl;
+  var $creation, $embed, $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapQuery, getOption, getProp, getPropSlug, getSentence, getThresholdVal, getUniqueFeatures, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, selectFilter, selectMulti, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, setUrl, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
+  $embed = $('#embed');
   $filters = $('#filters');
   $phenomena = $('#phenomena');
+  $creation = $('#creation');
   $fixedHeader = $('header.fixed');
   $headerSentence = $('header.fixed .sentence');
+  accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
+  styleUri = 'mapbox://styles/ygdp/cjgmk0hdk001z2rtariytjl77';
+  window.mapdata = {
+    survey: {
+      uri: 'mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1',
+      id: 'Survey_8'
+    },
+    coldspots: {
+      uri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q',
+      id: 'Coldspots_8'
+    },
+    hotspots: {
+      uri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge',
+      id: 'Hotspots_8'
+    }
+  };
   createMap = function() {
-    var mapbox, mapboxAttr;
-    mapboxAttr = $('#embed').attr('data-mapbox');
-    mapbox = JSON.parse(decodeURI(mapboxAttr));
-    mapboxgl.accessToken = mapbox.accessToken;
+    $embed.removeClass('pre form');
+    mapboxgl.accessToken = accessToken;
     window.map = new mapboxgl.Map({
       container: 'map',
-      style: mapbox.styleUri,
+      style: styleUri,
       zoom: 3,
       center: [-95.7129, 37.0902]
     });
-    return map.on('load', function() {
-      var dataBounds, dataLayer;
-      map.addLayer({
-        'id': 'survey-data',
-        'type': 'symbol',
-        'source': {
-          'type': 'vector',
-          'url': mapbox.surveyUri
-        },
-        'source-layer': mapbox.surveyId,
-        'zoom': 10,
-        'layout': {
-          'icon-size': 0.5
-        }
-      });
-      dataLayer = map.getLayer('survey-data');
-      dataBounds = map.getBounds(dataLayer).toArray();
-      map.addLayer({
-        'id': 'coldspots',
-        'type': 'line',
-        'source': {
-          'type': 'vector',
-          'url': mapbox.coldspotsUri
-        },
-        'source-layer': mapbox.coldspotsId,
-        'minzoom': 0,
-        'maxzoom': 24,
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-width': 1,
-          'line-color': '#8ba9c4'
-        }
-      });
-      map.addLayer({
-        'id': 'hotspots',
-        'type': 'line',
-        'source': {
-          'type': 'vector',
-          'url': mapbox.hotspotsUri
-        },
-        'source-layer': mapbox.hotspotsId,
-        'minzoom': 0,
-        'maxzoom': 24,
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-width': 1,
-          'line-color': '#c48f8f'
-        }
-      });
-      startListening(map);
-      getQuery();
-      return selectSentence();
+    return map.on('load', initMap);
+  };
+  initMap = function() {
+    var dataBounds, dataLayer;
+    map.addLayer({
+      'id': 'survey-data',
+      'type': 'symbol',
+      'source': {
+        'type': 'vector',
+        'url': mapdata.survey.uri
+      },
+      'source-layer': mapdata.survey.id,
+      'zoom': 10,
+      'layout': {
+        'icon-allow-overlap': true,
+        'icon-size': 0.5
+      }
     });
+    dataLayer = map.getLayer('survey-data');
+    dataBounds = map.getBounds(dataLayer).toArray();
+    map.addLayer({
+      'id': 'coldspots',
+      'type': 'line',
+      'source': {
+        'type': 'vector',
+        'url': mapdata.coldspots.uri
+      },
+      'source-layer': mapdata.coldspots.id,
+      'minzoom': 0,
+      'maxzoom': 24,
+      'layout': {
+        'visibility': 'none'
+      },
+      'paint': {
+        'line-width': 1,
+        'line-color': '#8ba9c4'
+      }
+    });
+    map.addLayer({
+      'id': 'hotspots',
+      'type': 'line',
+      'source': {
+        'type': 'vector',
+        'url': mapdata.hotspots.uri
+      },
+      'source-layer': mapdata.hotspots.id,
+      'minzoom': 0,
+      'maxzoom': 24,
+      'layout': {
+        'visibility': 'none'
+      },
+      'paint': {
+        'line-width': 1,
+        'line-color': '#c48f8f'
+      }
+    });
+    window.popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    });
+    $embed.removeClass('pre');
+    startListening();
+    getFilterQuery();
+    return selectSentence();
   };
   getUniqueFeatures = function(array, comparatorProperty) {
     var existingFeatureKeys, uniqueFeatures;
@@ -100,7 +123,7 @@ $(function() {
     $sentence = $(this);
     val = $sentence.attr('data-val');
     selectSentence(val);
-    return updateUrl();
+    return setUrl();
   };
   selectSentence = function(val) {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
@@ -144,15 +167,21 @@ $(function() {
     prop = $fieldset.attr('data-prop-slug') || $fieldset.attr('data-prop');
     val = $option.attr('data-val-slug') || $option.attr('data-val');
     selectFilter(prop, val);
-    return updateUrl();
+    return setUrl();
   };
   selectFilter = function(prop, val) {
-    var $fieldset, $option, $selected;
+    var $fieldset, $option, $options, $selected;
     val = getValSlug(prop, val);
-    $fieldset = getFieldset(prop);
+    if (['accept', 'reject'].includes(val)) {
+      $fieldset = getFieldset(val);
+      $option = getOption(val, prop);
+    } else {
+      $fieldset = getFieldset(prop);
+      $option = getOption(prop, val);
+    }
     $fieldset.addClass('open');
     $selected = $fieldset.find('.selected');
-    $option = getOption(prop, val);
+    $options = $fieldset.find('.options');
     if (!$option || !$option.length) {
       return;
     }
@@ -165,7 +194,7 @@ $(function() {
     }
     if ($option.is('.selected:not(.all)')) {
       $option.removeClass('selected');
-      if (!$fieldset.find('.selected').length) {
+      if (!$options.find('.selected').length) {
         $fieldset.find('.all').addClass('selected');
       }
     } else {
@@ -262,7 +291,7 @@ $(function() {
     return setFilter();
   };
   setFilter = function() {
-    var $selected, $sliders, __val, _prop, _vals, args, cond, filter, j, k, len, len1, ref, vals;
+    var $selected, $sliders, ___val, __val, __vals, _prop, _vals, args, cond, filter, k, l, len, len1, len2, len3, m, n, ref, vals;
     vals = {};
     $selected = $filters.find('.filter li.selected');
     $selected.each(function(i, li) {
@@ -288,21 +317,34 @@ $(function() {
       filter = ['all'];
       cond = 'in';
       ref = Object.keys(vals);
-      for (j = 0, len = ref.length; j < len; j++) {
-        _prop = ref[j];
+      for (k = 0, len = ref.length; k < len; k++) {
+        _prop = ref[k];
         _vals = vals[_prop];
         if (_prop.indexOf('_') > -1 && _vals[0] && _prop !== 'Age_Bin') {
           _vals = _vals[0].split(',');
         }
-        args = [cond, _prop];
-        for (k = 0, len1 = _vals.length; k < len1; k++) {
-          __val = _vals[k];
-          if (Number.isInteger(parseInt(__val)) && __val.indexOf('-') < 0) {
-            __val = parseInt(__val);
+        if (['accept', 'reject'].includes(_prop)) {
+          for (l = 0, len1 = _vals.length; l < len1; l++) {
+            __val = _vals[l];
+            __vals = getThresholdVal(_prop).split(',');
+            args = [cond, __val];
+            for (m = 0, len2 = __vals.length; m < len2; m++) {
+              ___val = __vals[m];
+              args.push(parseInt(___val));
+            }
+            filter.push(args);
           }
-          args.push(__val);
+        } else {
+          args = [cond, _prop];
+          for (n = 0, len3 = _vals.length; n < len3; n++) {
+            __val = _vals[n];
+            if (Number.isInteger(parseInt(__val)) && __val.indexOf('-') < 0) {
+              __val = parseInt(__val);
+            }
+            args.push(__val);
+          }
+          filter.push(args);
         }
-        filter.push(args);
       }
     } else {
       filter = clearFilter(prop);
@@ -336,7 +378,7 @@ $(function() {
     return map.setFilter('survey-data', filter);
   };
   clearFilter = function(prop) {
-    var arr, arrs, filter, i, j, len;
+    var arr, arrs, filter, i, k, len;
     if (!map.length) {
       return;
     }
@@ -344,7 +386,7 @@ $(function() {
     if (filter) {
       arrs = filter.slice(0);
       arrs.shift();
-      for (i = j = 0, len = arrs.length; j < len; i = ++j) {
+      for (i = k = 0, len = arrs.length; k < len; i = ++k) {
         arr = arrs[i];
         if (arr.indexOf(prop) > -1) {
           filter.splice(i + 1);
@@ -414,7 +456,7 @@ $(function() {
       $slider.attr('data-val-slug', val);
     }
     setFilter();
-    return updateUrl();
+    return setUrl();
   };
   MIN = 1;
   MAX = 5;
@@ -424,7 +466,7 @@ $(function() {
     $option = $input.parents('.option');
     val = parseInt(this.value);
     if (!val) {
-      if ($option.is('.acceptable')) {
+      if ($option.is('.accept')) {
         val = MAX;
       } else {
         val = MIN;
@@ -437,7 +479,7 @@ $(function() {
     return $(this).val(val);
   };
   changeThresholds = function(e) {
-    var $altMaxInput, $altMinInput, $altOption, $input, $option, $sibInput, altMaxVal, altMinVal, newAltMax, newAltMin, sibVal, val;
+    var $altMaxInput, $altMinInput, $altOption, $input, $option, $sibInput, altMaxVal, altMinVal, newAltMax, newAltMin, sibVal, type, val;
     $input = $(this);
     $sibInput = $input.siblings('input');
     $option = $input.parents('.option');
@@ -461,7 +503,8 @@ $(function() {
     $input.val(val);
     altMinVal = $altOption.find('.min').val();
     altMaxVal = $altOption.find('.max').val();
-    if ($option.is('.acceptable') && $input.is('.min') && val <= altMaxVal) {
+    type = $option.attr('data-type');
+    if (type === 'accept' && $input.is('.min') && val <= altMaxVal) {
       newAltMax = Math.abs(val) - 1;
       if (newAltMax < $altOption.find('.max').val()) {
         newAltMax += 1;
@@ -471,7 +514,7 @@ $(function() {
         newAltMax = MIN;
       }
       $altMaxInput.val(newAltMax);
-    } else if ($option.is('.unacceptable') && $input.is('.max') && val >= altMinVal) {
+    } else if (type === 'reject' && $input.is('.max') && val >= altMinVal) {
       newAltMin = Math.abs(val) + 1;
       if (newAltMin > $altOption.find('.min').val()) {
         newAltMin -= 1;
@@ -488,15 +531,31 @@ $(function() {
     return setFilter();
   };
   setThresholdVal = function($option) {
-    var i, j, max, min, range, rangeStr, ref, ref1;
+    var i, k, max, min, range, rangeStr, ref, ref1;
     min = $option.find('input.min').val();
     max = $option.find('input.max').val();
     range = [];
-    for (i = j = ref = min, ref1 = max; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
+    for (i = k = ref = min, ref1 = max; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
       range.push(Math.abs(i));
     }
     rangeStr = JSON.stringify(range).replace(/[\[\]']+/g, '');
     return $option.attr('data-val', rangeStr);
+  };
+  getThresholdVal = function(prop) {
+    var $option;
+    if (prop === 'accept') {
+      $option = $filters.find('.option.accept');
+    } else if (prop === 'reject') {
+      $option = $filters.find('.option.reject');
+    } else {
+      $option = $filters.find('.option[data-val="' + prop + '"]');
+      if ($option.length) {
+        return $option.attr('data-type');
+      } else {
+        return null;
+      }
+    }
+    return $option.attr('data-val');
   };
   hoverThresholds = function(e) {
     return $(this).parents('.option').addClass('no-hover');
@@ -505,17 +564,17 @@ $(function() {
     return $(this).parents('.option').removeClass('no-hover');
   };
   updateThresholdColors = function() {
-    var aRange, aVal, i, j, markerProps, prop, ref, ref1, stops, uRange, uVal;
+    var aRange, aVal, i, k, markerProps, prop, ref, ref1, stops, uRange, uVal;
     prop = $('.fieldset.phenomena .sentence.selected').attr('data-val');
     if (!prop) {
       return;
     }
-    aVal = $('.option.acceptable').attr('data-val');
+    aVal = $('.option.accept').attr('data-val');
     aRange = JSON.parse('[' + aVal + ']');
-    uVal = $('.option.unacceptable').attr('data-val');
+    uVal = $('.option.reject').attr('data-val');
     uRange = JSON.parse('[' + uVal + ']');
     stops = [];
-    for (i = j = ref = MIN, ref1 = MAX; ref <= ref1 ? j <= ref1 : j >= ref1; i = ref <= ref1 ? ++j : --j) {
+    for (i = k = ref = MIN, ref1 = MAX; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
       if (aRange.indexOf(i) > -1) {
         stops.push([i, 'marker-accepted']);
       } else if (uRange.indexOf(i) > -1) {
@@ -538,10 +597,10 @@ $(function() {
       url: keyUri,
       dataType: 'text',
       success: function(data) {
-        var $li, i, j, len, num, parsedRow, prefix, results, row, sentence, type, val;
+        var $li, i, k, len, num, parsedRow, prefix, results, row, sentence, type, val;
         data = data.split(/\r?\n|\r/);
         results = [];
-        for (i = j = 0, len = data.length; j < len; i = ++j) {
+        for (i = k = 0, len = data.length; k < len; i = ++k) {
           row = data[i];
           if (i !== 0) {
             parsedRow = row.split(',');
@@ -563,10 +622,11 @@ $(function() {
               }
             })();
             val = prefix + '_' + num;
-            $li = $('<li></li>').addClass('sentence').attr('data-val', val).append('<span>' + sentence + '</span>');
+            $li = $('<li></li>').addClass('sentence').append('<span>' + sentence + '</span>');
+            $options.append($li.addClass('option'));
+            $li = $li.attr('data-val', val);
             $filters.find('.fieldset.accept ul').append($li.clone());
-            $filters.find('.fieldset.reject ul').append($li.clone());
-            results.push($options.append($li.addClass('option')));
+            results.push($filters.find('.fieldset.reject ul').append($li.clone()));
           } else {
             results.push(void 0);
           }
@@ -575,8 +635,8 @@ $(function() {
       }
     });
   };
-  updateUrl = function() {
-    var $sentence, filter, filters, i, ii, j, k, location, prop, query, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
+  setUrl = function() {
+    var $sentence, filter, filters, i, j, k, l, location, prop, query, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
     filters = map.getFilter('survey-data');
     query = {};
     $sentence = $phenomena.find('.sentence.selected');
@@ -585,12 +645,12 @@ $(function() {
       query['s'] = sentenceVal;
     }
     if (filters) {
-      for (i = j = 1, ref = filters.length - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+      for (i = k = 1, ref = filters.length - 1; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
         if (filter = filters[i]) {
           prop = getPropSlug(filter[1]);
           queryVals = [];
-          for (ii = k = 2, ref1 = filter.length - 1; 2 <= ref1 ? k <= ref1 : k >= ref1; ii = 2 <= ref1 ? ++k : --k) {
-            queryVal = getValSlug(prop, filter[ii]);
+          for (j = l = 2, ref1 = filter.length - 1; 2 <= ref1 ? l <= ref1 : l >= ref1; j = 2 <= ref1 ? ++l : --l) {
+            queryVal = getValSlug(prop, filter[j]);
             queryVals.push(queryVal);
           }
           vals = queryVals.join();
@@ -610,34 +670,58 @@ $(function() {
     url = decodeURIComponent(url);
     return history.pushState(queryVals, '', url);
   };
-  getQuery = function() {
-    var i, j, k, l, len, len1, len2, pair, prop, query, queryVar, queryVars, val, vals;
+  getMapQuery = function() {
+    var i, k, layer, len, pair, props, query, queryVar, queryVars, type, val;
     query = window.location.search.substring(1);
     if (query) {
       query = decodeURIComponent(query);
       queryVars = query.split('&');
-      for (i = j = 0, len = queryVars.length; j < len; i = ++j) {
+      for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
+        queryVar = queryVars[i];
+        pair = queryVar.split('=');
+        val = pair[1];
+        props = pair[0].split('.');
+        layer = props[0];
+        type = props[1];
+      }
+    }
+    return createMap();
+  };
+  getFilterQuery = function() {
+    var i, k, l, len, len1, len2, m, pair, prop, query, queryVar, queryVars, val, vals;
+    query = window.location.search.substring(1);
+    if (query) {
+      query = decodeURIComponent(query);
+      queryVars = query.split('&');
+      for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
         queryVar = queryVars[i];
         pair = queryVar.split('=');
         if (pair[0] === 's') {
           selectSentence(pair[1]);
         }
       }
-      for (i = k = 0, len1 = queryVars.length; k < len1; i = ++k) {
+      for (i = l = 0, len1 = queryVars.length; l < len1; i = ++l) {
         queryVar = queryVars[i];
         pair = queryVar.split('=');
         prop = pair[0];
         openMulti(prop);
-        if (prop === 'show') {
-          selectFilter(prop, pair[1]);
+        if (pair[0].indexOf('map') > -1) {
           return;
         }
-        vals = pair[1].split(',');
+        if (prop === 'show') {
+          return selectFilter(prop, pair[1]);
+        }
+        vals = pair[1];
+        if (pair[0].indexOf('_') < 0) {
+          vals = vals.split(',');
+        } else {
+          vals = [getThresholdVal(vals)];
+        }
         if (prop === 'age') {
           setSlider(prop, vals);
         } else if (prop !== 's') {
-          for (l = 0, len2 = vals.length; l < len2; l++) {
-            val = vals[l];
+          for (m = 0, len2 = vals.length; m < len2; m++) {
+            val = vals[m];
             selectFilter(prop, val);
           }
         }
@@ -650,63 +734,47 @@ $(function() {
       return map.resize();
     }
   };
-  startListening = function(map) {
-    var popup;
-    $('body').on('click', 'aside .label', toggleFieldset);
-    $('body').on('click', 'aside .multi-label', selectMulti);
-    $('body').on('click', 'aside#filters ul li', clickFilter);
-    $('.slider').on('slidechange', changeSlider);
-    $('.range-input input').on('keyup', limitThresholds);
-    $('.range-input input').on('change', changeThresholds);
-    $('.range-input .inputs').on('mouseenter', hoverThresholds);
-    $('.range-input .inputs').on('mouseleave', unhoverThresholds);
-    $('body').on('click', 'aside .close', toggleSide);
-    $('body').on('click', 'aside#phenomena ul li', clickSentence);
-    $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
-    $('body').keyup(toggleView);
-    popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false
-    });
-    map.on('mouseenter', 'survey-data', function(e) {
-      var $content, $popup, aVals, color, i, j, len, marker, prop, prop_keys, props, sentence, uVals, ul, val;
-      sentence = $phenomena.attr('data-selected');
-      map.getCanvas().style.cursor = 'pointer';
-      marker = e.features[0];
-      props = marker.properties;
-      val = props[sentence];
-      aVals = $filters.find('.option.acceptable').data('val');
-      uVals = $filters.find('.option.unacceptable').data('val');
-      if (aVals.indexOf(val) > -1) {
-        color = '#5fa990';
-      } else if (uVals.indexOf(val) > -1) {
-        color = '#795292';
+  hoverMarker = function(e) {
+    var $content, $popup, aVals, color, i, k, len, marker, prop, prop_keys, props, sentence, uVals, ul, val;
+    sentence = $phenomena.attr('data-selected');
+    map.getCanvas().style.cursor = 'pointer';
+    marker = e.features[0];
+    props = marker.properties;
+    val = props[sentence];
+    aVals = $filters.find('.option.accept').attr('data-val');
+    uVals = $filters.find('.option.reject').attr('data-val');
+    if (aVals.indexOf(val) > -1) {
+      color = '#5fa990';
+    } else if (uVals.indexOf(val) > -1) {
+      color = '#795292';
+    }
+    props = {
+      'Age': props['Age'],
+      'Gender': props['Gender'],
+      'Education': props['Education'],
+      'Race': props['Race'],
+      'Place Raised': props['RaisedPlace'],
+      'Current Place': props['CurrentCity'] + ', ' + props['CurrentState'],
+      'Father Raised Place': props['DadCity'] + ', ' + props['DadState'],
+      'Mother Raised Place': props['MomCity'] + ', ' + props['MomState']
+    };
+    ul = '<ul>';
+    prop_keys = Object.keys(props);
+    for (i = k = 0, len = prop_keys.length; k < len; i = ++k) {
+      prop = prop_keys[i];
+      ul += '<li>' + prop + ': ' + props[prop] + '</li>';
+      if (i > prop_keys.length - 1) {
+        description += '</ul>';
       }
-      props = {
-        'Age': props['Age'],
-        'Gender': props['Gender'],
-        'Education': props['Education'],
-        'Race': props['Race'],
-        'Place Raised': props['RaisedPlace'],
-        'Current Place': props['CurrentCity'] + ', ' + props['CurrentState'],
-        'Father Raised Place': props['DadCity'] + ', ' + props['DadState'],
-        'Mother Raised Place': props['MomCity'] + ', ' + props['MomState']
-      };
-      ul = '<ul>';
-      prop_keys = Object.keys(props);
-      for (i = j = 0, len = prop_keys.length; j < len; i = ++j) {
-        prop = prop_keys[i];
-        ul += '<li>' + prop + ': ' + props[prop] + '</li>';
-        if (i > prop_keys.length - 1) {
-          description += '</ul>';
-        }
-      }
-      popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
-      $content = $(popup._content);
-      $popup = $content.parent();
-      $popup.addClass('show').attr('data-id', marker.id);
-      return $content.css('background', color);
-    });
+    }
+    popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
+    $content = $(popup._content);
+    $popup = $content.parent();
+    $popup.addClass('show').attr('data-id', marker.id);
+    return $content.css('background', color);
+  };
+  startListening = function() {
+    map.on('mouseenter', 'survey-data', hoverMarker);
     return map.on('mouseleave', 'survey-data', function(e) {
       var $popup, oldId;
       $popup = $('.mapboxgl-popup');
@@ -720,9 +788,6 @@ $(function() {
       }, 500);
     });
   };
-  installKey();
-  createMap();
-  setUpSliders();
   getProp = function(propSlug) {
     var $fieldset, prop;
     if ($fieldset = $('.fieldset[data-prop-slug="' + propSlug + '"]')) {
@@ -776,42 +841,19 @@ $(function() {
     }
     return val;
   };
-  mechanize = function(str) {
-    if (machine[str]) {
-      str = machine[str];
-    }
-    return str;
-  };
-  echo = function(x) {
-    return console.log(x);
-  };
-  human = {
-    'PR_1125': 'The car needs washed',
-    'CG_1025.1': 'I was afraid you might couldn’t find it',
-    'PI_1160': 'John plays guitar, but so don’t I',
-    'PI_1171': 'Here’s you a piece of pizza',
-    'CG_1026.1': 'This seat reclines hella',
-    'PI_1161': 'When I don\'t have hockey and I\'m done my homework, I go there and skate',
-    'PI_1172': 'I’m SO not going to study tonight',
-    'PR_1116': 'Every time you ask me not to hum, I’ll hum more louder',
-    'Age_Bin': 'age',
-    'Race': 'race',
-    'Income': 'income',
-    'Age': 'age',
-    'Asian': 'asian',
-    'Black': 'black',
-    'White': 'white',
-    'Hispanic': 'hispanic',
-    'Amerindian': 'amerindian'
-  };
-  return machine = {
-    'age': 'Age_Bin',
-    'income': 'Income',
-    'race': 'Race',
-    'asian': 'Asian',
-    'black': 'Black',
-    'white': 'White',
-    'hispanic': 'Hispanic',
-    'amerindian': 'Amerindian'
-  };
+  installKey();
+  getMapQuery();
+  setUpSliders();
+  $('body').on('click', 'aside .label', toggleFieldset);
+  $('body').on('click', 'aside .multi-label', selectMulti);
+  $('body').on('click', 'aside#filters ul li', clickFilter);
+  $('.slider').on('slidechange', changeSlider);
+  $('.range-input input').on('keyup', limitThresholds);
+  $('.range-input input').on('change', changeThresholds);
+  $('.range-input .inputs').on('mouseenter', hoverThresholds);
+  $('.range-input .inputs').on('mouseleave', unhoverThresholds);
+  $('body').on('click', 'aside .close', toggleSide);
+  $('body').on('click', 'aside#phenomena ul li', clickSentence);
+  $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
+  return $('body').keyup(toggleView);
 });

@@ -1,4 +1,5 @@
 doctype html
+-var ver = Math.round((new Date()).getTime() / 1000)
 html(lang='en-us', style='height: 100%; visibility: visible;')
 	head
 		meta(charset='utf-8')
@@ -6,13 +7,31 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 		script(src='./assets/js/jquery-3.2.1.min.js')
 		script(src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js')
 		script(src='./assets/js/jquery-ui.min.js')
-		script(src='./assets/js/scripts.js?v=1.2')
+		script(src='./assets/js/scripts.js?v='+ver)
 		//- link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet')	
 		link(href='./assets/css/bootstrap-grid.min.css' rel='stylesheet')
-		link(href='./assets/css/style.css?v=1.2' rel='stylesheet')
+		link(href='./assets/css/style.css?v='+ver rel='stylesheet')
 	body
-
 		#embed(data-mapbox='MAPBOX_VARS')
+			//- form#creation
+			//- 	div
+			//- 		div.group(data-layer='survey')
+			//- 			label survey.uri
+			//- 			input(type='text' name='survey.uri' value='mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1')
+			//- 			label survey.id
+			//- 			input(type='text' name='survey.id' value='Survey_8')
+			//- 		div.group(data-layer='coldspots')
+			//- 			label coldspots.uri
+			//- 			input(type='text' name='coldspots.uri' value='mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q')
+			//- 			label coldspots.id
+			//- 			input(type='text' name='coldspots.id' value='Coldspots_8')
+			//- 		div.group(data-layer='hotspots')
+			//- 			label hotspots.uri
+			//- 			input(type='text' name='hotspots.uri' value='mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge')
+			//- 			label hotspots.id
+			//- 			input(type='text' name='hotspots.id' value='Hotspots_8')
+			//- 		input(type='submit')
+
 			#frame
 				header.fixed
 					.wrapper
@@ -40,23 +59,23 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 					.inner
 						.scroller
 							.form(data-form='accept-reject')
-								.fieldset.filter.accept.open(data-prop='accept' data-prop-slug='accept')
+								.fieldset.filter.accept(data-prop='accept' data-prop-slug='accept')
 									.head
 										.label
 											.arrow
 											span Accept
 									.options
 										ul
-											//- li.sentence.selected.all(data-val=null) Accept All
+											li.sentence.selected.all(data-val=null) All Sentences
 
-								.fieldset.filter.reject.open(data-prop='reject' data-prop-slug='reject')
+								.fieldset.filter.reject(data-prop='reject' data-prop-slug='reject')
 									.head
 										.label
 											.arrow
 											span Reject
 									.options
 										ul
-											//- li.sentence.selected.all(data-val=null) Reject All
+											li.sentence.selected.all(data-val=null) All Sentences
 											
 							.form.active(data-form='filters')
 								.fieldset.filter.race(data-prop='Race' data-prop-slug='race')
@@ -110,15 +129,15 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 											span Age
 										.multi-toggle
 											.multi-label.selected(data-prop='Age' data-prop-slug='age') Range
-											.multi-label(data-prop='Age_Bin' data-prop-slug='age-group') Group
+											.multi-label(data-prop='Age_Bin' data-prop-slug='age_group') Group
 									.options
 										.multi-field.open(data-prop='age')
 											.slider(data-type='range' data-min='0' data-max='100' data-val='0,100' data-val-slug='0,100')
 												.handle-label.min
 												.handle-label.max
-										.multi-field(data-prop='age-group')
+										.multi-field(data-prop='age_group')
 												ul
-													li.option.selected.all(data-val=null) All Ages
+													li.option.selected.all(data-val=null) All Age Groups
 													li.option(data-val='18-30' data-val-slug='18-30') 18-30
 													li.option(data-val='31-40' data-val-slug='31-40') 31-40
 													li.option(data-val='41-50' data-val-slug='41-50') 41-50
@@ -135,13 +154,13 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 									.options
 										ul
 											li.option.selected.all(data-val=null) Show All
-											li.option.range-input(data-val='4,5').acceptable
+											li.option.range-input(data-val='4,5', data-type='accept').accept
 												span 'Acceptable' Only
 												.inputs
 													input.min(type='number' value='4' min='1' max='5')
 													span &ndash;
 													input.max(type='number' value='5' min='1' max='5')
-											li.option.range-input(data-val='1,2').unacceptable
+											li.option.range-input(data-val='1,2', data-type='reject').reject
 												span 'Unacceptable' Only
 												.inputs
 													input.min(type='number' value='1' min='1' max='5')
@@ -163,9 +182,9 @@ html(lang='en-us', style='height: 100%; visibility: visible;')
 					a(href='https://ygdp.yale.edu/').logo
 						object(type='image/svg+xml' data='./assets/img/ygdp.svg') Yale Grammatical Diversity Project
 					.keys
-						.key.unacceptable
+						.key.reject
 							span Unacceptable
-						.key.acceptable
+						.key.accept
 							span Acceptable
 				main
 					#map
