@@ -7,7 +7,7 @@ $ ->
 	$fixedHeader = $('header.fixed')
 	$headerSentence = $('header.fixed .sentence')
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
-	styleUri = 'mapbox://styles/ygdp/cjgmk0hdk001z2rtariytjl77'
+	styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67'
 
 	window.mapdata =
 		survey:
@@ -42,6 +42,7 @@ $ ->
 			'layout':
 				'icon-allow-overlap': true
 				'icon-size': 0.5
+				'icon-image': ''
 
 		dataLayer = map.getLayer('survey-data')
 		dataBounds = map.getBounds(dataLayer).toArray()
