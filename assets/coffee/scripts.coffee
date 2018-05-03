@@ -41,14 +41,16 @@ $ ->
 			'zoom': 10
 			'layout':
 				'icon-allow-overlap': true
-				'icon-size': 0.5
+				'icon-size':
+					'base': 0.9
+					'stops': [[2, 0.2],[22, 1.3]]
 				'icon-image': ''
 
 		dataLayer = map.getLayer('survey-data')
 		dataBounds = map.getBounds(dataLayer).toArray()
 
 		map.addLayer
-			'id': 'coldspots'
+			'id': 'coldspots-line'
 			'type': 'line'
 			'source':
 				'type': 'vector'
@@ -59,11 +61,17 @@ $ ->
 			'layout':
 				'visibility': 'none'
 			'paint':
-				'line-width': 1
 				'line-color': '#8ba9c4'
+				'line-opacity': 0.75
+				'line-blur':
+					'base': 1.08,
+					'stops': [[2, 1.6],[8, 4.8]]
+				'line-width':
+					'base': 1.25
+					'stops': [[2, 2.2], [8, 9]]
 
 		map.addLayer
-			'id': 'hotspots'
+			'id': 'hotspots-line'
 			'type': 'line'
 			'source':
 				'type': 'vector'
@@ -74,8 +82,45 @@ $ ->
 			'layout':
 				'visibility': 'none'
 			'paint':
-				'line-width': 1
 				'line-color': '#c48f8f'
+				'line-opacity': 0.75
+				'line-blur':
+					'base': 1.08,
+					'stops': [[2, 1.6],[8, 4.8]]
+				'line-width':
+					'base': 1.25
+					'stops': [[2, 2.2], [8, 9]]
+
+
+		map.addLayer
+			'id': 'coldspots-fill'
+			'type': 'fill'
+			'source':
+				'type': 'vector'
+				'url': mapdata.coldspots.uri
+			'source-layer': mapdata.coldspots.id
+			'minzoom': 0
+			'maxzoom': 24
+			'layout':
+				'visibility': 'none'
+			'paint':
+				'fill-color': 'rgba(190,215,255,0.12)'
+				'fill-outline-color': 'rgb(190,215,255)'
+
+		map.addLayer
+			'id': 'hotspots-fill'
+			'type': 'fill'
+			'source':
+				'type': 'vector'
+				'url': mapdata.hotspots.uri
+			'source-layer': mapdata.hotspots.id
+			'minzoom': 0
+			'maxzoom': 24
+			'layout':
+				'visibility': 'none'
+			'paint':
+				'fill-color': 'rgba(240,200,200,0.12)'
+				'fill-outline-color': 'rgb(240,200,200)'
 
 		window.popup = new mapboxgl.Popup
 			closeButton: false,
@@ -327,14 +372,17 @@ $ ->
 					filter.splice(i+1)
 			return filter
 
-	toggleLayer = (layerId) ->
-		if !map.getLayer(layerId)
-			return
-		visibility = map.getLayoutProperty(layerId, 'visibility')
-		if visibility == 'visible'
-			map.setLayoutProperty(layerId, 'visibility', 'none')
-		else
-			map.setLayoutProperty(layerId, 'visibility', 'visible')
+	toggleLayer = (string) ->
+		layerTypes = ['','-fill','-line']
+		for layerType in layerTypes
+			layerId = string+layerType
+			console.log layerId
+			if map.getLayer(layerId)
+				visibility = map.getLayoutProperty(layerId, 'visibility')
+				if visibility == 'visible'
+					map.setLayoutProperty(layerId, 'visibility', 'none')
+				else
+					map.setLayoutProperty(layerId, 'visibility', 'visible')
 
 	setUpSliders = () ->
 		$('.slider').each (i, slider) ->
