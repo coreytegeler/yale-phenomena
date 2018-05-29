@@ -1,0 +1,138 @@
+aside#filters
+	.tabs
+		.tab(data-form='accept-reject')
+			.label Accept/Reject
+		.tab.active(data-form='filters')
+			.label Filters
+	.inner
+		.scroller
+			.form(data-form='accept-reject')
+				.fieldset.filter.accept(data-prop='accept' data-prop-slug='accept')
+					.head
+						.label
+							.arrow
+							span Accept
+					.options
+						ul
+							li.sentence.selected.all(data-val=null) All Sentences
+
+				.fieldset.filter.reject(data-prop='reject' data-prop-slug='reject')
+					.head
+						.label
+							.arrow
+							span Reject
+					.options
+						ul
+							li.sentence.selected.all(data-val=null) All Sentences
+							
+			.form.active(data-form='filters')
+				.fieldset.filter.race(data-prop='Race' data-prop-slug='race')
+					.head
+						.label
+							.arrow
+							span Race/Ethnicity
+					.options
+						ul
+							li.option.selected.all(data-val=null) All Race
+							li.option(data-val='Amerindian' data-val-slug='amerindian') Amerindian
+							li.option(data-val='Asian' data-val-slug='asian') Asian
+							li.option(data-val='Black' data-val-slug='black') Black
+							li.option(data-val='Hispanic' data-val-slug='hispanic') Hispanic
+							li.option(data-val='White' data-val-slug='white') White
+							li.option(data-val='Other' data-val-slug='other') Other
+
+				.fieldset.filter.edu(data-prop='Education' data-prop-slug='edu')
+					.head
+						.label
+							.arrow
+							span Education
+					.options
+						ul
+							li.option.selected.all(data-val=null) All Education
+							li.option(data-val='Associates degree' data-val-slug='ad') Associates degree
+							li.option(data-val='Bachelors degree' data-val-slug='bd') Bachelors degree
+							li.option(data-val='Graduate degree (masters doctorate etc.)' data-val-slug='gd') Graduate degree (masters doctorate etc.)
+							li.option(data-val='High school graduate' data-val-slug='hsg') High school graduate
+							li.option(data-val='Some college no degree' data-val-slug='scnd') Some college no degree
+							li.option(data-val='Other' data-val-slug='other') Other
+
+				.fieldset.filter.gender(data-prop='Gender' data-prop-slug='gender')
+					.head
+						.label
+							.arrow
+							span Gender
+					.options
+						ul
+							li.option.selected.all(data-val=null) All Gender
+							li.option(data-val='Female' data-val-slug='f') Female
+							li.option(data-val='Male' data-val-slug='m') Male
+							li.option(data-val='Transgender (FTM)' data-val-slug='ftm') Transgender (FTM)
+							li.option(data-val='Transgender (MTF)' data-val-slug='mtf') Transgender (MTF)
+							li.option(data-val='Other' data-val-slug='other') Other
+				
+				.fieldset.filter.age.multi(data-prop='Age' data-prop-slug='age')
+					.head
+						.label
+							.arrow
+							span Age
+						.multi-toggle
+							.multi-label.selected(data-prop='Age' data-prop-slug='age') Range
+							.multi-label(data-prop='Age_Bin' data-prop-slug='age_group') Group
+					.options
+						.multi-field.open(data-prop='age')
+							.slider(data-type='range' data-min='0' data-max='100' data-val='0,100' data-val-slug='0,100')
+								.handle-label.min
+								.handle-label.max
+						.multi-field(data-prop='age_group')
+								ul
+									li.option.selected.all(data-val=null) All Age Groups
+									li.option(data-val='18-30' data-val-slug='18-30') 18-30
+									li.option(data-val='31-40' data-val-slug='31-40') 31-40
+									li.option(data-val='41-50' data-val-slug='41-50') 41-50
+									li.option(data-val='51-60' data-val-slug='51-60') 51-60
+									li.option(data-val='61_up' data-val-slug='61') 61 &amp; Up
+
+
+				.fieldset.filter.accepted.radio(data-prop='show', data-prop-slug='show')
+					.head
+						.label
+							.arrow
+							span Acceptability
+						.note Change threshold by modifying values
+					.options
+						ul
+							li.option.selected.all(data-val=null) Show All
+							li.option.range-input(data-val='4,5', data-type='accept').accept
+								span 'Acceptable' Only
+								.inputs
+									input.min(type='number' value='4' min='1' max='5')
+									span &ndash;
+									input.max(type='number' value='5' min='1' max='5')
+							li.option.range-input(data-val='1,2', data-type='reject').reject
+								span 'Unacceptable' Only
+								.inputs
+									input.min(type='number' value='1' min='1' max='5')
+									span &ndash;
+									input.max(type='number' value='2' min='1' max='5')
+
+				.fieldset.layers(data-prop='layers' data-prop-slug='layers')
+					.head
+						.label
+							.arrow
+							span Advanced
+					.options
+						ul
+							li.option(data-val='hotspots' data-val-slug='hotspots') Hot Spots
+							li.option(data-val='coldspots' data-val-slug='coldspots') Cold Spots
+			#embedder.form
+				.fieldset.embed
+					.head
+						.label
+							.arrow
+							span Get Embed Code
+					.options
+						.instruct Copy and paste this text to embed the map with all of the current filters and data.
+						textarea(rows=5)
+
+		.shadow.bottom
+		.shadow.top

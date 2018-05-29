@@ -14,7 +14,7 @@ var replace = require('gulp-replace');
 var htmlreplace = require('gulp-html-replace');
 
 var paths = {
-  pug: './*.pug',
+  pug: './index.pug',
   sass: './assets/sass/*.scss',
   coffee: './assets/coffee/*.coffee',
 }
@@ -43,7 +43,7 @@ gulp.task('compile-pug', function() {
     .pipe(pug())
     .pipe(gulpif(argv.prod, htmlmin({ collapseWhitespace: true })))
     .pipe(gulpif(argv.prod, htmlreplace({ css: 'style.min.css' })))
-    .pipe(replace('MAPBOX_VARS', encodeURI(JSON.stringify(mapboxVars))))
+    // .pipe(replace('MAPBOX_VARS', encodeURI(JSON.stringify(mapboxVars))))
     .pipe(replace('imgs/', dest.imgs))
     .pipe(gulp.dest(dest.html))
   .on('end', function() {

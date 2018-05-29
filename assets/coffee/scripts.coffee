@@ -1,27 +1,37 @@
 $ ->
 	keyUri = 'data/key8.csv'
-	$embed = $('#embed')
+	$body = $('body')
+	$map = $('#map')
 	$filters = $('#filters')
 	$phenomena = $('#phenomena')
 	$creation = $('#creation')
+	$embedder = $('#embedder')
 	$fixedHeader = $('header.fixed')
 	$headerSentence = $('header.fixed .sentence')
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
 	styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67'
 
-	window.mapdata =
-		survey:
-			uri: 'mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1'
-			id: 'Survey_8'
-		coldspots:
-			uri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q'
-			id: 'Coldspots_8'
-		hotspots:
-			uri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge'
-			id: 'Hotspots_8'
+	window.query = {}
+		
+	prepareMap = (e) ->
+		e.preventDefault()
+		serializedData = $('form').serializeArray()
+		mapData = {}
+		$.each serializedData, () ->
+			vars = this.name.split('.')
+			dataType = vars[0]
+			varType = vars[1]
+			if !mapData[dataType]
+				mapData[dataType] = {}
+			mapData[dataType][varType] = this.value
+		query.map = mapData
+		mapDataStr = JSON.stringify(mapData)
+		$map.attr('data-map', mapDataStr)
+		createMap()
 
 	createMap = () ->
-		$embed.removeClass('pre form')
+		setEmbedder()
+		$body.removeClass('form').addClass('map')
 		mapboxgl.accessToken = accessToken
 		window.map = new mapboxgl.Map
 			container: 'map',
@@ -36,8 +46,8 @@ $ ->
 			'type': 'symbol'
 			'source':
 				'type': 'vector'
-				'url': mapdata.survey.uri
-			'source-layer': mapdata.survey.id
+				'url': query.map.survey.uri
+			'source-layer': query.map.survey.id
 			'zoom': 10
 			'layout':
 				'icon-allow-overlap': true
@@ -54,8 +64,8 @@ $ ->
 			'type': 'line'
 			'source':
 				'type': 'vector'
-				'url': mapdata.coldspots.uri
-			'source-layer': mapdata.coldspots.id
+				'url': query.map.coldspots.uri
+			'source-layer': query.map.coldspots.id
 			'minzoom': 0
 			'maxzoom': 24
 			'layout':
@@ -75,8 +85,8 @@ $ ->
 			'type': 'line'
 			'source':
 				'type': 'vector'
-				'url': mapdata.hotspots.uri
-			'source-layer': mapdata.hotspots.id
+				'url': query.map.hotspots.uri
+			'source-layer': query.map.hotspots.id
 			'minzoom': 0
 			'maxzoom': 24
 			'layout':
@@ -97,8 +107,8 @@ $ ->
 			'type': 'fill'
 			'source':
 				'type': 'vector'
-				'url': mapdata.coldspots.uri
-			'source-layer': mapdata.coldspots.id
+				'url': query.map.coldspots.uri
+			'source-layer': query.map.coldspots.id
 			'minzoom': 0
 			'maxzoom': 24
 			'layout':
@@ -112,8 +122,8 @@ $ ->
 			'type': 'fill'
 			'source':
 				'type': 'vector'
-				'url': mapdata.hotspots.uri
-			'source-layer': mapdata.hotspots.id
+				'url': query.map.hotspots.uri
+			'source-layer': query.map.hotspots.id
 			'minzoom': 0
 			'maxzoom': 24
 			'layout':
@@ -126,21 +136,8 @@ $ ->
 			closeButton: false,
 			closeOnClick: false
 
-		$embed.removeClass('pre')
 		startListening()
 		getFilterQuery()
-		selectSentence()	
-
-	getUniqueFeatures = (array, comparatorProperty) ->
-		existingFeatureKeys = {}
-		uniqueFeatures = array.filter (el) ->
-			if(existingFeatureKeys[el.properties[comparatorProperty]])
-				return false
-			else
-				existingFeatureKeys[el.properties[comparatorProperty]] = true
-				return true
-		return uniqueFeatures
-
 
 	toggleSide = (e) ->
 		$side = $(this).parents('aside')
@@ -153,10 +150,11 @@ $ ->
 		$sentence = $(this)
 		val = $sentence.attr('data-val')
 		selectSentence(val)	
-		setUrl()	
+		setUrlParams()	
 
 	selectSentence = (val) ->
 		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
+		console.log $sentence
 		if !$sentence.length
 			$sentence = $phenomena.find('.option').first()
 			val = $sentence.attr('data-val')
@@ -191,7 +189,7 @@ $ ->
 		prop = $fieldset.attr('data-prop-slug') || $fieldset.attr('data-prop') 
 		val = $option.attr('data-val-slug') || $option.attr('data-val')
 		selectFilter(prop, val)
-		setUrl()
+		setUrlParams()
 
 
 	selectFilter = (prop, val) ->
@@ -376,7 +374,6 @@ $ ->
 		layerTypes = ['','-fill','-line']
 		for layerType in layerTypes
 			layerId = string+layerType
-			console.log layerId
 			if map.getLayer(layerId)
 				visibility = map.getLayoutProperty(layerId, 'visibility')
 				if visibility == 'visible'
@@ -429,7 +426,7 @@ $ ->
 			$slider.attr('data-val', val)
 			$slider.attr('data-val-slug', val)
 		setFilter()
-		setUrl()
+		setUrlParams()
 
 	MIN = 1
 	MAX = 5
@@ -579,13 +576,32 @@ $ ->
 						$filters.find('.fieldset.accept ul').append($li.clone())
 						$filters.find('.fieldset.reject ul').append($li.clone())
 
-	setUrl = () ->
-		filters = map.getFilter('survey-data')
-		query = {}
+	getMapData = () ->
+		mapData = {}
+		queryStr = window.location.search.substring(1)
+		if !queryStr
+			return
+		queryStr = decodeURIComponent(queryStr)
+		queryVars = queryStr.split('&')
+		for queryVar, i in queryVars
+			pair = queryVar.split('=')
+			vars = pair[0].split('.')
+			dataType = vars[1]
+			varType = vars[2]
+			val = pair[1]
+			if vars[0] == 'map'
+				if !mapData[dataType]
+					mapData[dataType] = {}
+				mapData[dataType][varType] = val
+		window.query.map = mapData
+
+	setUrlParams = () ->
 		$sentence = $phenomena.find('.sentence.selected')
 		if $sentence.length
 			sentenceVal = $sentence.attr('data-val')
 			query['s'] = sentenceVal
+
+		filters = map.getFilter('survey-data')
 		if filters
 			for i in [1..filters.length-1]
 				if filter = filters[i]
@@ -599,63 +615,63 @@ $ ->
 						query[prop] = query[prop]+','+vals
 					else
 						query[prop] = vals
+
+		mapData = query.map
+		window.query = Object.assign(query, {'map':mapData})
+		queryStr = $.param(window.query)
+		queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '')
 		location =  window.location
-		url = location.href.replace(location.search,'')
-		if filter != 'all'
-			url += '?'+$.param query
+		url = location.href
+		if filters
+			url = url.replace(location.search,'')	
+		url += '?'+queryStr
 		url = decodeURIComponent(url)
-		history.pushState queryVals, '', url
+		history.pushState(queryVals, '', url)
+		setEmbedder()
+
+	setEmbedder = () ->
+		url = window.location
+		iframe = '<iframe width="100%" height="700px" src="'+url+'"></iframe>'
+		$embedder.find('textarea').html(iframe)
 
 	getMapQuery = () ->
-		query = window.location.search.substring(1)
-		if query
-			query = decodeURIComponent(query)
-			queryVars = query.split('&')
-			# window.mapdata = {}
-			for queryVar, i in queryVars
-				pair = queryVar.split('=')
-				val = pair[1]
-				props = pair[0].split('.')
-				layer = props[0]
-				type = props[1]
-				# if !mapdata[layer]
-				# 	mapdata[layer] = {}
-				# mapdata[layer][type] = val
-		createMap()
+		queryStr = window.location.search.substring(1)
+		if queryStr
+			getMapData()
+			createMap()
+		else
+			$body.addClass('form')
+			$creation.find('form').on 'submit', prepareMap
 
 
 	getFilterQuery = () ->
-		query = window.location.search.substring(1)
-		if query
-			query = decodeURIComponent(query)
-			queryVars = query.split('&')
-			for queryVar, i in queryVars
-				pair = queryVar.split('=')
-				if pair[0] == 's'
-					selectSentence(pair[1])
-			for queryVar, i in queryVars
-				pair = queryVar.split('=')
-				prop = pair[0]
-				openMulti(prop)
-				if pair[0].indexOf('map') > -1
-					return
-				if prop == 'show'
-					return selectFilter(prop, pair[1])
-				vals = pair[1]
-				if pair[0].indexOf('_') < 0
-					vals = vals.split(',')
-				else
-					vals = [getThresholdVal(vals)]
-				if prop == 'age'
-					setSlider(prop, vals)
-				else if prop != 's'
-					for val in vals
-						selectFilter(prop, val)
-
-	toggleView = (e) ->
-		if (e.keyCode == 27)
-			$('body').toggleClass('embedded')
-			map.resize()
+		queryStr = window.location.search.substring(1)
+		if !queryStr
+			return
+		queryStr = decodeURIComponent(queryStr)
+		queryVars = queryStr.split('&')
+		sentenceSelected = false
+		for queryVar, i in queryVars
+			pair = queryVar.split('=')
+			prop = pair[0]
+			vals = pair[1]
+			if prop == 's'
+				sentenceSelected = true
+				selectSentence(vals)
+			openMulti(prop)				
+			if prop == 'show'
+				return selectFilter(prop, vals)
+			if prop.indexOf('_') < 0
+				vals = vals.split(',')
+			else
+				vals = [getThresholdVal(vals)]
+			if prop == 'age'
+				setSlider(prop, vals)
+			else if prop != 's'
+				for val in vals
+					selectFilter(prop, val)
+		if !sentenceSelected
+			selectSentence()
 
 	hoverMarker = (e) ->
 		sentence = $phenomena.attr('data-selected')
@@ -706,7 +722,6 @@ $ ->
 				if oldId == newId
 					$popup.removeClass('show')
 			, 500
-
 
 	getProp = (propSlug) ->
 		if $fieldset = $('.fieldset[data-prop-slug="'+propSlug+'"]')
@@ -762,7 +777,6 @@ $ ->
 	$('body').on 'click', 'aside .close', toggleSide
 	$('body').on 'click', 'aside#phenomena ul li', clickSentence
 	$('body').on 'click', 'aside#filters .tab', toggleFilterTabs
-	$('body').keyup toggleView
 
 
 

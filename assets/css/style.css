@@ -59,12 +59,13 @@ html, body {
 
 body {
   overflow-y: auto; }
-
-#embed {
-  width: 100%;
-  height: 100%;
-  display: block; }
-  #embed.loaded #creation {
+  body.form #frame {
+    display: none; }
+  body.form #creation {
+    display: block; }
+  body.map #frame {
+    display: block; }
+  body.map #creation {
     display: none; }
 
 #frame {
@@ -72,7 +73,8 @@ body {
   height: 100%;
   padding: 30px;
   background-color: #a8d7ee;
-  position: relative; }
+  position: relative;
+  display: none; }
 
 h1 {
   font-size: 20px;
@@ -301,6 +303,21 @@ aside {
         display: none; }
         aside#filters .inner .form.active {
           display: block; }
+        aside#filters .inner .form#embedder {
+          padding-top: 0;
+          padding-bottom: 15px;
+          display: block; }
+          aside#filters .inner .form#embedder .options {
+            padding: 0; }
+            aside#filters .inner .form#embedder .options .instruct {
+              color: #7a91ad; }
+            aside#filters .inner .form#embedder .options textarea {
+              margin: 15px 0 0 0;
+              width: 100%;
+              border: none;
+              background: #dcdfe2; }
+          aside#filters .inner .form#embedder .fieldset.open .options {
+            padding-top: 15px; }
       aside#filters .inner .shadow.top {
         box-shadow: inset 0 2.5em 1.5em -1em #f2f2ee;
         margin-bottom: -60px;
@@ -538,7 +555,7 @@ footer {
       footer .keys .key.reject {
         background-image: url(./../img/rejected-key.svg); }
 
-form#creation {
+#creation {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -548,27 +565,26 @@ form#creation {
   flex-direction: row;
   align-content: center;
   background-color: #a8d7ee;
-  display: flex; }
-  form#creation div {
+  display: none; }
+  #creation form {
     width: 228px;
-    display: table;
+    height: 100%;
+    display: flex;
     margin: auto; }
-    form#creation div label {
-      font-size: 16px;
-      line-height: 19px;
-      display: block;
-      padding: 0 0 10px 0; }
-    form#creation div input {
-      width: 100%;
-      padding: 10px;
-      margin: 0 0 10px 0;
-      border: none; }
-
-body.embedded #embed {
-  width: 780px;
-  height: 600px;
-  margin: 250px 0 900px 125px; }
-  body.embedded #embed header .wrapper {
-    background-color: transparent; }
-  body.embedded #embed header h1.sentence {
-    display: none !important; }
+    #creation form .inner {
+      display: table;
+      margin: auto; }
+      #creation form .inner label {
+        font-size: 16px;
+        line-height: 19px;
+        display: block;
+        padding: 0 0 10px 0; }
+        #creation form .inner label em {
+          padding: 0 0 0 1em;
+          font-size: .8em;
+          color: #7a91ad; }
+      #creation form .inner input {
+        width: 100%;
+        padding: 10px;
+        margin: 0 0 10px 0;
+        border: none; }

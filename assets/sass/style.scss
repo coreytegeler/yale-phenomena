@@ -11,12 +11,18 @@ html, body {
 }
 body {
 	overflow-y: auto;
-}
-#embed {
-	width: 100%;
-	height: 100%;
-	display: block;
-	&.loaded {
+	&.form {
+		#frame {
+			display: none;
+		}
+		#creation {
+			display: block;
+		}
+	}
+	&.map {
+		#frame {
+			display: block;
+		}
 		#creation {
 			display: none;
 		}
@@ -28,6 +34,7 @@ body {
 	padding: $mdSpace;
 	background-color: $lightBlue;
 	position: relative;
+	display: none;
 }
 h1 {
 	@include lgText;
@@ -299,6 +306,26 @@ aside {
 				display: none;
 				&.active {
 					display: block;
+				}
+				&#embedder {
+					padding-top: 0;
+					padding-bottom: 15px;
+					display: block;
+					.options {
+						padding: 0;
+						.instruct {
+							color: $mediumGrey;
+						}
+						textarea {
+							margin: $smSpace 0 0 0;
+							width: 100%;
+							border: none;
+							background: $lightGrey;
+						}
+					}
+					.fieldset.open .options {
+						padding-top: $smSpace;
+					}
 				}
 			}
 			.shadow {
@@ -601,6 +628,9 @@ main {
 		}
 	}
 }
+#embed {
+
+}
 footer {
 	width: calc(100% - #{$lgSpace});
 	height: calc(#{$mdSpace} - 14px);
@@ -634,7 +664,7 @@ footer {
 		}
 	}
 }
-form#creation {
+#creation {
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -644,40 +674,34 @@ form#creation {
 	flex-direction: row;
 	align-content: center;
 	background-color: $lightBlue;
-	display: flex;
-	div {
+	display: none;
+	form {
 		width: $left;
-		display: table;
+		height: 100%;
+		display: flex;
 		margin: auto;
-		.group {
-		}
-		label {
-			@include mdText;
-			display: block;
-			padding: 0 0 10px 0;
-		}
-		input {
-			width: 100%;
-			padding: 10px;
-			margin: 0 0 10px 0;
-			border: none;
-		}
-		select {
-
-		}
-	}
-}
-body.embedded {
-	#embed {
-		width: 780px;
-		height: 600px;
-		margin: 250px 0 900px 125px;
-		header {
-			.wrapper {
-				background-color: transparent;
+		.inner {
+			display: table;
+			margin: auto;
+			label {
+				@include mdText;
+				display: block;
+				padding: 0 0 10px 0;
+				em {
+					padding: 0 0 0 1em;
+					font-size: .8em;
+					// display: block;
+					color: $mediumGrey;
+				}
 			}
-			h1.sentence {
-				display: none !important;
+			input {
+				width: 100%;
+				padding: 10px;
+				margin: 0 0 10px 0;
+				border: none;
+			}
+			select {
+
 			}
 		}
 	}

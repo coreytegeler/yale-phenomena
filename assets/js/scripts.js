@@ -1,30 +1,40 @@
 $(function() {
-  var $creation, $embed, $filters, $fixedHeader, $headerSentence, $phenomena, MAX, MIN, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapQuery, getOption, getProp, getPropSlug, getSentence, getThresholdVal, getUniqueFeatures, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, selectFilter, selectMulti, selectSentence, setFilter, setSlider, setThresholdVal, setUpSliders, setUrl, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, toggleView, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, MAX, MIN, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getProp, getPropSlug, getSentence, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
-  $embed = $('#embed');
+  $body = $('body');
+  $map = $('#map');
   $filters = $('#filters');
   $phenomena = $('#phenomena');
   $creation = $('#creation');
+  $embedder = $('#embedder');
   $fixedHeader = $('header.fixed');
   $headerSentence = $('header.fixed .sentence');
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67';
-  window.mapdata = {
-    survey: {
-      uri: 'mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1',
-      id: 'Survey_8'
-    },
-    coldspots: {
-      uri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q',
-      id: 'Coldspots_8'
-    },
-    hotspots: {
-      uri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge',
-      id: 'Hotspots_8'
-    }
+  window.query = {};
+  prepareMap = function(e) {
+    var mapData, mapDataStr, serializedData;
+    e.preventDefault();
+    serializedData = $('form').serializeArray();
+    mapData = {};
+    $.each(serializedData, function() {
+      var dataType, varType, vars;
+      vars = this.name.split('.');
+      dataType = vars[0];
+      varType = vars[1];
+      if (!mapData[dataType]) {
+        mapData[dataType] = {};
+      }
+      return mapData[dataType][varType] = this.value;
+    });
+    query.map = mapData;
+    mapDataStr = JSON.stringify(mapData);
+    $map.attr('data-map', mapDataStr);
+    return createMap();
   };
   createMap = function() {
-    $embed.removeClass('pre form');
+    setEmbedder();
+    $body.removeClass('form').addClass('map');
     mapboxgl.accessToken = accessToken;
     window.map = new mapboxgl.Map({
       container: 'map',
@@ -41,9 +51,9 @@ $(function() {
       'type': 'symbol',
       'source': {
         'type': 'vector',
-        'url': mapdata.survey.uri
+        'url': query.map.survey.uri
       },
-      'source-layer': mapdata.survey.id,
+      'source-layer': query.map.survey.id,
       'zoom': 10,
       'layout': {
         'icon-allow-overlap': true,
@@ -61,9 +71,9 @@ $(function() {
       'type': 'line',
       'source': {
         'type': 'vector',
-        'url': mapdata.coldspots.uri
+        'url': query.map.coldspots.uri
       },
-      'source-layer': mapdata.coldspots.id,
+      'source-layer': query.map.coldspots.id,
       'minzoom': 0,
       'maxzoom': 24,
       'layout': {
@@ -87,9 +97,9 @@ $(function() {
       'type': 'line',
       'source': {
         'type': 'vector',
-        'url': mapdata.hotspots.uri
+        'url': query.map.hotspots.uri
       },
-      'source-layer': mapdata.hotspots.id,
+      'source-layer': query.map.hotspots.id,
       'minzoom': 0,
       'maxzoom': 24,
       'layout': {
@@ -113,9 +123,9 @@ $(function() {
       'type': 'fill',
       'source': {
         'type': 'vector',
-        'url': mapdata.coldspots.uri
+        'url': query.map.coldspots.uri
       },
-      'source-layer': mapdata.coldspots.id,
+      'source-layer': query.map.coldspots.id,
       'minzoom': 0,
       'maxzoom': 24,
       'layout': {
@@ -131,9 +141,9 @@ $(function() {
       'type': 'fill',
       'source': {
         'type': 'vector',
-        'url': mapdata.hotspots.uri
+        'url': query.map.hotspots.uri
       },
-      'source-layer': mapdata.hotspots.id,
+      'source-layer': query.map.hotspots.id,
       'minzoom': 0,
       'maxzoom': 24,
       'layout': {
@@ -148,23 +158,8 @@ $(function() {
       closeButton: false,
       closeOnClick: false
     });
-    $embed.removeClass('pre');
     startListening();
-    getFilterQuery();
-    return selectSentence();
-  };
-  getUniqueFeatures = function(array, comparatorProperty) {
-    var existingFeatureKeys, uniqueFeatures;
-    existingFeatureKeys = {};
-    uniqueFeatures = array.filter(function(el) {
-      if (existingFeatureKeys[el.properties[comparatorProperty]]) {
-        return false;
-      } else {
-        existingFeatureKeys[el.properties[comparatorProperty]] = true;
-        return true;
-      }
-    });
-    return uniqueFeatures;
+    return getFilterQuery();
   };
   toggleSide = function(e) {
     var $side;
@@ -179,11 +174,12 @@ $(function() {
     $sentence = $(this);
     val = $sentence.attr('data-val');
     selectSentence(val);
-    return setUrl();
+    return setUrlParams();
   };
   selectSentence = function(val) {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
     $sentence = $phenomena.find('.option[data-val="' + val + '"]');
+    console.log($sentence);
     if (!$sentence.length) {
       $sentence = $phenomena.find('.option').first();
       val = $sentence.attr('data-val');
@@ -223,7 +219,7 @@ $(function() {
     prop = $fieldset.attr('data-prop-slug') || $fieldset.attr('data-prop');
     val = $option.attr('data-val-slug') || $option.attr('data-val');
     selectFilter(prop, val);
-    return setUrl();
+    return setUrlParams();
   };
   selectFilter = function(prop, val) {
     var $fieldset, $option, $options, $selected;
@@ -458,7 +454,6 @@ $(function() {
     for (k = 0, len = layerTypes.length; k < len; k++) {
       layerType = layerTypes[k];
       layerId = string + layerType;
-      console.log(layerId);
       if (map.getLayer(layerId)) {
         visibility = map.getLayoutProperty(layerId, 'visibility');
         if (visibility === 'visible') {
@@ -521,7 +516,7 @@ $(function() {
       $slider.attr('data-val-slug', val);
     }
     setFilter();
-    return setUrl();
+    return setUrlParams();
   };
   MIN = 1;
   MAX = 5;
@@ -700,15 +695,39 @@ $(function() {
       }
     });
   };
-  setUrl = function() {
-    var $sentence, filter, filters, i, j, k, l, location, prop, query, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
-    filters = map.getFilter('survey-data');
-    query = {};
+  getMapData = function() {
+    var dataType, i, k, len, mapData, pair, queryStr, queryVar, queryVars, val, varType, vars;
+    mapData = {};
+    queryStr = window.location.search.substring(1);
+    if (!queryStr) {
+      return;
+    }
+    queryStr = decodeURIComponent(queryStr);
+    queryVars = queryStr.split('&');
+    for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
+      queryVar = queryVars[i];
+      pair = queryVar.split('=');
+      vars = pair[0].split('.');
+      dataType = vars[1];
+      varType = vars[2];
+      val = pair[1];
+      if (vars[0] === 'map') {
+        if (!mapData[dataType]) {
+          mapData[dataType] = {};
+        }
+        mapData[dataType][varType] = val;
+      }
+    }
+    return window.query.map = mapData;
+  };
+  setUrlParams = function() {
+    var $sentence, filter, filters, i, j, k, l, location, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
     $sentence = $phenomena.find('.sentence.selected');
     if ($sentence.length) {
       sentenceVal = $sentence.attr('data-val');
       query['s'] = sentenceVal;
     }
+    filters = map.getFilter('survey-data');
     if (filters) {
       for (i = k = 1, ref = filters.length - 1; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
         if (filter = filters[i]) {
@@ -727,76 +746,77 @@ $(function() {
         }
       }
     }
+    mapData = query.map;
+    window.query = Object.assign(query, {
+      'map': mapData
+    });
+    queryStr = $.param(window.query);
+    queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '');
     location = window.location;
-    url = location.href.replace(location.search, '');
-    if (filter !== 'all') {
-      url += '?' + $.param(query);
+    url = location.href;
+    if (filters) {
+      url = url.replace(location.search, '');
     }
+    url += '?' + queryStr;
     url = decodeURIComponent(url);
-    return history.pushState(queryVals, '', url);
+    history.pushState(queryVals, '', url);
+    return setEmbedder();
+  };
+  setEmbedder = function() {
+    var iframe, url;
+    url = window.location;
+    iframe = '<iframe width="100%" height="700px" src="' + url + '"></iframe>';
+    return $embedder.find('textarea').html(iframe);
   };
   getMapQuery = function() {
-    var i, k, layer, len, pair, props, query, queryVar, queryVars, type, val;
-    query = window.location.search.substring(1);
-    if (query) {
-      query = decodeURIComponent(query);
-      queryVars = query.split('&');
-      for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
-        queryVar = queryVars[i];
-        pair = queryVar.split('=');
-        val = pair[1];
-        props = pair[0].split('.');
-        layer = props[0];
-        type = props[1];
-      }
+    var queryStr;
+    queryStr = window.location.search.substring(1);
+    if (queryStr) {
+      getMapData();
+      return createMap();
+    } else {
+      $body.addClass('form');
+      return $creation.find('form').on('submit', prepareMap);
     }
-    return createMap();
   };
   getFilterQuery = function() {
-    var i, k, l, len, len1, len2, m, pair, prop, query, queryVar, queryVars, val, vals;
-    query = window.location.search.substring(1);
-    if (query) {
-      query = decodeURIComponent(query);
-      queryVars = query.split('&');
-      for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
-        queryVar = queryVars[i];
-        pair = queryVar.split('=');
-        if (pair[0] === 's') {
-          selectSentence(pair[1]);
-        }
+    var i, k, l, len, len1, pair, prop, queryStr, queryVar, queryVars, sentenceSelected, val, vals;
+    queryStr = window.location.search.substring(1);
+    if (!queryStr) {
+      return;
+    }
+    queryStr = decodeURIComponent(queryStr);
+    queryVars = queryStr.split('&');
+    sentenceSelected = false;
+    for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
+      queryVar = queryVars[i];
+      pair = queryVar.split('=');
+      prop = pair[0];
+      vals = pair[1];
+      if (prop === 's') {
+        sentenceSelected = true;
+        selectSentence(vals);
       }
-      for (i = l = 0, len1 = queryVars.length; l < len1; i = ++l) {
-        queryVar = queryVars[i];
-        pair = queryVar.split('=');
-        prop = pair[0];
-        openMulti(prop);
-        if (pair[0].indexOf('map') > -1) {
-          return;
-        }
-        if (prop === 'show') {
-          return selectFilter(prop, pair[1]);
-        }
-        vals = pair[1];
-        if (pair[0].indexOf('_') < 0) {
-          vals = vals.split(',');
-        } else {
-          vals = [getThresholdVal(vals)];
-        }
-        if (prop === 'age') {
-          setSlider(prop, vals);
-        } else if (prop !== 's') {
-          for (m = 0, len2 = vals.length; m < len2; m++) {
-            val = vals[m];
-            selectFilter(prop, val);
-          }
+      openMulti(prop);
+      if (prop === 'show') {
+        return selectFilter(prop, vals);
+      }
+      if (prop.indexOf('_') < 0) {
+        vals = vals.split(',');
+      } else {
+        vals = [getThresholdVal(vals)];
+      }
+      if (prop === 'age') {
+        setSlider(prop, vals);
+      } else if (prop !== 's') {
+        for (l = 0, len1 = vals.length; l < len1; l++) {
+          val = vals[l];
+          selectFilter(prop, val);
         }
       }
     }
-  };
-  toggleView = function(e) {
-    if (e.keyCode === 27) {
-      $('body').toggleClass('embedded');
-      return map.resize();
+    if (!sentenceSelected) {
+      return selectSentence();
     }
   };
   hoverMarker = function(e) {
@@ -919,6 +939,5 @@ $(function() {
   $('.range-input .inputs').on('mouseleave', unhoverThresholds);
   $('body').on('click', 'aside .close', toggleSide);
   $('body').on('click', 'aside#phenomena ul li', clickSentence);
-  $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
-  return $('body').keyup(toggleView);
+  return $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
 });
