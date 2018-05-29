@@ -25,8 +25,7 @@ $ ->
 				mapData[dataType] = {}
 			mapData[dataType][varType] = this.value
 		query.map = mapData
-		mapDataStr = JSON.stringify(mapData)
-		$map.attr('data-map', mapDataStr)
+		setUrlParams()
 		createMap()
 
 	createMap = () ->
@@ -154,7 +153,6 @@ $ ->
 
 	selectSentence = (val) ->
 		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
-		console.log $sentence
 		if !$sentence.length
 			$sentence = $phenomena.find('.option').first()
 			val = $sentence.attr('data-val')
@@ -355,7 +353,6 @@ $ ->
 					$slider.attr('data-val', vals.join(','))
 					filter.push(['>=', prop, vals[0]])
 					filter.push(['<=', prop, vals[1]])
-		
 		map.setFilter('survey-data', filter)
 
 	clearFilter = (prop) ->
@@ -596,13 +593,14 @@ $ ->
 		window.query.map = mapData
 
 	setUrlParams = () ->
+		mapData = window.query.map
+		window.query = {}
 		$sentence = $phenomena.find('.sentence.selected')
 		if $sentence.length
 			sentenceVal = $sentence.attr('data-val')
 			query['s'] = sentenceVal
-
-		filters = map.getFilter('survey-data')
-		if filters
+		if $map.is('.mapboxgl-map')
+			filters = map.getFilter('survey-data')
 			for i in [1..filters.length-1]
 				if filter = filters[i]
 					prop = getPropSlug(filter[1])
@@ -616,8 +614,7 @@ $ ->
 					else
 						query[prop] = vals
 
-		mapData = query.map
-		window.query = Object.assign(query, {'map':mapData})
+		window.query = Object.assign({'map':mapData}, query)
 		queryStr = $.param(window.query)
 		queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '')
 		location =  window.location

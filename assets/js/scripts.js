@@ -13,7 +13,7 @@ $(function() {
   styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67';
   window.query = {};
   prepareMap = function(e) {
-    var mapData, mapDataStr, serializedData;
+    var mapData, serializedData;
     e.preventDefault();
     serializedData = $('form').serializeArray();
     mapData = {};
@@ -28,8 +28,7 @@ $(function() {
       return mapData[dataType][varType] = this.value;
     });
     query.map = mapData;
-    mapDataStr = JSON.stringify(mapData);
-    $map.attr('data-map', mapDataStr);
+    setUrlParams();
     return createMap();
   };
   createMap = function() {
@@ -179,7 +178,6 @@ $(function() {
   selectSentence = function(val) {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
     $sentence = $phenomena.find('.option[data-val="' + val + '"]');
-    console.log($sentence);
     if (!$sentence.length) {
       $sentence = $phenomena.find('.option').first();
       val = $sentence.attr('data-val');
@@ -722,13 +720,15 @@ $(function() {
   };
   setUrlParams = function() {
     var $sentence, filter, filters, i, j, k, l, location, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
+    mapData = window.query.map;
+    window.query = {};
     $sentence = $phenomena.find('.sentence.selected');
     if ($sentence.length) {
       sentenceVal = $sentence.attr('data-val');
       query['s'] = sentenceVal;
     }
-    filters = map.getFilter('survey-data');
-    if (filters) {
+    if ($map.is('.mapboxgl-map')) {
+      filters = map.getFilter('survey-data');
       for (i = k = 1, ref = filters.length - 1; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
         if (filter = filters[i]) {
           prop = getPropSlug(filter[1]);
@@ -746,10 +746,9 @@ $(function() {
         }
       }
     }
-    mapData = query.map;
-    window.query = Object.assign(query, {
+    window.query = Object.assign({
       'map': mapData
-    });
+    }, query);
     queryStr = $.param(window.query);
     queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '');
     location = window.location;
