@@ -681,18 +681,13 @@ footer {
 		display: flex;
 		margin: auto;
 		.inner {
+			width: 100%;
 			display: table;
 			margin: auto;
 			label {
 				@include mdText;
 				display: block;
-				padding: 0 0 10px 0;
-				em {
-					padding: 0 0 0 1em;
-					font-size: .8em;
-					// display: block;
-					color: $mediumGrey;
-				}
+				padding: 0 0 5px 0;
 			}
 			input {
 				width: 100%;
