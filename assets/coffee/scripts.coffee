@@ -180,7 +180,7 @@ $ ->
 
 	clickFilter = (e) ->		
 		$option = $(this)
-		if $option.is('.range-input') && $(e.target).is('.inputs, .inputs *')
+		if $(e.target).is('.inputs, .inputs *')
 			return false
 		$fieldset = $option.parents('.fieldset')
 		$side = $fieldset.parents('aside')
@@ -203,12 +203,6 @@ $ ->
 		$options = $fieldset.find('.options')
 		if !$option || !$option.length
 			return
-		if $option.is('.all')
-			$selected.filter(':not(.all)').removeClass('selected')
-		else if $fieldset.is('.radio')
-			$selected.removeClass('selected')
-		else
-			$selected.filter('.all').removeClass('selected')
 
 		if $option.is('.selected:not(.all)')
 			$option.removeClass('selected')
@@ -216,6 +210,13 @@ $ ->
 				$fieldset.find('.all').addClass('selected')
 		else
 			$option.addClass('selected')
+
+		if $option.is('.all')
+			$selected.filter(':not(.all)').removeClass('selected')
+		else if $fieldset.is('.radio')
+			$selected.removeClass('selected')
+		else
+			$selected.filter('.all').removeClass('selected')
 
 		if $fieldset.is('.layers')
 			toggleLayer(val)

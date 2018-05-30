@@ -209,7 +209,7 @@ $(function() {
   clickFilter = function(e) {
     var $fieldset, $option, $side, prop, val;
     $option = $(this);
-    if ($option.is('.range-input') && $(e.target).is('.inputs, .inputs *')) {
+    if ($(e.target).is('.inputs, .inputs *')) {
       return false;
     }
     $fieldset = $option.parents('.fieldset');
@@ -235,13 +235,6 @@ $(function() {
     if (!$option || !$option.length) {
       return;
     }
-    if ($option.is('.all')) {
-      $selected.filter(':not(.all)').removeClass('selected');
-    } else if ($fieldset.is('.radio')) {
-      $selected.removeClass('selected');
-    } else {
-      $selected.filter('.all').removeClass('selected');
-    }
     if ($option.is('.selected:not(.all)')) {
       $option.removeClass('selected');
       if (!$options.find('.selected').length) {
@@ -249,6 +242,13 @@ $(function() {
       }
     } else {
       $option.addClass('selected');
+    }
+    if ($option.is('.all')) {
+      $selected.filter(':not(.all)').removeClass('selected');
+    } else if ($fieldset.is('.radio')) {
+      $selected.removeClass('selected');
+    } else {
+      $selected.filter('.all').removeClass('selected');
     }
     if ($fieldset.is('.layers')) {
       return toggleLayer(val);

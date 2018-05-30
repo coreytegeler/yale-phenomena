@@ -377,30 +377,32 @@ aside {
       aside#filters .fieldset ul li.selected {
         font-weight: 400;
         background-position: right center !important; }
-      aside#filters .fieldset .range-input:hover:not(.selected).no-hover {
-        font-weight: 200; }
-      aside#filters .fieldset .range-input .inputs {
-        font-weight: 200;
-        display: inline;
-        float: right;
-        color: #f9f9f9;
-        cursor: default; }
-        aside#filters .fieldset .range-input .inputs input {
-          width: 1.5em;
-          background-color: transparent;
-          border: none;
-          outline: none;
+      aside#filters .fieldset .option.range-input {
+        padding-right: 0; }
+        aside#filters .fieldset .option.range-input:hover:not(.selected).no-hover {
+          font-weight: 200; }
+        aside#filters .fieldset .option.range-input .inputs {
+          font-weight: 200;
           display: inline;
-          text-align: center;
+          float: right;
           color: #f9f9f9;
-          padding: 0 0 1px 0; }
-          aside#filters .fieldset .range-input .inputs input::-webkit-outer-spin-button, aside#filters .fieldset .range-input .inputs input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0; }
-      aside#filters .fieldset .range-input.accept .inputs {
-        background-color: #5fa990; }
-      aside#filters .fieldset .range-input.reject .inputs {
-        background-color: #78558a; }
+          cursor: default; }
+          aside#filters .fieldset .option.range-input .inputs input {
+            width: 1.5em;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            display: inline;
+            text-align: center;
+            color: #f9f9f9;
+            padding: 0 0 1px 0; }
+            aside#filters .fieldset .option.range-input .inputs input::-webkit-outer-spin-button, aside#filters .fieldset .option.range-input .inputs input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0; }
+        aside#filters .fieldset .option.range-input.accept .inputs {
+          background-color: #5fa990; }
+        aside#filters .fieldset .option.range-input.reject .inputs {
+          background-color: #78558a; }
       aside#filters .fieldset .slider {
         width: calc(100% - 10px);
         height: 2px;

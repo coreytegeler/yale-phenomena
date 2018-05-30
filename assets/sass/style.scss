@@ -407,7 +407,8 @@ aside {
 					}
 				}
 			}
-			.range-input {
+			.option.range-input {
+				padding-right: 0;
 				&:hover {
 					&:not(.selected).no-hover {
 						font-weight: 200;
