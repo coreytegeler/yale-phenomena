@@ -658,7 +658,7 @@ $ ->
 				selectSentence(vals)
 			openMulti(prop)				
 			if prop == 'show'
-				return selectFilter(prop, vals)
+				selectFilter(prop, vals)
 			if prop.indexOf('_') < 0
 				vals = vals.split(',')
 			else
