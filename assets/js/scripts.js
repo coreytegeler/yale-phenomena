@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, MAX, MIN, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getProp, getPropSlug, getSentence, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getProp, getPropSlug, getSentence, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
   $body = $('body');
   $map = $('#map');
@@ -11,6 +11,9 @@ $(function() {
   $headerSentence = $('header.fixed .sentence');
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67';
+  DEFAULT_ZOOM = 3;
+  MIN_ZOOM = 0;
+  MAX_ZOOM = 24;
   window.query = {};
   prepareMap = function(e) {
     var mapData, serializedData;
@@ -25,22 +28,30 @@ $(function() {
       if (!mapData[dataType]) {
         mapData[dataType] = {};
       }
-      return mapData[dataType][varType] = this.value;
+      if (varType) {
+        return mapData[dataType][varType] = this.value;
+      } else {
+        return mapData[dataType] = parseFloat(this.value);
+      }
     });
     query.map = mapData;
     setUrlParams();
     return createMap();
   };
   createMap = function() {
+    var lngLat;
     setEmbedder();
     $body.removeClass('form').addClass('map');
     mapboxgl.accessToken = accessToken;
     window.map = new mapboxgl.Map({
       container: 'map',
       style: styleUri,
-      zoom: 3,
-      center: [-95.7129, 37.0902]
+      zoom: query.map.zoom
     });
+    if (query.map.lng && query.map.lat) {
+      lngLat = new mapboxgl.LngLat(query.map.lng, query.map.lat);
+      map.setCenter(lngLat);
+    }
     return map.on('load', initMap);
   };
   initMap = function() {
@@ -53,7 +64,6 @@ $(function() {
         'url': query.map.survey.uri
       },
       'source-layer': query.map.survey.id,
-      'zoom': 10,
       'layout': {
         'icon-allow-overlap': true,
         'icon-size': {
@@ -73,8 +83,8 @@ $(function() {
         'url': query.map.coldspots.uri
       },
       'source-layer': query.map.coldspots.id,
-      'minzoom': 0,
-      'maxzoom': 24,
+      'minzoom': MIN_ZOOM,
+      'maxzoom': MAX_ZOOM,
       'layout': {
         'visibility': 'none'
       },
@@ -99,8 +109,8 @@ $(function() {
         'url': query.map.hotspots.uri
       },
       'source-layer': query.map.hotspots.id,
-      'minzoom': 0,
-      'maxzoom': 24,
+      'minzoom': MIN_ZOOM,
+      'maxzoom': MAX_ZOOM,
       'layout': {
         'visibility': 'none'
       },
@@ -125,8 +135,8 @@ $(function() {
         'url': query.map.coldspots.uri
       },
       'source-layer': query.map.coldspots.id,
-      'minzoom': 0,
-      'maxzoom': 24,
+      'minzoom': MIN_ZOOM,
+      'maxzoom': MAX_ZOOM,
       'layout': {
         'visibility': 'none'
       },
@@ -143,8 +153,8 @@ $(function() {
         'url': query.map.hotspots.uri
       },
       'source-layer': query.map.hotspots.id,
-      'minzoom': 0,
-      'maxzoom': 24,
+      'minzoom': MIN_ZOOM,
+      'maxzoom': MAX_ZOOM,
       'layout': {
         'visibility': 'none'
       },
@@ -713,22 +723,25 @@ $(function() {
         if (!mapData[dataType]) {
           mapData[dataType] = {};
         }
-        mapData[dataType][varType] = val;
+        if (varType) {
+          mapData[dataType][varType] = val;
+        } else {
+          mapData[dataType] = parseFloat(val);
+        }
       }
     }
-    return window.query.map = mapData;
+    window.query.map = mapData;
+    return Object.keys(mapData).length;
   };
   setUrlParams = function() {
     var $sentence, filter, filters, i, j, k, l, location, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
     mapData = window.query.map;
-    window.query = {};
     $sentence = $phenomena.find('.sentence.selected');
     if ($sentence.length) {
       sentenceVal = $sentence.attr('data-val');
       query['s'] = sentenceVal;
     }
-    if ($map.is('.mapboxgl-map')) {
-      filters = map.getFilter('survey-data');
+    if ($map.is('.mapboxgl-map') && (filters = map.getFilter('survey-data'))) {
       for (i = k = 1, ref = filters.length - 1; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
         if (filter = filters[i]) {
           prop = getPropSlug(filter[1]);
@@ -752,7 +765,7 @@ $(function() {
     queryStr = $.param(window.query);
     queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '');
     location = window.location;
-    url = location.href;
+    url = location.origin;
     if (filters) {
       url = url.replace(location.search, '');
     }
@@ -764,14 +777,13 @@ $(function() {
   setEmbedder = function() {
     var iframe, url;
     url = window.location;
-    iframe = '<iframe width="100%" height="700px" src="' + url + '"></iframe>';
+    iframe = '<iframe width="100%" height="500px" src="' + url + '"></iframe>';
     return $embedder.find('textarea').html(iframe);
   };
   getMapQuery = function() {
     var queryStr;
     queryStr = window.location.search.substring(1);
-    if (queryStr) {
-      getMapData();
+    if (queryStr && getMapData()) {
       return createMap();
     } else {
       $body.addClass('form');
@@ -858,6 +870,14 @@ $(function() {
     return $content.css('background', color);
   };
   startListening = function() {
+    map.on('moveend', function(e) {
+      var center;
+      center = map.getCenter();
+      query.map.zoom = map.getZoom();
+      query.map.lng = center.lng;
+      query.map.lat = center.lat;
+      return setUrlParams();
+    });
     map.on('mouseenter', 'survey-data', hoverMarker);
     return map.on('mouseleave', 'survey-data', function(e) {
       var $popup, oldId;

@@ -567,7 +567,8 @@ footer {
   flex-direction: row;
   align-content: center;
   background-color: #a8d7ee;
-  display: none; }
+  display: none;
+  overflow-y: auto; }
   #creation form {
     width: 228px;
     height: 100%;
@@ -576,7 +577,7 @@ footer {
     #creation form .inner {
       width: 100%;
       display: table;
-      margin: auto; }
+      margin: 50px auto; }
       #creation form .inner label {
         font-size: 16px;
         line-height: 19px;

@@ -11,8 +11,11 @@ $ ->
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
 	styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67'
 
+	DEFAULT_ZOOM = 3
+	MIN_ZOOM = 0
+	MAX_ZOOM = 24
+
 	window.query = {}
-		
 	prepareMap = (e) ->
 		e.preventDefault()
 		serializedData = $('form').serializeArray()
@@ -23,7 +26,10 @@ $ ->
 			varType = vars[1]
 			if !mapData[dataType]
 				mapData[dataType] = {}
-			mapData[dataType][varType] = this.value
+			if varType
+				mapData[dataType][varType] = this.value
+			else
+				mapData[dataType] = parseFloat(this.value)
 		query.map = mapData
 		setUrlParams()
 		createMap()
@@ -35,8 +41,11 @@ $ ->
 		window.map = new mapboxgl.Map
 			container: 'map',
 			style: styleUri,
-			zoom: 3,
-			center: [-95.7129, 37.0902]
+			zoom: query.map.zoom,
+		if query.map.lng && query.map.lat
+			lngLat = new mapboxgl.LngLat(query.map.lng, query.map.lat)
+			map.setCenter(lngLat)
+
 		map.on 'load', initMap
 
 	initMap = () ->
@@ -47,7 +56,6 @@ $ ->
 				'type': 'vector'
 				'url': query.map.survey.uri
 			'source-layer': query.map.survey.id
-			'zoom': 10
 			'layout':
 				'icon-allow-overlap': true
 				'icon-size':
@@ -65,8 +73,8 @@ $ ->
 				'type': 'vector'
 				'url': query.map.coldspots.uri
 			'source-layer': query.map.coldspots.id
-			'minzoom': 0
-			'maxzoom': 24
+			'minzoom': MIN_ZOOM
+			'maxzoom': MAX_ZOOM
 			'layout':
 				'visibility': 'none'
 			'paint':
@@ -86,8 +94,8 @@ $ ->
 				'type': 'vector'
 				'url': query.map.hotspots.uri
 			'source-layer': query.map.hotspots.id
-			'minzoom': 0
-			'maxzoom': 24
+			'minzoom': MIN_ZOOM
+			'maxzoom': MAX_ZOOM
 			'layout':
 				'visibility': 'none'
 			'paint':
@@ -108,8 +116,8 @@ $ ->
 				'type': 'vector'
 				'url': query.map.coldspots.uri
 			'source-layer': query.map.coldspots.id
-			'minzoom': 0
-			'maxzoom': 24
+			'minzoom': MIN_ZOOM
+			'maxzoom': MAX_ZOOM
 			'layout':
 				'visibility': 'none'
 			'paint':
@@ -123,8 +131,8 @@ $ ->
 				'type': 'vector'
 				'url': query.map.hotspots.uri
 			'source-layer': query.map.hotspots.id
-			'minzoom': 0
-			'maxzoom': 24
+			'minzoom': MIN_ZOOM
+			'maxzoom': MAX_ZOOM
 			'layout':
 				'visibility': 'none'
 			'paint':
@@ -590,18 +598,20 @@ $ ->
 			if vars[0] == 'map'
 				if !mapData[dataType]
 					mapData[dataType] = {}
-				mapData[dataType][varType] = val
+				if varType
+					mapData[dataType][varType] = val
+				else
+					mapData[dataType] = parseFloat(val)
 		window.query.map = mapData
+		return Object.keys(mapData).length
 
 	setUrlParams = () ->
 		mapData = window.query.map
-		window.query = {}
 		$sentence = $phenomena.find('.sentence.selected')
 		if $sentence.length
 			sentenceVal = $sentence.attr('data-val')
 			query['s'] = sentenceVal
-		if $map.is('.mapboxgl-map')
-			filters = map.getFilter('survey-data')
+		if $map.is('.mapboxgl-map') && filters = map.getFilter('survey-data')
 			for i in [1..filters.length-1]
 				if filter = filters[i]
 					prop = getPropSlug(filter[1])
@@ -619,7 +629,7 @@ $ ->
 		queryStr = $.param(window.query)
 		queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '')
 		location =  window.location
-		url = location.href
+		url = location.origin
 		if filters
 			url = url.replace(location.search,'')	
 		url += '?'+queryStr
@@ -629,13 +639,12 @@ $ ->
 
 	setEmbedder = () ->
 		url = window.location
-		iframe = '<iframe width="100%" height="700px" src="'+url+'"></iframe>'
+		iframe = '<iframe width="100%" height="500px" src="'+url+'"></iframe>'
 		$embedder.find('textarea').html(iframe)
 
 	getMapQuery = () ->
 		queryStr = window.location.search.substring(1)
-		if queryStr
-			getMapData()
+		if queryStr && getMapData()
 			createMap()
 		else
 			$body.addClass('form')
@@ -711,6 +720,13 @@ $ ->
 		$content.css('background', color)
 
 	startListening = () ->
+		map.on 'moveend', (e) ->
+			center = map.getCenter()
+			query.map.zoom = map.getZoom()
+			query.map.lng = center.lng
+			query.map.lat = center.lat
+			setUrlParams()
+
 		map.on 'mouseenter', 'survey-data', hoverMarker
 		map.on 'mouseleave', 'survey-data', (e) ->
 			$popup = $('.mapboxgl-popup')

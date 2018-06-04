@@ -676,6 +676,7 @@ footer {
 	align-content: center;
 	background-color: $lightBlue;
 	display: none;
+	overflow-y: auto;
 	form {
 		width: $left;
 		height: 100%;
@@ -684,7 +685,7 @@ footer {
 		.inner {
 			width: 100%;
 			display: table;
-			margin: auto;
+			margin: 50px auto;
 			label {
 				@include mdText;
 				display: block;
