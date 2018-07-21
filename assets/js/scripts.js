@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getProp, getPropSlug, getSentence, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomona, getProp, getPropSlug, getSentence, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
   $body = $('body');
   $map = $('#map');
@@ -15,6 +15,17 @@ $(function() {
   MIN_ZOOM = 0;
   MAX_ZOOM = 24;
   window.query = {};
+  getPhenomona = function() {
+    return $.ajax({
+      url: 'https://ygdp.yale.edu/phenomena/json',
+      success: function(json) {
+        return console.log(json);
+      },
+      error: function(a, b, c) {
+        return console.log(a, b, c);
+      }
+    });
+  };
   prepareMap = function(e) {
     var mapData, serializedData;
     e.preventDefault();
@@ -946,6 +957,7 @@ $(function() {
     return val;
   };
   installKey();
+  getPhenomona();
   getMapQuery();
   setUpSliders();
   $('body').on('click', 'aside .label', toggleFieldset);

@@ -16,6 +16,16 @@ $ ->
 	MAX_ZOOM = 24
 
 	window.query = {}
+
+	getPhenomona = () ->
+		$.ajax
+			url: 'https://ygdp.yale.edu/phenomena/json',
+			success: (json) ->
+				console.log json
+			error: (a, b, c) ->
+				console.log a, b, c
+
+
 	prepareMap = (e) ->
 		e.preventDefault()
 		serializedData = $('form').serializeArray()
@@ -777,6 +787,7 @@ $ ->
 
 
 	installKey()
+	getPhenomona()
 	getMapQuery()
 	setUpSliders()
 

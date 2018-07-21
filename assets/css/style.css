@@ -570,7 +570,6 @@ footer {
   display: none;
   overflow-y: auto; }
   #creation form {
-    width: 228px;
     height: 100%;
     display: flex;
     margin: auto; }
@@ -578,13 +577,26 @@ footer {
       width: 100%;
       display: table;
       margin: 50px auto; }
+      #creation form .inner .group {
+        width: 456px;
+        display: table;
+        margin: auto; }
+      #creation form .inner fieldset {
+        border: 0;
+        margin: 0 10px;
+        padding: 0; }
+        #creation form .inner fieldset.half {
+          width: calc(50% - 20px);
+          float: left; }
       #creation form .inner label {
+        width: 100%;
         font-size: 16px;
         line-height: 19px;
         display: block;
-        padding: 0 0 5px 0; }
-      #creation form .inner input {
+        padding: 10px 0; }
+      #creation form .inner input, #creation form .inner select {
         width: 100%;
         padding: 10px;
-        margin: 0 0 10px 0;
         border: none; }
+      #creation form .inner select {
+        height: 30px; }
