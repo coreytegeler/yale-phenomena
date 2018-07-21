@@ -19,11 +19,18 @@ $ ->
 
 	getPhenomona = () ->
 		$.ajax
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
 			url: 'https://ygdp.yale.edu/phenomena/json',
-			success: (json) ->
-				console.log json
+			success: (data, textStatus, jqXHR) ->
+				console.log data
+				console.log textStatus
+				console.log jqXHR
 			error: (a, b, c) ->
-				console.log a, b, c
+				console.log a
+				console.log b
+				console.log c
 
 
 	prepareMap = (e) ->

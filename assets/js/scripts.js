@@ -17,12 +17,19 @@ $(function() {
   window.query = {};
   getPhenomona = function() {
     return $.ajax({
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
       url: 'https://ygdp.yale.edu/phenomena/json',
-      success: function(json) {
-        return console.log(json);
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        return console.log(jqXHR);
       },
       error: function(a, b, c) {
-        return console.log(a, b, c);
+        console.log(a);
+        console.log(b);
+        return console.log(c);
       }
     });
   };
