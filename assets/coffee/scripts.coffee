@@ -17,21 +17,76 @@ $ ->
 
 	window.query = {}
 
-	getPhenomona = () ->
+	getPhenomena = () ->
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			url: 'https://ygdp.yale.edu/phenomena/json',
+			url: '/assets/phenomena.json',
+			# url: 'https://ygdp.yale.edu/phenomena/json',
 			success: (data, textStatus, jqXHR) ->
-				console.log data
-				console.log textStatus
-				console.log jqXHR
-			error: (a, b, c) ->
-				console.log a
-				console.log b
-				console.log c
+				populatePhenomena(data)
+			error: (error) ->
+				console.log error
 
+	# installKey = () ->
+		# $options = $phenomena.find('ul')
+		# $.ajax
+		# 	url: keyUri
+		# 	dataType: 'text'
+		# 	success: (data) ->
+		# 		data = data.split(/\r?\n|\r/)
+		# 		for row, i in data
+		# 			if i != 0
+		# 				parsedRow = row.split(',')
+		# 				type = parsedRow[0]
+		# 				num = parsedRow[1]
+		# 				sentence = row.split(num+',')[1]
+		# 				prefix = switch
+		# 					when type.indexOf('Primary') > -1 then 'PR'
+		# 					when type.indexOf('Pilot') > -1 then 'PI'
+		# 					when type.indexOf('ControlG') > -1 then 'CG'
+		# 					when type.indexOf('ControlU') > -1 then 'CU'
+		# 					else 'X'
+		# 				val = prefix + '_' + num
+		# 				$li = $('<li></li>')
+		# 					.addClass('sentence')
+		# 					.append('<span>'+sentence+'</span>')
+		# 				$options.append($li.addClass('option'))
+
+		# 				$li = $li.attr('data-val', val)
+		# 				$filters.find('.fieldset.accept ul').append($li.clone())
+		# 				$filters.find('.fieldset.reject ul').append($li.clone())
+
+	populatePhenomena = (phenomena) ->
+		for phenomenon in phenomena
+			option = $('<option></option>')
+			option.text(phenomenon.title.replace(/(<([^>]+)>)/ig,''))
+			option.val(phenomenon.id)
+			$('select[name="phenomenon"]').append(option)
+
+	getSentences = () ->
+		$.ajax
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
+			url: '/assets/sentences.json',
+			# url: 'https://ygdp.yale.edu/phenomena/json',
+			success: (data, textStatus, jqXHR) ->
+				populateSentences(data)
+			error: (error) ->
+				console.log error
+
+	populateSentences = (sentences) ->
+		$options = $phenomena.find('ul')
+		for sentence in sentences
+			$option = $('<li></li>')
+				.addClass('sentence')
+				.attr('data-val', sentence.id)
+				.html('<span>'+sentence.title+'</span>')
+			$options.append($option.addClass('option'))
+			$filters.find('.fieldset.accept ul').append($option.clone())
+			$filters.find('.fieldset.reject ul').append($option.clone())
 
 	prepareMap = (e) ->
 		e.preventDefault()
@@ -51,8 +106,11 @@ $ ->
 		setUrlParams()
 		createMap()
 
+
+
 	createMap = () ->
 		setEmbedder()
+		getSentences()
 		$body.removeClass('form').addClass('map')
 		mapboxgl.accessToken = accessToken
 		window.map = new mapboxgl.Map
@@ -570,34 +628,6 @@ $ ->
 			stops: stops
 		map.setLayoutProperty('survey-data', 'icon-image', markerProps);
 
-	installKey = () ->
-		$options = $phenomena.find('ul')
-		$.ajax
-			url: keyUri
-			dataType: 'text'
-			success: (data) ->
-				data = data.split(/\r?\n|\r/)
-				for row, i in data
-					if i != 0
-						parsedRow = row.split(',')
-						type = parsedRow[0]
-						num = parsedRow[1]
-						sentence = row.split(num+',')[1]
-						prefix = switch
-							when type.indexOf('Primary') > -1 then 'PR'
-							when type.indexOf('Pilot') > -1 then 'PI'
-							when type.indexOf('ControlG') > -1 then 'CG'
-							when type.indexOf('ControlU') > -1 then 'CU'
-							else 'X'
-						val = prefix + '_' + num
-						$li = $('<li></li>')
-							.addClass('sentence')
-							.append('<span>'+sentence+'</span>')
-						$options.append($li.addClass('option'))
-
-						$li = $li.attr('data-val', val)
-						$filters.find('.fieldset.accept ul').append($li.clone())
-						$filters.find('.fieldset.reject ul').append($li.clone())
 
 	getMapData = () ->
 		mapData = {}
@@ -793,8 +823,8 @@ $ ->
 		return val
 
 
-	installKey()
-	getPhenomona()
+	# installKey()
+	getPhenomena()
 	getMapQuery()
 	setUpSliders()
 

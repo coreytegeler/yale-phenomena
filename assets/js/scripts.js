@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomona, getProp, getPropSlug, getSentence, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, installKey, keyUri, limitThresholds, openMulti, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
   $body = $('body');
   $map = $('#map');
@@ -15,23 +15,58 @@ $(function() {
   MIN_ZOOM = 0;
   MAX_ZOOM = 24;
   window.query = {};
-  getPhenomona = function() {
+  getPhenomena = function() {
     return $.ajax({
       type: 'GET',
       contentType: 'application/json',
       dataType: 'json',
-      url: 'https://ygdp.yale.edu/phenomena/json',
+      url: '/assets/phenomena.json',
       success: function(data, textStatus, jqXHR) {
-        console.log(data);
-        console.log(textStatus);
-        return console.log(jqXHR);
+        return populatePhenomena(data);
       },
-      error: function(a, b, c) {
-        console.log(a);
-        console.log(b);
-        return console.log(c);
+      error: function(error) {
+        return console.log(error);
       }
     });
+  };
+  populatePhenomena = function(phenomena) {
+    var k, len, option, phenomenon, results;
+    results = [];
+    for (k = 0, len = phenomena.length; k < len; k++) {
+      phenomenon = phenomena[k];
+      option = $('<option></option>');
+      option.text(phenomenon.title.replace(/(<([^>]+)>)/ig, ''));
+      option.val(phenomenon.id);
+      results.push($('select[name="phenomenon"]').append(option));
+    }
+    return results;
+  };
+  getSentences = function() {
+    return $.ajax({
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
+      url: '/assets/sentences.json',
+      success: function(data, textStatus, jqXHR) {
+        return populateSentences(data);
+      },
+      error: function(error) {
+        return console.log(error);
+      }
+    });
+  };
+  populateSentences = function(sentences) {
+    var $option, $options, k, len, results, sentence;
+    $options = $phenomena.find('ul');
+    results = [];
+    for (k = 0, len = sentences.length; k < len; k++) {
+      sentence = sentences[k];
+      $option = $('<li></li>').addClass('sentence').attr('data-val', sentence.id).html('<span>' + sentence.title + '</span>');
+      $options.append($option.addClass('option'));
+      $filters.find('.fieldset.accept ul').append($option.clone());
+      results.push($filters.find('.fieldset.reject ul').append($option.clone()));
+    }
+    return results;
   };
   prepareMap = function(e) {
     var mapData, serializedData;
@@ -59,6 +94,7 @@ $(function() {
   createMap = function() {
     var lngLat;
     setEmbedder();
+    getSentences();
     $body.removeClass('form').addClass('map');
     mapboxgl.accessToken = accessToken;
     window.map = new mapboxgl.Map({
@@ -676,51 +712,6 @@ $(function() {
     };
     return map.setLayoutProperty('survey-data', 'icon-image', markerProps);
   };
-  installKey = function() {
-    var $options;
-    $options = $phenomena.find('ul');
-    return $.ajax({
-      url: keyUri,
-      dataType: 'text',
-      success: function(data) {
-        var $li, i, k, len, num, parsedRow, prefix, results, row, sentence, type, val;
-        data = data.split(/\r?\n|\r/);
-        results = [];
-        for (i = k = 0, len = data.length; k < len; i = ++k) {
-          row = data[i];
-          if (i !== 0) {
-            parsedRow = row.split(',');
-            type = parsedRow[0];
-            num = parsedRow[1];
-            sentence = row.split(num + ',')[1];
-            prefix = (function() {
-              switch (false) {
-                case !(type.indexOf('Primary') > -1):
-                  return 'PR';
-                case !(type.indexOf('Pilot') > -1):
-                  return 'PI';
-                case !(type.indexOf('ControlG') > -1):
-                  return 'CG';
-                case !(type.indexOf('ControlU') > -1):
-                  return 'CU';
-                default:
-                  return 'X';
-              }
-            })();
-            val = prefix + '_' + num;
-            $li = $('<li></li>').addClass('sentence').append('<span>' + sentence + '</span>');
-            $options.append($li.addClass('option'));
-            $li = $li.attr('data-val', val);
-            $filters.find('.fieldset.accept ul').append($li.clone());
-            results.push($filters.find('.fieldset.reject ul').append($li.clone()));
-          } else {
-            results.push(void 0);
-          }
-        }
-        return results;
-      }
-    });
-  };
   getMapData = function() {
     var dataType, i, k, len, mapData, pair, queryStr, queryVar, queryVars, val, varType, vars;
     mapData = {};
@@ -963,8 +954,7 @@ $(function() {
     }
     return val;
   };
-  installKey();
-  getPhenomona();
+  getPhenomena();
   getMapQuery();
   setUpSliders();
   $('body').on('click', 'aside .label', toggleFieldset);
