@@ -22,7 +22,7 @@ $ ->
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			url: '/assets/phenomena.json',
+			url: './assets/phenomena.json',
 			# url: 'https://ygdp.yale.edu/phenomena/json',
 			success: (data, textStatus, jqXHR) ->
 				populatePhenomena(data)
@@ -70,7 +70,7 @@ $ ->
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			url: '/assets/sentences.json',
+			url: './assets/sentences.json',
 			# url: 'https://ygdp.yale.edu/phenomena/json',
 			success: (data, textStatus, jqXHR) ->
 				populateSentences(data)

@@ -20,7 +20,7 @@ $(function() {
       type: 'GET',
       contentType: 'application/json',
       dataType: 'json',
-      url: '/assets/phenomena.json',
+      url: './assets/phenomena.json',
       success: function(data, textStatus, jqXHR) {
         return populatePhenomena(data);
       },
@@ -46,7 +46,7 @@ $(function() {
       type: 'GET',
       contentType: 'application/json',
       dataType: 'json',
-      url: '/assets/sentences.json',
+      url: './assets/sentences.json',
       success: function(data, textStatus, jqXHR) {
         return populateSentences(data);
       },
