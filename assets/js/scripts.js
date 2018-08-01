@@ -774,7 +774,7 @@ $(function() {
     queryStr = $.param(window.query);
     queryStr = queryStr.replace(/\%5B/g, '.').replace(/%5D/g, '');
     location = window.location;
-    url = location.origin;
+    url = location.origin + location.pathname;
     if (filters) {
       url = url.replace(location.search, '');
     }
