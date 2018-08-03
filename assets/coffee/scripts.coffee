@@ -16,53 +16,50 @@ $ ->
 	MAX_ZOOM = 24
 
 	window.query = {}
+	window.phen = {}
 
-	getPhenomena = () ->
+	getPhenomena = (id) ->
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			url: './assets/phenomena.json',
 			# url: 'https://ygdp.yale.edu/phenomena/json',
+			url: './assets/phenomena.json'
 			success: (data, textStatus, jqXHR) ->
 				populatePhenomena(data)
 			error: (error) ->
 				console.log error
 
-	# installKey = () ->
-		# $options = $phenomena.find('ul')
-		# $.ajax
-		# 	url: keyUri
-		# 	dataType: 'text'
-		# 	success: (data) ->
-		# 		data = data.split(/\r?\n|\r/)
-		# 		for row, i in data
-		# 			if i != 0
-		# 				parsedRow = row.split(',')
-		# 				type = parsedRow[0]
-		# 				num = parsedRow[1]
-		# 				sentence = row.split(num+',')[1]
-		# 				prefix = switch
-		# 					when type.indexOf('Primary') > -1 then 'PR'
-		# 					when type.indexOf('Pilot') > -1 then 'PI'
-		# 					when type.indexOf('ControlG') > -1 then 'CG'
-		# 					when type.indexOf('ControlU') > -1 then 'CU'
-		# 					else 'X'
-		# 				val = prefix + '_' + num
-		# 				$li = $('<li></li>')
-		# 					.addClass('sentence')
-		# 					.append('<span>'+sentence+'</span>')
-		# 				$options.append($li.addClass('option'))
+	getPhenomenon = (id) ->
+		$.ajax
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
+			# url: 'https://ygdp.yale.edu/phenomena/json/'+id,
+			url: './assets/phenomena.json'
+			success: (data, textStatus, jqXHR) ->
+				if data.length
+					for datum in data
+						if parseInt(datum.id) == id
+							phenomenon = datum
+				else
+					phenomenon = data[0]
+				window.phen = phenomenon
+				setUpPhenomenonData()
+			error: (error) ->
+				console.log error
 
-		# 				$li = $li.attr('data-val', val)
-		# 				$filters.find('.fieldset.accept ul').append($li.clone())
-		# 				$filters.find('.fieldset.reject ul').append($li.clone())
+	setUpPhenomenonData = () ->
+		$('header .phenomenon').each () ->
+			$(this).html(phen.title)
 
 	populatePhenomena = (phenomena) ->
 		for phenomenon in phenomena
 			option = $('<option></option>')
 			option.text(phenomenon.title.replace(/(<([^>]+)>)/ig,''))
 			option.val(phenomenon.id)
+			if phenomenon.id == '156'
+				option.attr('selected', 'selected')
 			$('select[name="phenomenon"]').append(option)
 
 	getSentences = () ->
@@ -71,7 +68,7 @@ $ ->
 			contentType: 'application/json',
 			dataType: 'json',
 			url: './assets/sentences.json',
-			# url: 'https://ygdp.yale.edu/phenomena/json',
+			# url: 'https://ygdp.yale.edu/sentences/json/'+query.map.phenomenon,
 			success: (data, textStatus, jqXHR) ->
 				populateSentences(data)
 			error: (error) ->
@@ -106,11 +103,10 @@ $ ->
 		setUrlParams()
 		createMap()
 
-
-
 	createMap = () ->
 		setEmbedder()
 		getSentences()
+		getPhenomenon(query.map.phenomenon)
 		$body.removeClass('form').addClass('map')
 		mapboxgl.accessToken = accessToken
 		window.map = new mapboxgl.Map
@@ -129,8 +125,8 @@ $ ->
 			'type': 'symbol'
 			'source':
 				'type': 'vector'
-				'url': query.map.survey.uri
-			'source-layer': query.map.survey.id
+				'url': 'mapbox://'+phen.survey_id
+			'source-layer': phen.survey_name
 			'layout':
 				'icon-allow-overlap': true
 				'icon-size':
@@ -146,8 +142,8 @@ $ ->
 			'type': 'line'
 			'source':
 				'type': 'vector'
-				'url': query.map.coldspots.uri
-			'source-layer': query.map.coldspots.id
+				'url': 'mapbox://'+phen.coldspots_id
+			'source-layer': phen.coldspots_name
 			'minzoom': MIN_ZOOM
 			'maxzoom': MAX_ZOOM
 			'layout':
@@ -167,8 +163,8 @@ $ ->
 			'type': 'line'
 			'source':
 				'type': 'vector'
-				'url': query.map.hotspots.uri
-			'source-layer': query.map.hotspots.id
+				'url': 'mapbox://'+phen.hotspots_id
+			'source-layer': phen.hotspots_name
 			'minzoom': MIN_ZOOM
 			'maxzoom': MAX_ZOOM
 			'layout':
@@ -189,8 +185,8 @@ $ ->
 			'type': 'fill'
 			'source':
 				'type': 'vector'
-				'url': query.map.coldspots.uri
-			'source-layer': query.map.coldspots.id
+				'url': 'mapbox://'+phen.coldspots_id
+			'source-layer': phen.coldspots_name
 			'minzoom': MIN_ZOOM
 			'maxzoom': MAX_ZOOM
 			'layout':
@@ -204,8 +200,8 @@ $ ->
 			'type': 'fill'
 			'source':
 				'type': 'vector'
-				'url': query.map.hotspots.uri
-			'source-layer': query.map.hotspots.id
+				'url': 'mapbox://'+phen.hotspots_id
+			'source-layer': phen.hotspots_name
 			'minzoom': MIN_ZOOM
 			'maxzoom': MAX_ZOOM
 			'layout':

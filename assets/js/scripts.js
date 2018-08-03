@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getPhenomenon, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpPhenomenonData, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
   $body = $('body');
   $map = $('#map');
@@ -15,7 +15,8 @@ $(function() {
   MIN_ZOOM = 0;
   MAX_ZOOM = 24;
   window.query = {};
-  getPhenomena = function() {
+  window.phen = {};
+  getPhenomena = function(id) {
     return $.ajax({
       type: 'GET',
       contentType: 'application/json',
@@ -29,6 +30,37 @@ $(function() {
       }
     });
   };
+  getPhenomenon = function(id) {
+    return $.ajax({
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
+      url: './assets/phenomena.json',
+      success: function(data, textStatus, jqXHR) {
+        var datum, k, len, phenomenon;
+        if (data.length) {
+          for (k = 0, len = data.length; k < len; k++) {
+            datum = data[k];
+            if (parseInt(datum.id) === id) {
+              phenomenon = datum;
+            }
+          }
+        } else {
+          phenomenon = data[0];
+        }
+        window.phen = phenomenon;
+        return setUpPhenomenonData();
+      },
+      error: function(error) {
+        return console.log(error);
+      }
+    });
+  };
+  setUpPhenomenonData = function() {
+    return $('header .phenomenon').each(function() {
+      return $(this).html(phen.title);
+    });
+  };
   populatePhenomena = function(phenomena) {
     var k, len, option, phenomenon, results;
     results = [];
@@ -37,6 +69,9 @@ $(function() {
       option = $('<option></option>');
       option.text(phenomenon.title.replace(/(<([^>]+)>)/ig, ''));
       option.val(phenomenon.id);
+      if (phenomenon.id === '156') {
+        option.attr('selected', 'selected');
+      }
       results.push($('select[name="phenomenon"]').append(option));
     }
     return results;
@@ -95,6 +130,7 @@ $(function() {
     var lngLat;
     setEmbedder();
     getSentences();
+    getPhenomenon(query.map.phenomenon);
     $body.removeClass('form').addClass('map');
     mapboxgl.accessToken = accessToken;
     window.map = new mapboxgl.Map({
@@ -115,9 +151,9 @@ $(function() {
       'type': 'symbol',
       'source': {
         'type': 'vector',
-        'url': query.map.survey.uri
+        'url': 'mapbox://' + phen.survey_id
       },
-      'source-layer': query.map.survey.id,
+      'source-layer': phen.survey_name,
       'layout': {
         'icon-allow-overlap': true,
         'icon-size': {
@@ -134,9 +170,9 @@ $(function() {
       'type': 'line',
       'source': {
         'type': 'vector',
-        'url': query.map.coldspots.uri
+        'url': 'mapbox://' + phen.coldspots_id
       },
-      'source-layer': query.map.coldspots.id,
+      'source-layer': phen.coldspots_name,
       'minzoom': MIN_ZOOM,
       'maxzoom': MAX_ZOOM,
       'layout': {
@@ -160,9 +196,9 @@ $(function() {
       'type': 'line',
       'source': {
         'type': 'vector',
-        'url': query.map.hotspots.uri
+        'url': 'mapbox://' + phen.hotspots_id
       },
-      'source-layer': query.map.hotspots.id,
+      'source-layer': phen.hotspots_name,
       'minzoom': MIN_ZOOM,
       'maxzoom': MAX_ZOOM,
       'layout': {
@@ -186,9 +222,9 @@ $(function() {
       'type': 'fill',
       'source': {
         'type': 'vector',
-        'url': query.map.coldspots.uri
+        'url': 'mapbox://' + phen.coldspots_id
       },
-      'source-layer': query.map.coldspots.id,
+      'source-layer': phen.coldspots_name,
       'minzoom': MIN_ZOOM,
       'maxzoom': MAX_ZOOM,
       'layout': {
@@ -204,9 +240,9 @@ $(function() {
       'type': 'fill',
       'source': {
         'type': 'vector',
-        'url': query.map.hotspots.uri
+        'url': 'mapbox://' + phen.hotspots_id
       },
-      'source-layer': query.map.hotspots.id,
+      'source-layer': phen.hotspots_name,
       'minzoom': MIN_ZOOM,
       'maxzoom': MAX_ZOOM,
       'layout': {

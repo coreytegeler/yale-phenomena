@@ -4,47 +4,40 @@
 			div.group(data-layer='phenomenon')
 				fieldset
 					label Phenomenon
-					select(type='text' name='phenomenon')
-						option(value='null') Select Phenomenon
-			div.group(data-layer='survey')
-				fieldset.half
-					label Survey URI
-					input(type='text' name='survey.uri' value='mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1')
-				fieldset.half
-					label Survey ID
-					input(type='text' name='survey.id' value='Survey_8')
-			div.group(data-layer='coldspots')
-				fieldset.half
-					label Coldspots URI
-					input(type='text' name='coldspots.uri' value='mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q')
-				fieldset.half
-					label Coldspots ID
-					input(type='text' name='coldspots.id' value='Coldspots_8')
-			div.group(data-layer='hotspots')
-				fieldset.half
-					label Hotspots URI
-					input(type='text' name='hotspots.uri' value='mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge')
-				fieldset.half
-					label Hotspots ID
-					input(type='text' name='hotspots.id' value='Hotspots_8')
-			div.group(data-layer='hotspots')
-				fieldset.half
-					label Hotspots URI
-					input(type='text' name='hotspots.uri' value='mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge')
-				fieldset.half
-					label Hotspots ID
-					input(type='text' name='hotspots.id' value='Hotspots_8')
+					select(type='text' name='phenomenon' default=56)
+						//- option Select Phenomenon
+			//- div.group(data-layer='survey')
+			//- 	fieldset.half
+			//- 		label Survey URI
+			//- 		input(type='text' name='survey.uri' value='mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1' required)
+			//- 	fieldset.half
+			//- 		label Survey ID
+			//- 		input(type='text' name='survey.id' value='Survey_8' required)
+			//- div.group(data-layer='coldspots')
+			//- 	fieldset.half
+			//- 		label Coldspots URI
+			//- 		input(type='text' name='coldspots.uri' value='mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q' required)
+			//- 	fieldset.half
+			//- 		label Coldspots ID
+			//- 		input(type='text' name='coldspots.id' value='Coldspots_8' required)
+			//- div.group(data-layer='hotspots')
+			//- 	fieldset.half
+			//- 		label Hotspots URI
+			//- 		input(type='text' name='hotspots.uri' value='mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge' required)
+			//- 	fieldset.half
+			//- 		label Hotspots ID
+			//- 		input(type='text' name='hotspots.id' value='Hotspots_8' required)
 			div.group
 				fieldset.half
 					label Longitude
-					input(type='text' name='lng' value='-94.075358')
+					input(type='text' name='lng' value='-94.075358' required)
 				fieldset.half
 					label Latitude
-					input(type='text' name='lat' value='37.796961')
+					input(type='text' name='lat' value='37.796961' required)
 			div.group
 				fieldset.half
 					label Zoom
-					input(type='text' name='zoom' value='3')
+					input(type='text' name='zoom' value='3' required)
 				fieldset.half
 					label &nbsp;
-					input(type='submit')
+					input(type='submit' required)
