@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX, MAX_ZOOM, MIN, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getPhenomenon, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpPhenomenonData, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getPhenomenon, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpPhenomenonData, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
   $body = $('body');
   $map = $('#map');
@@ -16,6 +16,8 @@ $(function() {
   DEFAULT_ZOOM = 3.4;
   MIN_ZOOM = 0;
   MAX_ZOOM = 24;
+  MIN_THRESH = 1;
+  MAX_THRESH = 5;
   window.query = {
     map: {
       lat: DEFAULT_LAT,
@@ -479,7 +481,9 @@ $(function() {
         }
       }
     });
-    return map.setFilter('survey-data', filter);
+    if (map.getLayer('survey-data')) {
+      return map.setFilter('survey-data', filter);
+    }
   };
   clearFilter = function(prop) {
     var arr, arrs, filter, i, k, len;
@@ -570,8 +574,6 @@ $(function() {
     setFilter();
     return setUrlParams();
   };
-  MIN = 1;
-  MAX = 5;
   limitThresholds = function(e) {
     var $input, $option, val;
     $input = $(this);
@@ -579,14 +581,14 @@ $(function() {
     val = parseInt(this.value);
     if (!val) {
       if ($option.is('.accept')) {
-        val = MAX;
+        val = MAX_THRESH;
       } else {
-        val = MIN;
+        val = MIN_THRESH;
       }
-    } else if (val < MIN) {
-      val = MIN;
-    } else if (val > MAX) {
-      val = MAX;
+    } else if (val < MIN_THRESH) {
+      val = MIN_THRESH;
+    } else if (val > MAX_THRESH) {
+      val = MAX_THRESH;
     }
     return $(this).val(val);
   };
@@ -596,46 +598,54 @@ $(function() {
     $sibInput = $input.siblings('input');
     $option = $input.parents('.option');
     $altOption = $option.siblings('.option.range-input');
-    val = $input.val();
+    val = parseInt($input.val());
+    type = $option.attr('data-type');
     sibVal = $sibInput.val();
-    if ($input.is('.min')) {
-      if (val > sibVal) {
-        val = sibVal;
-      }
-    } else if ($input.is('.max')) {
-      if (val < sibVal) {
-        val = sibVal;
-      }
+    if ($input.is('.min') && val > sibVal) {
+      $sibInput.val(val);
+    } else if ($input.is('.max') && val < sibVal) {
+      $sibInput.val(val);
     }
-    if (val > MAX) {
-      val = MAX;
-    } else if (val < MIN) {
-      val = MIN;
+    if (val > MAX_THRESH) {
+      val = MAX_THRESH;
+    } else if (val < MIN_THRESH) {
+      val = MIN_THRESH;
     }
     $input.val(val);
-    altMinVal = $altOption.find('.min').val();
-    altMaxVal = $altOption.find('.max').val();
-    type = $option.attr('data-type');
-    if (type === 'accept' && $input.is('.min') && val <= altMaxVal) {
-      newAltMax = Math.abs(val) - 1;
-      if (newAltMax < $altOption.find('.max').val()) {
-        newAltMax += 1;
+    $altMinInput = $altOption.find('.min');
+    $altMaxInput = $altOption.find('.max');
+    altMinVal = parseInt($altMinInput.val());
+    altMaxVal = parseInt($altMaxInput.val());
+    if (type === 'accept' && val <= altMaxVal) {
+      newAltMax = val - 1;
+      if (newAltMax < $altMaxInput.val()) {
+        newAltMax++;
       }
-      $altMaxInput = $altOption.find('.max');
-      if (newAltMax < MIN) {
-        newAltMax = MIN;
+      if (newAltMax === altMaxVal) {
+        newAltMax = val - 1;
+      }
+      if (newAltMax < MIN_THRESH) {
+        newAltMax = MIN_THRESH;
       }
       $altMaxInput.val(newAltMax);
-    } else if (type === 'reject' && $input.is('.max') && val >= altMinVal) {
-      newAltMin = Math.abs(val) + 1;
-      if (newAltMin > $altOption.find('.min').val()) {
-        newAltMin -= 1;
+      if (newAltMax < altMinVal) {
+        $altMinInput.val(newAltMax);
       }
-      $altMinInput = $altOption.find('.min');
-      if (newAltMin > MAX) {
-        newAltMax = MAX;
+    } else if (type === 'reject' && val >= altMinVal) {
+      newAltMin = val + 1;
+      if (newAltMin > $altMinInput.val()) {
+        newAltMin--;
+      }
+      if (newAltMin === altMinVal) {
+        newAltMin = val + 1;
+      }
+      if (newAltMin > MAX_THRESH) {
+        newAltMax = MAX_THRESH;
       }
       $altMinInput.val(newAltMin);
+      if (newAltMin > altMaxVal) {
+        $altMaxInput.val(newAltMin);
+      }
     }
     setThresholdVal($option);
     setThresholdVal($altOption);
@@ -686,7 +696,7 @@ $(function() {
     uVal = $('.option.reject').attr('data-val');
     uRange = JSON.parse('[' + uVal + ']');
     stops = [];
-    for (i = k = ref = MIN, ref1 = MAX; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
+    for (i = k = ref = MIN_THRESH, ref1 = MAX_THRESH; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
       if (aRange.indexOf(i) > -1) {
         stops.push([i, 'marker-accepted']);
       } else if (uRange.indexOf(i) > -1) {

@@ -17,6 +17,8 @@ $ ->
 	DEFAULT_ZOOM = 3.4
 	MIN_ZOOM = 0
 	MAX_ZOOM = 24
+	MIN_THRESH = 1
+	MAX_THRESH = 5
 
 	window.query =
 		map:
@@ -396,7 +398,9 @@ $ ->
 					$slider.attr('data-val', vals.join(','))
 					filter.push(['>=', prop, vals[0]])
 					filter.push(['<=', prop, vals[1]])
-		map.setFilter('survey-data', filter)
+
+		if map.getLayer('survey-data')
+			map.setFilter('survey-data', filter)
 
 	clearFilter = (prop) ->
 		if !map.length
@@ -468,22 +472,19 @@ $ ->
 		setFilter()
 		setUrlParams()
 
-	MIN = 1
-	MAX = 5
-
 	limitThresholds = (e) ->
 		$input = $(this)
 		$option = $input.parents('.option')
 		val = parseInt(this.value)
 		if !val
 			if $option.is('.accept')
-				val = MAX
+				val = MAX_THRESH
 			else
-				val = MIN
-		else if val < MIN
-			val = MIN
-		else if val > MAX
-			val = MAX
+				val = MIN_THRESH
+		else if val < MIN_THRESH
+			val = MIN_THRESH
+		else if val > MAX_THRESH
+			val = MAX_THRESH
 		$(this).val(val)
 
 	changeThresholds = (e) ->
@@ -491,40 +492,52 @@ $ ->
 		$sibInput = $input.siblings('input')
 		$option = $input.parents('.option')
 		$altOption = $option.siblings('.option.range-input')
-		val = $input.val()
+		val = parseInt($input.val())
+		type = $option.attr('data-type')
 		sibVal = $sibInput.val()
 
-		if $input.is('.min')
-			if val > sibVal
-				val = sibVal
-		else if $input.is('.max')
-			if val < sibVal
-				val = sibVal
-		if val > MAX
-			val = MAX
-		else if val < MIN
-			val = MIN
+		if $input.is('.min') && val > sibVal
+			$sibInput.val(val)
+		else if $input.is('.max') && val < sibVal
+			$sibInput.val(val)
+
+		if val > MAX_THRESH
+			val = MAX_THRESH
+		else if val < MIN_THRESH
+			val = MIN_THRESH
+
 		$input.val(val)
 
-		altMinVal = $altOption.find('.min').val()
-		altMaxVal = $altOption.find('.max').val()
-		type = $option.attr('data-type')
-		if type == 'accept' && $input.is('.min') && val <= altMaxVal
-			newAltMax = Math.abs(val) - 1
-			if newAltMax < $altOption.find('.max').val()
-				newAltMax += 1
-			$altMaxInput = $altOption.find('.max')
-			if newAltMax < MIN
-				newAltMax = MIN
+		$altMinInput = $altOption.find('.min')
+		$altMaxInput = $altOption.find('.max')
+		altMinVal = parseInt($altMinInput.val())
+		altMaxVal = parseInt($altMaxInput.val())
+
+		if type == 'accept' && val <= altMaxVal
+			
+			newAltMax = val-1
+			if newAltMax < $altMaxInput.val()
+				newAltMax++
+			if newAltMax == altMaxVal
+				newAltMax = val-1
+			if newAltMax < MIN_THRESH
+				newAltMax = MIN_THRESH
 			$altMaxInput.val(newAltMax)
-		else if type == 'reject' && $input.is('.max') && val >= altMinVal
-			newAltMin = Math.abs(val) + 1
-			if newAltMin > $altOption.find('.min').val()
-				newAltMin -= 1
-			$altMinInput = $altOption.find('.min')
-			if newAltMin > MAX
-				newAltMax = MAX
+			if newAltMax < altMinVal
+				$altMinInput.val(newAltMax)
+
+		else if type == 'reject' && val >= altMinVal
+			
+			newAltMin = val + 1
+			if newAltMin > $altMinInput.val()
+				newAltMin--
+			if newAltMin == altMinVal
+				newAltMin = val+1
+			if newAltMin > MAX_THRESH
+				newAltMax = MAX_THRESH
 			$altMinInput.val(newAltMin)
+			if newAltMin > altMaxVal
+				$altMaxInput.val(newAltMin)
 
 
 		setThresholdVal($option)
@@ -573,7 +586,7 @@ $ ->
 		uRange = JSON.parse('['+uVal+']')
 
 		stops = []
-		for i in [MIN..MAX]
+		for i in [MIN_THRESH..MAX_THRESH]
 			if aRange.indexOf(i) > -1
 				stops.push([i, 'marker-accepted'])
 			else if uRange.indexOf(i) > -1
