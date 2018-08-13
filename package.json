@@ -7,13 +7,14 @@
   "author": "Corey Tegeler <coreytegeler@gmail.com>",
   "license": "GNU",
   "dependencies": {
-    "npm": "^6.2.0"
+    "npm": "^6.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^6.3.2",
     "babel-preset-es2015": "^6.22.0",
     "browser-sync": "^2.24.6",
+    "debug": "~> 2.6.9",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.1.0",
     "gulp-coffee": "^2.3.5",
@@ -27,7 +28,9 @@
     "gulp-sass": "^3.2.1",
     "gulp-util": "^3.0.8",
     "hoek": "~> 4.2.1",
-    "node-sass": "^4.9.2",
+    "lodash": "~> 4.17.5",
+    "no-case": "~> 2.3.2",
+    "node-sass": "^4.9.3",
     "rupture": "^0.6.2",
     "yargs": "^6.6.0"
   },
