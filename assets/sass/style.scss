@@ -49,13 +49,13 @@ header {
 	opacity: 1;
 	.wrapper {
 		width: 100%;
-		padding: $smSpace 0 $smSpace $smSpace;
+		padding: $smSpace calc(#{$smSpace} + 3px);
 		display: table;
 		background-color: rgba($white,.8);
 	}
 	h2 {
-		display: inline;
-		margin: 0 0 $mdSpace 0;
+		display: inline-block;
+		margin: 0;
 		padding: 0 0 .125em 0;
 		border-bottom: .125em solid $dark;
 	}
@@ -74,8 +74,8 @@ header {
 				pointer-events: all;
 			}
 			h1.sentence {
-				margin: 0;
-				padding: $mdSpace 0 50px 0;
+				margin: 3px 0 0 0;
+				padding: $mdSpace 0 0 0;
 				pointer-events: all;
 			}
 		}
@@ -117,7 +117,7 @@ aside {
 		}
 		.shadow {
 			width: 100%;
-			height: #{$lgSpace};
+			height: $lgSpace;
 			display: table;
 			&.top {
 				position: absolute;
@@ -168,7 +168,7 @@ aside {
 			}
 			&.bottom {
 				@include bottomShadow($white);
-				width: calc(100% - $mdSpace);
+				width: calc(100% - #{$mdSpace});
 				margin-left: $mdSpace;
 			}
 		}
@@ -684,7 +684,8 @@ footer {
 		.inner {
 			width: 100%;
 			display: table;
-			margin: 50px auto;
+			margin: auto;
+			padding: 50px;
 			.group {
 				width: #{$left*2};
 				display: table;
@@ -692,7 +693,7 @@ footer {
 			}
 			fieldset {
 				border: 0;
-				margin: 0 10px;
+				margin: 10px 0;
 				padding: 0;
 				&.half {
 					width: calc(50% - 20px);
@@ -703,7 +704,7 @@ footer {
 				width: 100%;
 				@include mdText;
 				display: block;
-				padding: 10px 0;
+				padding: 0 0 10px 0;
 			}
 			input, select {
 				width: 100%;
@@ -711,7 +712,7 @@ footer {
 				border: none;
 			}
 			select {
-				height: $mdSpace;
+				height: 33px;
 			}
 		}
 	}

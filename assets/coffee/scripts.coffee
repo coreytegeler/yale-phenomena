@@ -11,11 +11,19 @@ $ ->
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
 	styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67'
 
-	DEFAULT_ZOOM = 3
+
+	DEFAULT_LAT = 39.6
+	DEFAULT_LNG = -99.4
+	DEFAULT_ZOOM = 3.4
 	MIN_ZOOM = 0
 	MAX_ZOOM = 24
 
-	window.query = {}
+	window.query =
+		map:
+			lat: DEFAULT_LAT
+			lng: DEFAULT_LNG
+			zoom: DEFAULT_ZOOM
+
 	window.phen = {}
 
 	getPhenomena = (id) ->
@@ -131,54 +139,11 @@ $ ->
 				'icon-allow-overlap': true
 				'icon-size':
 					'base': 0.9
-					'stops': [[2, 0.2],[22, 1.3]]
+					'stops': [[2, 0.2],[16, 1.4]]
 				'icon-image': ''
 
 		dataLayer = map.getLayer('survey-data')
 		dataBounds = map.getBounds(dataLayer).toArray()
-
-		map.addLayer
-			'id': 'coldspots-line'
-			'type': 'line'
-			'source':
-				'type': 'vector'
-				'url': 'mapbox://'+phen.coldspots_id
-			'source-layer': phen.coldspots_name
-			'minzoom': MIN_ZOOM
-			'maxzoom': MAX_ZOOM
-			'layout':
-				'visibility': 'none'
-			'paint':
-				'line-color': '#8ba9c4'
-				'line-opacity': 0.75
-				'line-blur':
-					'base': 1.08,
-					'stops': [[2, 1.6],[8, 4.8]]
-				'line-width':
-					'base': 1.25
-					'stops': [[2, 2.2], [8, 9]]
-
-		map.addLayer
-			'id': 'hotspots-line'
-			'type': 'line'
-			'source':
-				'type': 'vector'
-				'url': 'mapbox://'+phen.hotspots_id
-			'source-layer': phen.hotspots_name
-			'minzoom': MIN_ZOOM
-			'maxzoom': MAX_ZOOM
-			'layout':
-				'visibility': 'none'
-			'paint':
-				'line-color': '#c48f8f'
-				'line-opacity': 0.75
-				'line-blur':
-					'base': 1.08,
-					'stops': [[2, 1.6],[8, 4.8]]
-				'line-width':
-					'base': 1.25
-					'stops': [[2, 2.2], [8, 9]]
-
 
 		map.addLayer
 			'id': 'coldspots-fill'
@@ -192,8 +157,7 @@ $ ->
 			'layout':
 				'visibility': 'none'
 			'paint':
-				'fill-color': 'rgba(190,215,255,0.12)'
-				'fill-outline-color': 'rgb(190,215,255)'
+				'fill-color': 'rgba(141,171,247,0.3)'
 
 		map.addLayer
 			'id': 'hotspots-fill'
@@ -207,8 +171,7 @@ $ ->
 			'layout':
 				'visibility': 'none'
 			'paint':
-				'fill-color': 'rgba(240,200,200,0.12)'
-				'fill-outline-color': 'rgb(240,200,200)'
+				'fill-color': 'rgba(228,139,139,0.3)'
 
 		window.popup = new mapboxgl.Popup
 			closeButton: false,
@@ -640,13 +603,12 @@ $ ->
 			val = pair[1]
 			if vars[0] == 'map'
 				if !mapData[dataType]
-					mapData[dataType] = {}
+					query.map[dataType] = {}
 				if varType
-					mapData[dataType][varType] = val
+					query.map[dataType][varType] = val
 				else
-					mapData[dataType] = parseFloat(val)
-		window.query.map = mapData
-		return Object.keys(mapData).length
+					query.map[dataType] = parseFloat(val)
+		return Object.keys(query.map).length
 
 	setUrlParams = () ->
 		mapData = window.query.map
@@ -819,7 +781,6 @@ $ ->
 		return val
 
 
-	# installKey()
 	getPhenomena()
 	getMapQuery()
 	setUpSliders()

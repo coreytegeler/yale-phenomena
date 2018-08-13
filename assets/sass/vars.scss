@@ -10,6 +10,7 @@ $green: rgb(95,169,144);
 $mdSpace: 30px;
 $smSpace: #{$mdSpace/2};
 $lgSpace: #{$mdSpace*2};
+$xlSpace: #{$mdSpace*3};
 
 $left: 228px;
 $right: 206px;
@@ -36,11 +37,11 @@ $right: 206px;
 }
 
 @mixin bottomShadow($color) {
-	box-shadow: inset 0 -2.5em 1.5em -1em  $color;
+	box-shadow: inset 0 -3.5em 2.5em -2em $color;
 }
 
 @mixin topShadow($color) {
-	box-shadow: inset 0 2.5em 1.5em -1em  $color;
+	box-shadow: inset 0 3.5em 2.5em -2em $color;
 }
 
 @mixin hideScroll {

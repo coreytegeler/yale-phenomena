@@ -1,10 +1,12 @@
 #creation
 	form
 		.inner
-			div.group(data-layer='phenomenon')
+			div.group
 				fieldset
 					label Phenomenon
 					select(type='text' name='phenomenon' default=56)
+				fieldset
+					input(type='submit' required)
 						//- option Select Phenomenon
 			//- div.group(data-layer='survey')
 			//- 	fieldset.half
@@ -27,17 +29,14 @@
 			//- 	fieldset.half
 			//- 		label Hotspots ID
 			//- 		input(type='text' name='hotspots.id' value='Hotspots_8' required)
-			div.group
-				fieldset.half
-					label Longitude
-					input(type='text' name='lng' value='-94.075358' required)
-				fieldset.half
-					label Latitude
-					input(type='text' name='lat' value='37.796961' required)
-			div.group
-				fieldset.half
-					label Zoom
-					input(type='text' name='zoom' value='3' required)
-				fieldset.half
-					label &nbsp;
-					input(type='submit' required)
+			//- div.group
+			//- 	fieldset.half
+			//- 		label Longitude
+			//- 		input(type='text' name='lng' value='-94.075358' required)
+			//- 	fieldset.half
+			//- 		label Latitude
+			//- 		input(type='text' name='lat' value='37.796961' required)
+			//- div.group
+			//- 	fieldset.half
+			//- 		label Zoom
+			//- 		input(type='text' name='zoom' value='3' required)

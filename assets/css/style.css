@@ -91,12 +91,12 @@ header {
   opacity: 1; }
   header .wrapper {
     width: 100%;
-    padding: 15px 0 15px 15px;
+    padding: 15px calc(15px + 3px);
     display: table;
     background-color: rgba(249, 249, 249, 0.8); }
   header h2 {
-    display: inline;
-    margin: 0 0 30px 0;
+    display: inline-block;
+    margin: 0;
     padding: 0 0 .125em 0;
     border-bottom: 0.125em solid #153554; }
   header.fixed {
@@ -113,8 +113,8 @@ header {
       header.fixed .wrapper h2 {
         pointer-events: all; }
       header.fixed .wrapper h1.sentence {
-        margin: 0;
-        padding: 30px 0 50px 0;
+        margin: 3px 0 0 0;
+        padding: 30px 0 0 0;
         pointer-events: all; }
   header.hide {
     display: none; }
@@ -186,13 +186,13 @@ aside {
       display: flex;
       flex-direction: column; }
     aside#phenomena .shadow.top {
-      box-shadow: inset 0 2.5em 1.5em -1em #f9f9f9;
+      box-shadow: inset 0 3.5em 2.5em -2em #f9f9f9;
       position: relative;
       margin: 0 0 -60px 30px;
       z-index: 500; }
     aside#phenomena .shadow.bottom {
-      box-shadow: inset 0 -2.5em 1.5em -1em #f9f9f9;
-      width: calc(100% - $mdSpace);
+      box-shadow: inset 0 -3.5em 2.5em -2em #f9f9f9;
+      width: calc(100% - 30px);
       margin-left: 30px; }
     aside#phenomena .phenomena {
       padding: 22.5px 15px;
@@ -228,10 +228,10 @@ aside {
         margin-left: 0; }
         aside#phenomena.closed .shadow.top {
           margin-top: 1em;
-          box-shadow: inset 0 2.5em 1.5em -1em #a8d7ee; }
+          box-shadow: inset 0 3.5em 2.5em -2em #a8d7ee; }
         aside#phenomena.closed .shadow.bottom {
           width: 2em;
-          box-shadow: inset 0 -2.5em 1.5em -1em #a8d7ee; }
+          box-shadow: inset 0 -3.5em 2.5em -2em #a8d7ee; }
       aside#phenomena.closed .phenomena {
         padding: 1.25em 0;
         margin: 0;
@@ -319,11 +319,11 @@ aside {
           aside#filters .inner .form#embedder .fieldset.open .options {
             padding-top: 15px; }
       aside#filters .inner .shadow.top {
-        box-shadow: inset 0 2.5em 1.5em -1em #f2f2ee;
+        box-shadow: inset 0 3.5em 2.5em -2em #f2f2ee;
         margin-bottom: -60px;
         z-index: 500; }
       aside#filters .inner .shadow.bottom {
-        box-shadow: inset 0 -2.5em 1.5em -1em #f2f2ee;
+        box-shadow: inset 0 -3.5em 2.5em -2em #f2f2ee;
         width: 100%; }
     aside#filters .fieldset {
       margin: 0 0 1em 0; }
@@ -576,14 +576,15 @@ footer {
     #creation form .inner {
       width: 100%;
       display: table;
-      margin: 50px auto; }
+      margin: auto;
+      padding: 50px; }
       #creation form .inner .group {
         width: 456px;
         display: table;
         margin: auto; }
       #creation form .inner fieldset {
         border: 0;
-        margin: 0 10px;
+        margin: 10px 0;
         padding: 0; }
         #creation form .inner fieldset.half {
           width: calc(50% - 20px);
@@ -593,10 +594,10 @@ footer {
         font-size: 16px;
         line-height: 19px;
         display: block;
-        padding: 10px 0; }
+        padding: 0 0 10px 0; }
       #creation form .inner input, #creation form .inner select {
         width: 100%;
         padding: 10px;
         border: none; }
       #creation form .inner select {
-        height: 30px; }
+        height: 33px; }
