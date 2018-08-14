@@ -123,16 +123,15 @@ $(function() {
       vars = this.name.split('.');
       dataType = vars[0];
       varType = vars[1];
-      if (!mapData[dataType]) {
-        mapData[dataType] = {};
+      if (!query.map[dataType]) {
+        query.map[dataType] = {};
       }
       if (varType) {
-        return mapData[dataType][varType] = this.value;
+        return query.map[dataType][varType] = this.value;
       } else {
-        return mapData[dataType] = parseFloat(this.value);
+        return query.map[dataType] = parseFloat(this.value);
       }
     });
-    query.map = mapData;
     setUrlParams();
     return createMap();
   };

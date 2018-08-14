@@ -14,9 +14,9 @@ var replace = require('gulp-replace');
 var htmlreplace = require('gulp-html-replace');
 
 var paths = {
-  pug: './index.pug',
-  sass: './assets/sass/*.scss',
-  coffee: './assets/coffee/*.coffee',
+  pug: './**/*.pug',
+  sass: './source/sass/*.scss',
+  coffee: './source/coffee/*.coffee',
 }
 
 var dest = {
@@ -26,24 +26,12 @@ var dest = {
   imgs: './assets/imgs'
 }
 
-var mapboxVars = {
-  accessToken: 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg',
-  styleUri: 'mapbox://styles/ygdp/cjf9phmuh0t582rmoqk7dp2b3',
-  surveyUri: 'mapbox://ygdp.cjfaf000j0nxs2qp8gs7qpy75-2syg1',
-  surveyId: 'Survey_8',
-  coldspotsUri: 'mapbox://ygdp.cjf9zc8rv1evr2wqwbsym7s86-8iw7q',
-  coldspotsId: 'Coldspots_8',
-  hotspotsUri: 'mapbox://ygdp.cjf9zw1ys0j8o2wp8qs9iqo81-00bge',
-  hotspotsId: 'Hotspots_8'
-}
-
 gulp.task('compile-pug', function() {
-  return gulp.src(paths.pug)
+  return gulp.src('./index.pug')
     .pipe(plumber())
     .pipe(pug())
     .pipe(gulpif(argv.prod, htmlmin({ collapseWhitespace: true })))
     .pipe(gulpif(argv.prod, htmlreplace({ css: 'style.min.css' })))
-    // .pipe(replace('MAPBOX_VARS', encodeURI(JSON.stringify(mapboxVars))))
     .pipe(replace('imgs/', dest.imgs))
     .pipe(gulp.dest(dest.html))
   .on('end', function() {
@@ -58,7 +46,7 @@ gulp.task('compile-sass', function() {
     compress: argv.prod ? true : false
   };
 
-  return gulp.src('./assets/sass/style.scss')
+  return gulp.src('./source/sass/style.scss')
     .pipe(plumber())
     .pipe(sass(options))
     .pipe(gulpif(argv.prod, rename('style.min.css')))
@@ -71,7 +59,7 @@ gulp.task('compile-sass', function() {
 });
 
 gulp.task('compile-coffee', function() {
-  return gulp.src('./assets/coffee/scripts.coffee')
+  return gulp.src('./source/coffee/scripts.coffee')
     .pipe(coffee({bare: true}))
     .pipe(gulpif(argv.prod, rename('scripts.min.js')))
     .pipe(gulp.dest(dest.js))

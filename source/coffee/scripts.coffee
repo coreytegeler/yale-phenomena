@@ -103,13 +103,12 @@ $ ->
 			vars = this.name.split('.')
 			dataType = vars[0]
 			varType = vars[1]
-			if !mapData[dataType]
-				mapData[dataType] = {}
+			if !query.map[dataType]
+				query.map[dataType] = {}
 			if varType
-				mapData[dataType][varType] = this.value
+				query.map[dataType][varType] = this.value
 			else
-				mapData[dataType] = parseFloat(this.value)
-		query.map = mapData
+				query.map[dataType] = parseFloat(this.value)
 		setUrlParams()
 		createMap()
 
