@@ -13,6 +13,12 @@ var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 var htmlreplace = require('gulp-html-replace');
 
+if(argv.prod) {
+  var env = 'prod';
+} else if(argv.dev) {
+  var env = 'dev';
+}
+
 var paths = {
   pug: './**/*.pug',
   sass: './source/sass/*.scss',
@@ -20,10 +26,18 @@ var paths = {
 }
 
 var dest = {
-  html: './',
-  css: './assets/css',
-  js: './assets/js',
-  imgs: './assets/imgs'
+  dev: {
+    html: './',
+    css: './assets/css/',
+    js: './assets/js/',
+    imgs: './assets/imgs/'
+  },
+  prod: {
+    html: './dist/',
+    css: './dist/assets/css/',
+    js: './dist/assets/js/',
+    imgs: './dist/assets/imgs/'
+  }
 }
 
 gulp.task('compile-pug', function() {
@@ -31,9 +45,10 @@ gulp.task('compile-pug', function() {
     .pipe(plumber())
     .pipe(pug())
     .pipe(gulpif(argv.prod, htmlmin({ collapseWhitespace: true })))
-    .pipe(gulpif(argv.prod, htmlreplace({ css: 'style.min.css' })))
-    .pipe(replace('imgs/', dest.imgs))
-    .pipe(gulp.dest(dest.html))
+    .pipe(gulpif(argv.prod, replace('style.css', 'style.min.css')))
+    .pipe(gulpif(argv.prod, replace('scripts.js', 'scripts.min.js')))
+    .pipe(replace('imgs/', dest[env].imgs))
+    .pipe(gulp.dest(dest[env].html))
   .on('end', function() {
     log('HTML done');
     if (argv.prod) log('HTML minified');
@@ -45,13 +60,12 @@ gulp.task('compile-sass', function() {
     use: [rupture(), autoprefixer()],
     compress: argv.prod ? true : false
   };
-
   return gulp.src('./source/sass/style.scss')
     .pipe(plumber())
     .pipe(sass(options))
     .pipe(gulpif(argv.prod, rename('style.min.css')))
-    .pipe(replace('imgs/', dest.imgs))
-    .pipe(gulp.dest(dest.css))
+    .pipe(replace('imgs/', dest[env].imgs))
+    .pipe(gulp.dest(dest[env].css))
   .on('end', function() {
     log('Sass done');
     if (argv.prod) log('CSS minified');
@@ -62,7 +76,9 @@ gulp.task('compile-coffee', function() {
   return gulp.src('./source/coffee/scripts.coffee')
     .pipe(coffee({bare: true}))
     .pipe(gulpif(argv.prod, rename('scripts.min.js')))
-    .pipe(gulp.dest(dest.js))
+    .pipe(gulpif(argv.prod, replace('ENVIRONMENT', 'prod')))
+    .pipe(gulpif(argv.dev, replace('ENVIRONMENT', 'dev')))
+    .pipe(gulp.dest(dest[env].js))
   .on('end', function() {
     log('Coffee done');
     if (argv.prod) log('JS minified');

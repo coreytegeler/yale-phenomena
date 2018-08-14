@@ -10,7 +10,7 @@ $ ->
 	$headerSentence = $('header.fixed .sentence')
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
 	styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67'
-
+	env = 'ENVIRONMENT'
 
 	DEFAULT_LAT = 39.6
 	DEFAULT_LNG = -99.4
@@ -29,26 +29,32 @@ $ ->
 	window.phen = {}
 
 	getPhenomena = (id) ->
+		if env == 'dev'
+			ajaxUrl = './assets/phenomena.json'
+		else
+			ajaxUrl = 'https://ygdp.yale.edu/phenomena/json'
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			# url: 'https://ygdp.yale.edu/phenomena/json',
-			url: './assets/phenomena.json'
+			url: ajaxUrl,
 			success: (data, textStatus, jqXHR) ->
 				populatePhenomena(data)
 			error: (error) ->
 				console.log error
 
 	getPhenomenon = (id) ->
+		if env == 'dev'
+			ajaxUrl = './assets/phenomena.json'
+		else
+			ajaxUrl = 'https://ygdp.yale.edu/phenomena/json/'+id
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			# url: 'https://ygdp.yale.edu/phenomena/json/'+id,
-			url: './assets/phenomena.json'
+			url: ajaxUrl,
 			success: (data, textStatus, jqXHR) ->
-				if data.length
+				if env == 'dev'
 					for datum in data
 						if parseInt(datum.id) == id
 							phenomenon = datum
@@ -73,12 +79,15 @@ $ ->
 			$('select[name="phenomenon"]').append(option)
 
 	getSentences = () ->
+		if env == 'dev'
+			ajaxUrl = './assets/sentences.json'
+		else
+			ajaxUrl = 'https://ygdp.yale.edu/sentences/json/'+query.map.phenomenon
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
-			url: './assets/sentences.json',
-			# url: 'https://ygdp.yale.edu/sentences/json/'+query.map.phenomenon,
+			url: ajaxUrl,
 			success: (data, textStatus, jqXHR) ->
 				populateSentences(data)
 			error: (error) ->
