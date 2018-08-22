@@ -156,7 +156,7 @@ $ ->
 		dataBounds = map.getBounds(dataLayer).toArray()
 
 		map.addLayer
-			'id': 'coldspots-fill'
+			'id': 'coldspots'
 			'type': 'fill'
 			'source':
 				'type': 'vector'
@@ -170,7 +170,7 @@ $ ->
 				'fill-color': 'rgba(141,171,247,0.3)'
 
 		map.addLayer
-			'id': 'hotspots-fill'
+			'id': 'hotspots'
 			'type': 'fill'
 			'source':
 				'type': 'vector'
@@ -255,14 +255,12 @@ $ ->
 		$options = $fieldset.find('.options')
 		if !$option || !$option.length
 			return
-
 		if $option.is('.selected:not(.all)')
 			$option.removeClass('selected')
 			if !$options.find('.selected').length
 				$fieldset.find('.all').addClass('selected')
 		else
 			$option.addClass('selected')
-
 		if $option.is('.all')
 			$selected.filter(':not(.all)').removeClass('selected')
 		else if $fieldset.is('.radio')
@@ -279,6 +277,8 @@ $ ->
 		$fieldset = getFieldset(prop)
 		$slider = $fieldset.find('.slider')
 		$fieldset.addClass('open')
+		if vals.length != 2
+			vals = [1,100]
 		$slider.slider('values', vals)
 
 	getFieldset = (prop) ->
@@ -344,6 +344,7 @@ $ ->
 		$fieldset.attr('data-prop', prop)
 		$fieldset.attr('data-prop-slug', propSlug)
 		setFilter()
+		setUrlParams()
 		
 	setFilter = () ->
 		vals = {}
@@ -362,7 +363,9 @@ $ ->
 			else
 				vals[_prop].push(_val)
 			filter = clearFilter(prop)
-		if !filter
+		if filter
+			filter = clearFilter(prop)
+		else
 			filter = ['all']
 			cond = 'in'
 			for _prop in Object.keys(vals)
@@ -383,9 +386,6 @@ $ ->
 							__val = parseInt(__val)
 						args.push(__val)
 					filter.push(args)
-		else
-			filter = clearFilter(prop)
-
 		$sliders = $filters.find('.slider')
 		$sliders.each (i, slider) ->
 			$slider = $(slider)
@@ -406,7 +406,6 @@ $ ->
 					$slider.attr('data-val', vals.join(','))
 					filter.push(['>=', prop, vals[0]])
 					filter.push(['<=', prop, vals[1]])
-
 		if map.getLayer('survey-data')
 			map.setFilter('survey-data', filter)
 
@@ -422,16 +421,13 @@ $ ->
 					filter.splice(i+1)
 			return filter
 
-	toggleLayer = (string) ->
-		layerTypes = ['','-fill','-line']
-		for layerType in layerTypes
-			layerId = string+layerType
-			if map.getLayer(layerId)
-				visibility = map.getLayoutProperty(layerId, 'visibility')
-				if visibility == 'visible'
-					map.setLayoutProperty(layerId, 'visibility', 'none')
-				else
-					map.setLayoutProperty(layerId, 'visibility', 'visible')
+	toggleLayer = (layerId) ->
+		if map.getLayer(layerId)
+			visibility = map.getLayoutProperty(layerId, 'visibility')
+			if visibility == 'visible'
+				map.setLayoutProperty(layerId, 'visibility', 'none')
+			else
+				map.setLayoutProperty(layerId, 'visibility', 'visible')
 
 	setUpSliders = () ->
 		$('.slider').each (i, slider) ->
@@ -520,9 +516,7 @@ $ ->
 		$altMaxInput = $altOption.find('.max')
 		altMinVal = parseInt($altMinInput.val())
 		altMaxVal = parseInt($altMaxInput.val())
-
 		if type == 'accept' && val <= altMaxVal
-			
 			newAltMax = val-1
 			if newAltMax < $altMaxInput.val()
 				newAltMax++
@@ -533,9 +527,7 @@ $ ->
 			$altMaxInput.val(newAltMax)
 			if newAltMax < altMinVal
 				$altMinInput.val(newAltMax)
-
 		else if type == 'reject' && val >= altMinVal
-			
 			newAltMin = val + 1
 			if newAltMin > $altMinInput.val()
 				newAltMin--
@@ -547,12 +539,11 @@ $ ->
 			if newAltMin > altMaxVal
 				$altMaxInput.val(newAltMin)
 
-
 		setThresholdVal($option)
 		setThresholdVal($altOption)
-
 		updateThresholdColors()
 		setFilter()
+		setUrlParams()
 
 	setThresholdVal = ($option) ->
 		min = $option.find('input.min').val()
@@ -587,12 +578,10 @@ $ ->
 		prop = $('.fieldset.phenomena .sentence.selected').attr('data-val')
 		if !prop
 			return
-
 		aVal = $('.option.accept').attr('data-val')
 		aRange = JSON.parse('['+aVal+']')
 		uVal = $('.option.reject').attr('data-val')
 		uRange = JSON.parse('['+uVal+']')
-
 		stops = []
 		for i in [MIN_THRESH..MAX_THRESH]
 			if aRange.indexOf(i) > -1
@@ -601,7 +590,6 @@ $ ->
 				stops.push([i, 'marker-rejected'])
 			else
 				stops.push([i, ''])
-
 		markerProps = 
 			property: prop
 			type: 'categorical'
@@ -634,12 +622,16 @@ $ ->
 	setUrlParams = () ->
 		mapData = window.query.map
 		$sentence = $phenomena.find('.sentence.selected')
+		for key in Object.keys(window.query)
+			if ['map','s'].indexOf(key) < 0
+				delete window.query[key]
 		if $sentence.length
 			sentenceVal = $sentence.attr('data-val')
 			query['s'] = sentenceVal
 		if $map.is('.mapboxgl-map') && filters = map.getFilter('survey-data')
 			for i in [1..filters.length-1]
-				if filter = filters[i]
+				filter = filters[i]
+				if filter && filter != 'all'
 					prop = getPropSlug(filter[1])
 					queryVals = []
 					for j in [2..filter.length-1]

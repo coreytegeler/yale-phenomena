@@ -194,7 +194,7 @@ $(function() {
     dataLayer = map.getLayer('survey-data');
     dataBounds = map.getBounds(dataLayer).toArray();
     map.addLayer({
-      'id': 'coldspots-fill',
+      'id': 'coldspots',
       'type': 'fill',
       'source': {
         'type': 'vector',
@@ -211,7 +211,7 @@ $(function() {
       }
     });
     map.addLayer({
-      'id': 'hotspots-fill',
+      'id': 'hotspots',
       'type': 'fill',
       'source': {
         'type': 'vector',
@@ -335,6 +335,9 @@ $(function() {
     $fieldset = getFieldset(prop);
     $slider = $fieldset.find('.slider');
     $fieldset.addClass('open');
+    if (vals.length !== 2) {
+      vals = [1, 100];
+    }
     return $slider.slider('values', vals);
   };
   getFieldset = function(prop) {
@@ -412,7 +415,8 @@ $(function() {
     $field.addClass('open').removeClass('disabled');
     $fieldset.attr('data-prop', prop);
     $fieldset.attr('data-prop-slug', propSlug);
-    return setFilter();
+    setFilter();
+    return setUrlParams();
   };
   setFilter = function() {
     var $selected, $sliders, ___val, __val, __vals, _prop, _vals, args, cond, filter, k, l, len, len1, len2, len3, m, n, ref, vals;
@@ -437,7 +441,9 @@ $(function() {
       }
       return filter = clearFilter(prop);
     });
-    if (!filter) {
+    if (filter) {
+      filter = clearFilter(prop);
+    } else {
       filter = ['all'];
       cond = 'in';
       ref = Object.keys(vals);
@@ -470,8 +476,6 @@ $(function() {
           filter.push(args);
         }
       }
-    } else {
-      filter = clearFilter(prop);
     }
     $sliders = $filters.find('.slider');
     $sliders.each(function(i, slider) {
@@ -521,25 +525,16 @@ $(function() {
       return filter;
     }
   };
-  toggleLayer = function(string) {
-    var k, layerId, layerType, layerTypes, len, results, visibility;
-    layerTypes = ['', '-fill', '-line'];
-    results = [];
-    for (k = 0, len = layerTypes.length; k < len; k++) {
-      layerType = layerTypes[k];
-      layerId = string + layerType;
-      if (map.getLayer(layerId)) {
-        visibility = map.getLayoutProperty(layerId, 'visibility');
-        if (visibility === 'visible') {
-          results.push(map.setLayoutProperty(layerId, 'visibility', 'none'));
-        } else {
-          results.push(map.setLayoutProperty(layerId, 'visibility', 'visible'));
-        }
+  toggleLayer = function(layerId) {
+    var visibility;
+    if (map.getLayer(layerId)) {
+      visibility = map.getLayoutProperty(layerId, 'visibility');
+      if (visibility === 'visible') {
+        return map.setLayoutProperty(layerId, 'visibility', 'none');
       } else {
-        results.push(void 0);
+        return map.setLayoutProperty(layerId, 'visibility', 'visible');
       }
     }
-    return results;
   };
   setUpSliders = function() {
     return $('.slider').each(function(i, slider) {
@@ -668,7 +663,8 @@ $(function() {
     setThresholdVal($option);
     setThresholdVal($altOption);
     updateThresholdColors();
-    return setFilter();
+    setFilter();
+    return setUrlParams();
   };
   setThresholdVal = function($option) {
     var i, k, max, min, range, rangeStr, ref, ref1;
@@ -760,19 +756,27 @@ $(function() {
     return Object.keys(query.map).length;
   };
   setUrlParams = function() {
-    var $sentence, filter, filters, i, j, k, l, location, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
+    var $sentence, filter, filters, i, j, k, key, l, len, location, m, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, ref2, sentenceVal, url, vals;
     mapData = window.query.map;
     $sentence = $phenomena.find('.sentence.selected');
+    ref = Object.keys(window.query);
+    for (k = 0, len = ref.length; k < len; k++) {
+      key = ref[k];
+      if (['map', 's'].indexOf(key) < 0) {
+        delete window.query[key];
+      }
+    }
     if ($sentence.length) {
       sentenceVal = $sentence.attr('data-val');
       query['s'] = sentenceVal;
     }
     if ($map.is('.mapboxgl-map') && (filters = map.getFilter('survey-data'))) {
-      for (i = k = 1, ref = filters.length - 1; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
-        if (filter = filters[i]) {
+      for (i = l = 1, ref1 = filters.length - 1; 1 <= ref1 ? l <= ref1 : l >= ref1; i = 1 <= ref1 ? ++l : --l) {
+        filter = filters[i];
+        if (filter && filter !== 'all') {
           prop = getPropSlug(filter[1]);
           queryVals = [];
-          for (j = l = 2, ref1 = filter.length - 1; 2 <= ref1 ? l <= ref1 : l >= ref1; j = 2 <= ref1 ? ++l : --l) {
+          for (j = m = 2, ref2 = filter.length - 1; 2 <= ref2 ? m <= ref2 : m >= ref2; j = 2 <= ref2 ? ++m : --m) {
             queryVal = getValSlug(prop, filter[j]);
             queryVals.push(queryVal);
           }

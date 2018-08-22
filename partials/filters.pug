@@ -14,7 +14,7 @@ aside#filters
 							span Accept
 					.options
 						ul
-							li.sentence.selected.all(data-val=null) All Sentences
+							li.option.sentence.selected.all(data-val=null) All Sentences
 
 				.fieldset.filter.reject(data-prop='reject' data-prop-slug='reject')
 					.head
@@ -23,7 +23,7 @@ aside#filters
 							span Reject
 					.options
 						ul
-							li.sentence.selected.all(data-val=null) All Sentences
+							li.option.sentence.selected.all(data-val=null) All Sentences
 							
 			.form.active(data-form='filters')
 				.fieldset.filter.race(data-prop='Race' data-prop-slug='race')
@@ -80,7 +80,7 @@ aside#filters
 							.multi-label(data-prop='Age_Bin' data-prop-slug='age_group') Group
 					.options
 						.multi-field.open(data-prop='age')
-							.slider(data-type='range' data-min='0' data-max='100' data-val='0,100' data-val-slug='0,100')
+							.slider(data-type='range' data-min='1' data-max='100' data-val='1,100' data-val-slug='1,100')
 								.handle-label.min
 								.handle-label.max
 						.multi-field(data-prop='age_group')
