@@ -798,6 +798,8 @@ $ ->
 	getMapQuery()
 	setUpSliders()
 
+	new ClipboardJS('.instruct, #embed')
+
 	$('body').on 'click', 'aside .label', toggleFieldset
 	$('body').on 'click', 'aside .multi-label', selectMulti
 	$('body').on 'click', 'aside#filters ul li', clickFilter

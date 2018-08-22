@@ -93,7 +93,7 @@ aside#filters
 									li.option(data-val='61_up' data-val-slug='61') 61 &amp; Up
 
 
-				.fieldset.filter.accepted.radio(data-prop='show', data-prop-slug='show')
+				.fieldset.filter.accepted.radio(data-prop='show' data-prop-slug='show')
 					.head
 						.label
 							.arrow
@@ -102,13 +102,13 @@ aside#filters
 					.options
 						ul
 							li.option.selected.all(data-val=null) Show All
-							li.option.range-input(data-val='4,5', data-type='accept').accept
+							li.option.range-input(data-val='4,5' data-type='accept').accept
 								span 'Acceptable' Only
 								.inputs
 									input.min(type='number' value='4' min='2' max='5')
 									span &ndash;
 									input.max(type='number' value='5' min='2' max='5')
-							li.option.range-input(data-val='1,2', data-type='reject').reject
+							li.option.range-input(data-val='1,2' data-type='reject').reject
 								span 'Unacceptable' Only
 								.inputs
 									input.min(type='number' value='1' min='1' max='4')
@@ -129,10 +129,10 @@ aside#filters
 					.head
 						.label
 							.arrow
-							span Get Embed Code
+							span Embed Current Map
 					.options
-						.instruct Copy and paste this text to embed the map with all of the current filters and data.
-						textarea(rows=5)
+						.instruct(data-clipboard-target='#embed') Copy and paste this text to embed this map.
+						textarea#embed(rows='5' data-clipboard-target='#embed')
 
 		.shadow.bottom
 		.shadow.top
