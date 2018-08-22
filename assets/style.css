@@ -298,15 +298,16 @@ aside {
       top: 30px; }
       aside#filters .inner .form {
         width: 100%;
-        padding: 30px 15px;
+        padding: 15px;
         background-color: #f2f2ee;
         display: none; }
         aside#filters .inner .form.active {
           display: block; }
         aside#filters .inner .form#embedder {
-          padding-top: 0;
-          padding-bottom: 15px;
+          border-top: 1px solid #dcdfe2;
           display: block; }
+          aside#filters .inner .form#embedder .fieldset {
+            margin: 0; }
           aside#filters .inner .form#embedder .options {
             padding: 0; }
             aside#filters .inner .form#embedder .options .instruct {
@@ -350,12 +351,19 @@ aside {
               font-weight: 400; }
         aside#filters .fieldset .head .note {
           color: #7a91ad;
-          font-size: 8px;
+          font-size: 9px;
           line-height: 10px;
           position: absolute;
           display: inline;
           padding-left: 5px;
           visibility: hidden; }
+          aside#filters .fieldset .head .note.option {
+            color: #153554;
+            right: 0;
+            padding-top: 1px; }
+            aside#filters .fieldset .head .note.option:hover {
+              color: #7a91ad;
+              cursor: pointer; }
       aside#filters .fieldset .options {
         height: 0;
         padding: 0 0 0 2em;
@@ -434,7 +442,7 @@ aside {
             content: attr(data-val);
             color: #7a91ad;
             text-align: center;
-            font-size: 8px;
+            font-size: 9px;
             line-height: 10px; }
           aside#filters .fieldset .slider .ui-slider-handle.ui-state-hover, aside#filters .fieldset .slider .ui-slider-handle.ui-state-active {
             cursor: ew-resize;

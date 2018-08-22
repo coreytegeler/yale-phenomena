@@ -1,8 +1,8 @@
-aside#filters
+aside#filters.closed
 	.tabs
 		.tab(data-form='accept-reject')
 			.label Accept/Reject
-		.tab.active(data-form='filters')
+		.tab(data-form='filters')
 			.label Filters
 	.inner
 		.scroller
@@ -12,20 +12,20 @@ aside#filters
 						.label
 							.arrow
 							span Accept
+						.note.option.selected.all(data-val=null) Deselect All
 					.options
 						ul
-							li.option.sentence.selected.all(data-val=null) All Sentences
 
 				.fieldset.filter.reject(data-prop='reject' data-prop-slug='reject')
 					.head
 						.label
 							.arrow
 							span Reject
+						.note.option.selected.all(data-val=null) Deselect All
 					.options
 						ul
-							li.option.sentence.selected.all(data-val=null) All Sentences
 							
-			.form.active(data-form='filters')
+			.form(data-form='filters')
 				.fieldset.filter.race(data-prop='Race' data-prop-slug='race')
 					.head
 						.label
@@ -135,4 +135,4 @@ aside#filters
 						textarea#embed(rows='5' data-clipboard-target='#embed')
 
 		.shadow.bottom
-		.shadow.top
+		//- .shadow.top

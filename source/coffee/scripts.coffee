@@ -306,6 +306,7 @@ $ ->
 		$tab = $(this)
 		$filters = $tab.parents('#filters')
 		if $tab.is('.active')
+			$tab.removeClass('active')
 			return $filters.toggleClass('closed')
 		$filters.removeClass('closed')
 		formId = $tab.attr('data-form')
@@ -802,7 +803,7 @@ $ ->
 
 	$('body').on 'click', 'aside .label', toggleFieldset
 	$('body').on 'click', 'aside .multi-label', selectMulti
-	$('body').on 'click', 'aside#filters ul li', clickFilter
+	$('body').on 'click', 'aside#filters .option', clickFilter
 	$('.slider').on 'slidechange', changeSlider
 	$('.range-input input').on 'keyup', limitThresholds
 	$('.range-input input').on 'change', changeThresholds
