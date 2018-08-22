@@ -149,8 +149,8 @@ $ ->
 				'icon-allow-overlap': true
 				'icon-size':
 					'base': 0.9
-					'stops': [[2, 0.2],[16, 1.4]]
-				'icon-image': ''
+					'stops': [[0, 0.2],[16, 1.4]]
+				'icon-image': 'marker'
 
 		dataLayer = map.getLayer('survey-data')
 		dataBounds = map.getBounds(dataLayer).toArray()

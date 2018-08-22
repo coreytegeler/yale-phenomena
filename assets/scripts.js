@@ -186,9 +186,9 @@ $(function() {
         'icon-allow-overlap': true,
         'icon-size': {
           'base': 0.9,
-          'stops': [[2, 0.2], [16, 1.4]]
+          'stops': [[0, 0.2], [16, 1.4]]
         },
-        'icon-image': ''
+        'icon-image': 'marker'
       }
     });
     dataLayer = map.getLayer('survey-data');
