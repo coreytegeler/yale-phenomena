@@ -144,7 +144,7 @@ aside {
 			top: $mdSpace;
 			z-index: 500;
 			background-color: $lightBlue;
-			background-image: url(./../img/x.svg);
+			background-image: url(./img/x.svg);
 			background-position: center;
 			background-size: 1.25em auto;
 			background-repeat: no-repeat;
@@ -204,7 +204,7 @@ aside {
 			width: $mdSpace;
 			left: 0;
 			.hamburger {
-				background-image: url(./../img/hamburger.svg);
+				background-image: url(./img/hamburger.svg);
 			}
 			.shadow {
 				margin-left: 0;
@@ -355,7 +355,7 @@ aside {
 						left: 0;
 						top: 0;
 						position: absolute;
-						background-image: url('./../img/arrows.svg');
+						background-image: url('./img/arrows.svg');
 						background-position: left -1em;
 						background-repeat: no-repeat;
 						background-size: 1em auto;
@@ -388,7 +388,7 @@ aside {
 						cursor: pointer;
 						font-weight: 200;
 						&:not(.all) {
-							background-image: url(./../img/x.svg);
+							background-image: url(./img/x.svg);
 							background-position: 200% center;
 							background-repeat: no-repeat;
 							background-size: .75em;
@@ -657,10 +657,10 @@ footer {
 			display: flex;
 	    align-items: center;
 	    &.accept {
-	    	background-image: url(./../img/accepted-key.svg);
+	    	background-image: url(./img/accepted-key.svg);
 	    }
 	    &.reject {
-	    	background-image: url(./../img/rejected-key.svg);
+	    	background-image: url(./img/rejected-key.svg);
 	    }
 		}
 	}

@@ -28,15 +28,13 @@ var paths = {
 var dest = {
   dev: {
     html: './',
-    css: './assets/css/',
-    js: './assets/js/',
-    imgs: './assets/imgs/'
+    css: './assets/',
+    js: './assets/',
   },
   prod: {
     html: './dist/',
-    css: './dist/assets/css/',
-    js: './dist/assets/js/',
-    imgs: './dist/assets/imgs/'
+    css: './dist/assets/',
+    js: './dist/assets/',
   }
 }
 
@@ -47,7 +45,6 @@ gulp.task('compile-pug', function() {
     .pipe(gulpif(argv.prod, htmlmin({ collapseWhitespace: true })))
     .pipe(gulpif(argv.prod, replace('style.css', 'style.min.css')))
     .pipe(gulpif(argv.prod, replace('scripts.js', 'scripts.min.js')))
-    .pipe(replace('imgs/', dest[env].imgs))
     .pipe(gulp.dest(dest[env].html))
   .on('end', function() {
     log('HTML done');
@@ -64,7 +61,6 @@ gulp.task('compile-sass', function() {
     .pipe(plumber())
     .pipe(sass(options))
     .pipe(gulpif(argv.prod, rename('style.min.css')))
-    .pipe(replace('imgs/', dest[env].imgs))
     .pipe(gulp.dest(dest[env].css))
   .on('end', function() {
     log('Sass done');

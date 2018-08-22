@@ -1,48 +1,48 @@
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Light.woff2") format("woff2"), url("./../fonts/Mallory-Light.woff") format("woff");
+  src: url("./fonts/Mallory-Light.woff2") format("woff2"), url("./fonts/Mallory-Light.woff") format("woff");
   font-weight: 100;
   font-style: normal; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-LightItalic.woff2") format("woff2"), url("./../fonts/Mallory-LightItalic.woff") format("woff");
+  src: url("./fonts/Mallory-LightItalic.woff2") format("woff2"), url("./fonts/Mallory-LightItalic.woff") format("woff");
   font-weight: 100;
   font-style: italic; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Book.woff2") format("woff2"), url("./../fonts/Mallory-Book.woff") format("woff");
+  src: url("./fonts/Mallory-Book.woff2") format("woff2"), url("./fonts/Mallory-Book.woff") format("woff");
   font-weight: 200;
   font-style: normal; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-BookItalic.woff2") format("woff2"), url("./../fonts/Mallory-BookItalic.woff") format("woff");
+  src: url("./fonts/Mallory-BookItalic.woff2") format("woff2"), url("./fonts/Mallory-BookItalic.woff") format("woff");
   font-weight: 200;
   font-style: italic; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Medium.woff2") format("woff2"), url("./../fonts/Mallory-Medium.woff") format("woff");
+  src: url("./fonts/Mallory-Medium.woff2") format("woff2"), url("./fonts/Mallory-Medium.woff") format("woff");
   font-weight: 300;
   font-style: normal; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-MediumItalic.woff2") format("woff2"), url("./../fonts/Mallory-MediumItalic.woff") format("woff");
+  src: url("./fonts/Mallory-MediumItalic.woff2") format("woff2"), url("./fonts/Mallory-MediumItalic.woff") format("woff");
   font-weight: 300;
   font-style: italic; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-Bold.woff2") format("woff2"), url("./../fonts/Mallory-Bold.woff") format("woff");
+  src: url("./fonts/Mallory-Bold.woff2") format("woff2"), url("./fonts/Mallory-Bold.woff") format("woff");
   font-weight: 400;
   font-style: normal; }
 
 @font-face {
   font-family: 'Mallory';
-  src: url("./../fonts/Mallory-BoldItalic.woff2") format("woff2"), url("./../fonts/Mallory-BoldItalic.woff") format("woff");
+  src: url("./fonts/Mallory-BoldItalic.woff2") format("woff2"), url("./fonts/Mallory-BoldItalic.woff") format("woff");
   font-weight: 400;
   font-style: italic; }
 
@@ -173,7 +173,7 @@ aside {
       top: 30px;
       z-index: 500;
       background-color: #a8d7ee;
-      background-image: url(./../img/x.svg);
+      background-image: url(./img/x.svg);
       background-position: center;
       background-size: 1.25em auto;
       background-repeat: no-repeat;
@@ -223,7 +223,7 @@ aside {
       width: 30px;
       left: 0; }
       aside#phenomena.closed .hamburger {
-        background-image: url(./../img/hamburger.svg); }
+        background-image: url(./img/hamburger.svg); }
       aside#phenomena.closed .shadow {
         margin-left: 0; }
         aside#phenomena.closed .shadow.top {
@@ -340,7 +340,7 @@ aside {
             left: 0;
             top: 0;
             position: absolute;
-            background-image: url("./../img/arrows.svg");
+            background-image: url("./img/arrows.svg");
             background-position: left -1em;
             background-repeat: no-repeat;
             background-size: 1em auto; }
@@ -368,7 +368,7 @@ aside {
             cursor: pointer;
             font-weight: 200; }
             aside#filters .fieldset .options ul li:not(.all) {
-              background-image: url(./../img/x.svg);
+              background-image: url(./img/x.svg);
               background-position: 200% center;
               background-repeat: no-repeat;
               background-size: .75em; }
@@ -553,9 +553,9 @@ footer {
       display: flex;
       align-items: center; }
       footer .keys .key.accept {
-        background-image: url(./../img/accepted-key.svg); }
+        background-image: url(./img/accepted-key.svg); }
       footer .keys .key.reject {
-        background-image: url(./../img/rejected-key.svg); }
+        background-image: url(./img/rejected-key.svg); }
 
 #creation {
   width: 100%;
