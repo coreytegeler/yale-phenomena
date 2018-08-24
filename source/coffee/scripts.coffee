@@ -9,7 +9,7 @@ $ ->
 	$fixedHeader = $('header.fixed')
 	$headerSentence = $('header.fixed .sentence')
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
-	styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67'
+	styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw'
 	env = 'ENVIRONMENT'
 
 	DEFAULT_LAT = 39.6
@@ -89,7 +89,14 @@ $ ->
 			dataType: 'json',
 			url: ajaxUrl,
 			success: (data, textStatus, jqXHR) ->
-				populateSentences(data)
+				if env == 'dev'
+					sentences = []
+					for datum in data
+						if parseInt(datum.phenomenon_id) == query.map.phenomenon
+							sentences.push(datum)
+				else
+					sentences = data
+				populateSentences(sentences)
 			error: (error) ->
 				console.log error
 
@@ -134,7 +141,6 @@ $ ->
 		if query.map.lng && query.map.lat
 			lngLat = new mapboxgl.LngLat(query.map.lng, query.map.lat)
 			map.setCenter(lngLat)
-
 		map.on 'load', initMap
 
 	initMap = () ->
@@ -146,42 +152,51 @@ $ ->
 				'url': 'mapbox://'+phen.survey_id
 			'source-layer': phen.survey_name
 			'layout':
+				'icon-image': 'marker'
 				'icon-allow-overlap': true
 				'icon-size':
 					'base': 0.9
 					'stops': [[0, 0.2],[16, 1.4]]
-				'icon-image': 'marker'
 
-		dataLayer = map.getLayer('survey-data')
-		dataBounds = map.getBounds(dataLayer).toArray()
+			dataLayer = map.getLayer('survey-data')
+			dataBounds = map.getBounds(dataLayer).toArray()
 
-		map.addLayer
-			'id': 'coldspots'
-			'type': 'fill'
-			'source':
-				'type': 'vector'
-				'url': 'mapbox://'+phen.coldspots_id
-			'source-layer': phen.coldspots_name
-			'minzoom': MIN_ZOOM
-			'maxzoom': MAX_ZOOM
-			'layout':
-				'visibility': 'none'
-			'paint':
-				'fill-color': 'rgba(141,171,247,0.3)'
+		if phen.coldspots_id && phen.coldspots_name
+			map.addLayer
+				'id': 'coldspots'
+				'type': 'fill'
+				'source':
+					'type': 'vector'
+					'url': 'mapbox://'+phen.coldspots_id
+				'source-layer': phen.coldspots_name
+				'minzoom': MIN_ZOOM
+				'maxzoom': MAX_ZOOM
+				'layout':
+					'visibility': 'none'
+				'paint':
+					'fill-color': 'rgba(141,171,247,0.3)'
+		else
+			$('.option[data-val="coldspots"]').remove()
 
-		map.addLayer
-			'id': 'hotspots'
-			'type': 'fill'
-			'source':
-				'type': 'vector'
-				'url': 'mapbox://'+phen.hotspots_id
-			'source-layer': phen.hotspots_name
-			'minzoom': MIN_ZOOM
-			'maxzoom': MAX_ZOOM
-			'layout':
-				'visibility': 'none'
-			'paint':
-				'fill-color': 'rgba(228,139,139,0.3)'
+		if phen.hotspots_id && phen.hotspots_name
+			map.addLayer
+				'id': 'hotspots'
+				'type': 'fill'
+				'source':
+					'type': 'vector'
+					'url': 'mapbox://'+phen.hotspots_id
+				'source-layer': phen.hotspots_name
+				'minzoom': MIN_ZOOM
+				'maxzoom': MAX_ZOOM
+				'layout':
+					'visibility': 'none'
+				'paint':
+					'fill-color': 'rgba(228,139,139,0.3)'
+		else
+			$('.option[data-val="hotspots"]').remove()
+
+		if (!phen.hotspots_id && !phen.hotspots_name) && (!phen.coldspots_id && !phen.coldspots_name)
+			$('.fieldset.layers').remove()
 
 		window.popup = new mapboxgl.Popup
 			closeButton: false,
@@ -595,7 +610,8 @@ $ ->
 			property: prop
 			type: 'categorical'
 			stops: stops
-		map.setLayoutProperty('survey-data', 'icon-image', markerProps);
+		map.setLayoutProperty('survey-data', 'icon-image', markerProps)
+
 
 
 	getMapData = () ->
@@ -618,7 +634,6 @@ $ ->
 					query.map[dataType][varType] = val
 				else
 					query.map[dataType] = parseFloat(val)
-		return Object.keys(query.map).length
 
 	setUrlParams = () ->
 		mapData = window.query.map
@@ -662,13 +677,11 @@ $ ->
 		$embedder.find('textarea').html(iframe)
 
 	getMapQuery = () ->
-		queryStr = window.location.search.substring(1)
-		if queryStr && getMapData()
+		getMapData()
+		if query.map && query.map.phenomenon
 			createMap()
 		else
 			$body.addClass('form')
-			$creation.find('form').on 'submit', prepareMap
-
 
 	getFilterQuery = () ->
 		queryStr = window.location.search.substring(1)
@@ -812,6 +825,7 @@ $ ->
 	$('body').on 'click', 'aside .close', toggleSide
 	$('body').on 'click', 'aside#phenomena ul li', clickSentence
 	$('body').on 'click', 'aside#filters .tab', toggleFilterTabs
+	$('body').on 'submit', '#creation form', prepareMap
 
 
 

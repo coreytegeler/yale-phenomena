@@ -112,6 +112,7 @@ $(function() {
       dataType: 'json',
       url: ajaxUrl,
       success: function(data, textStatus, jqXHR) {
+        console.log(data);
         return populateSentences(data);
       },
       error: function(error) {
@@ -186,47 +187,55 @@ $(function() {
         'icon-allow-overlap': true,
         'icon-size': {
           'base': 0.9,
-          'stops': [[2, 0.2], [16, 1.4]]
+          'stops': [[0, 0.2], [16, 1.4]]
         },
-        'icon-image': ''
+        'icon-image': 'marker'
       }
     });
     dataLayer = map.getLayer('survey-data');
     dataBounds = map.getBounds(dataLayer).toArray();
-    map.addLayer({
-      'id': 'coldspots-fill',
-      'type': 'fill',
-      'source': {
-        'type': 'vector',
-        'url': 'mapbox://' + phen.coldspots_id
-      },
-      'source-layer': phen.coldspots_name,
-      'minzoom': MIN_ZOOM,
-      'maxzoom': MAX_ZOOM,
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': 'rgba(141,171,247,0.3)'
-      }
-    });
-    map.addLayer({
-      'id': 'hotspots-fill',
-      'type': 'fill',
-      'source': {
-        'type': 'vector',
-        'url': 'mapbox://' + phen.hotspots_id
-      },
-      'source-layer': phen.hotspots_name,
-      'minzoom': MIN_ZOOM,
-      'maxzoom': MAX_ZOOM,
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': 'rgba(228,139,139,0.3)'
-      }
-    });
+    if (phen.coldspots_id && phen.coldspots_name) {
+      map.addLayer({
+        'id': 'coldspots',
+        'type': 'fill',
+        'source': {
+          'type': 'vector',
+          'url': 'mapbox://' + phen.coldspots_id
+        },
+        'source-layer': phen.coldspots_name,
+        'minzoom': MIN_ZOOM,
+        'maxzoom': MAX_ZOOM,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': 'rgba(141,171,247,0.3)'
+        }
+      });
+    } else {
+      $('.option[data-val="coldspots"]').addClass('disabled');
+    }
+    if (phen.hotspots_id && phen.hotspots_name) {
+      map.addLayer({
+        'id': 'hotspots',
+        'type': 'fill',
+        'source': {
+          'type': 'vector',
+          'url': 'mapbox://' + phen.hotspots_id
+        },
+        'source-layer': phen.hotspots_name,
+        'minzoom': MIN_ZOOM,
+        'maxzoom': MAX_ZOOM,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': 'rgba(228,139,139,0.3)'
+        }
+      });
+    } else {
+      $('.option[data-val="hotspots"]').addClass('disabled');
+    }
     window.popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false
@@ -335,6 +344,9 @@ $(function() {
     $fieldset = getFieldset(prop);
     $slider = $fieldset.find('.slider');
     $fieldset.addClass('open');
+    if (vals.length !== 2) {
+      vals = [1, 100];
+    }
     return $slider.slider('values', vals);
   };
   getFieldset = function(prop) {
@@ -369,6 +381,7 @@ $(function() {
     $tab = $(this);
     $filters = $tab.parents('#filters');
     if ($tab.is('.active')) {
+      $tab.removeClass('active');
       return $filters.toggleClass('closed');
     }
     $filters.removeClass('closed');
@@ -412,7 +425,8 @@ $(function() {
     $field.addClass('open').removeClass('disabled');
     $fieldset.attr('data-prop', prop);
     $fieldset.attr('data-prop-slug', propSlug);
-    return setFilter();
+    setFilter();
+    return setUrlParams();
   };
   setFilter = function() {
     var $selected, $sliders, ___val, __val, __vals, _prop, _vals, args, cond, filter, k, l, len, len1, len2, len3, m, n, ref, vals;
@@ -437,7 +451,9 @@ $(function() {
       }
       return filter = clearFilter(prop);
     });
-    if (!filter) {
+    if (filter) {
+      filter = clearFilter(prop);
+    } else {
       filter = ['all'];
       cond = 'in';
       ref = Object.keys(vals);
@@ -470,8 +486,6 @@ $(function() {
           filter.push(args);
         }
       }
-    } else {
-      filter = clearFilter(prop);
     }
     $sliders = $filters.find('.slider');
     $sliders.each(function(i, slider) {
@@ -521,25 +535,16 @@ $(function() {
       return filter;
     }
   };
-  toggleLayer = function(string) {
-    var k, layerId, layerType, layerTypes, len, results, visibility;
-    layerTypes = ['', '-fill', '-line'];
-    results = [];
-    for (k = 0, len = layerTypes.length; k < len; k++) {
-      layerType = layerTypes[k];
-      layerId = string + layerType;
-      if (map.getLayer(layerId)) {
-        visibility = map.getLayoutProperty(layerId, 'visibility');
-        if (visibility === 'visible') {
-          results.push(map.setLayoutProperty(layerId, 'visibility', 'none'));
-        } else {
-          results.push(map.setLayoutProperty(layerId, 'visibility', 'visible'));
-        }
+  toggleLayer = function(layerId) {
+    var visibility;
+    if (map.getLayer(layerId)) {
+      visibility = map.getLayoutProperty(layerId, 'visibility');
+      if (visibility === 'visible') {
+        return map.setLayoutProperty(layerId, 'visibility', 'none');
       } else {
-        results.push(void 0);
+        return map.setLayoutProperty(layerId, 'visibility', 'visible');
       }
     }
-    return results;
   };
   setUpSliders = function() {
     return $('.slider').each(function(i, slider) {
@@ -668,7 +673,8 @@ $(function() {
     setThresholdVal($option);
     setThresholdVal($altOption);
     updateThresholdColors();
-    return setFilter();
+    setFilter();
+    return setUrlParams();
   };
   setThresholdVal = function($option) {
     var i, k, max, min, range, rangeStr, ref, ref1;
@@ -760,19 +766,27 @@ $(function() {
     return Object.keys(query.map).length;
   };
   setUrlParams = function() {
-    var $sentence, filter, filters, i, j, k, l, location, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, sentenceVal, url, vals;
+    var $sentence, filter, filters, i, j, k, key, l, len, location, m, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, ref2, sentenceVal, url, vals;
     mapData = window.query.map;
     $sentence = $phenomena.find('.sentence.selected');
+    ref = Object.keys(window.query);
+    for (k = 0, len = ref.length; k < len; k++) {
+      key = ref[k];
+      if (['map', 's'].indexOf(key) < 0) {
+        delete window.query[key];
+      }
+    }
     if ($sentence.length) {
       sentenceVal = $sentence.attr('data-val');
       query['s'] = sentenceVal;
     }
     if ($map.is('.mapboxgl-map') && (filters = map.getFilter('survey-data'))) {
-      for (i = k = 1, ref = filters.length - 1; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
-        if (filter = filters[i]) {
+      for (i = l = 1, ref1 = filters.length - 1; 1 <= ref1 ? l <= ref1 : l >= ref1; i = 1 <= ref1 ? ++l : --l) {
+        filter = filters[i];
+        if (filter && filter !== 'all') {
           prop = getPropSlug(filter[1]);
           queryVals = [];
-          for (j = l = 2, ref1 = filter.length - 1; 2 <= ref1 ? l <= ref1 : l >= ref1; j = 2 <= ref1 ? ++l : --l) {
+          for (j = m = 2, ref2 = filter.length - 1; 2 <= ref2 ? m <= ref2 : m >= ref2; j = 2 <= ref2 ? ++m : --m) {
             queryVal = getValSlug(prop, filter[j]);
             queryVals.push(queryVal);
           }
@@ -974,9 +988,10 @@ $(function() {
   getPhenomena();
   getMapQuery();
   setUpSliders();
+  new ClipboardJS('.instruct, #embed');
   $('body').on('click', 'aside .label', toggleFieldset);
   $('body').on('click', 'aside .multi-label', selectMulti);
-  $('body').on('click', 'aside#filters ul li', clickFilter);
+  $('body').on('click', 'aside#filters .option', clickFilter);
   $('.slider').on('slidechange', changeSlider);
   $('.range-input input').on('keyup', limitThresholds);
   $('.range-input input').on('change', changeThresholds);

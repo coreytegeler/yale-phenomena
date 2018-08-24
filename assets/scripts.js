@@ -10,7 +10,7 @@ $(function() {
   $fixedHeader = $('header.fixed');
   $headerSentence = $('header.fixed .sentence');
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
-  styleUri = 'mapbox://styles/ygdp/cjf9yeodd67sq2ro1uvh1ua67';
+  styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw';
   env = 'dev';
   DEFAULT_LAT = 39.6;
   DEFAULT_LNG = -99.4;
@@ -112,7 +112,19 @@ $(function() {
       dataType: 'json',
       url: ajaxUrl,
       success: function(data, textStatus, jqXHR) {
-        return populateSentences(data);
+        var datum, k, len, sentences;
+        if (env === 'dev') {
+          sentences = [];
+          for (k = 0, len = data.length; k < len; k++) {
+            datum = data[k];
+            if (parseInt(datum.phenomenon_id) === query.map.phenomenon) {
+              sentences.push(datum);
+            }
+          }
+        } else {
+          sentences = data;
+        }
+        return populateSentences(sentences);
       },
       error: function(error) {
         return console.log(error);
@@ -183,50 +195,59 @@ $(function() {
       },
       'source-layer': phen.survey_name,
       'layout': {
+        'icon-image': 'marker',
         'icon-allow-overlap': true,
         'icon-size': {
           'base': 0.9,
           'stops': [[0, 0.2], [16, 1.4]]
+        }
+      }
+    }, dataLayer = map.getLayer('survey-data'), dataBounds = map.getBounds(dataLayer).toArray());
+    if (phen.coldspots_id && phen.coldspots_name) {
+      map.addLayer({
+        'id': 'coldspots',
+        'type': 'fill',
+        'source': {
+          'type': 'vector',
+          'url': 'mapbox://' + phen.coldspots_id
         },
-        'icon-image': 'marker'
-      }
-    });
-    dataLayer = map.getLayer('survey-data');
-    dataBounds = map.getBounds(dataLayer).toArray();
-    map.addLayer({
-      'id': 'coldspots',
-      'type': 'fill',
-      'source': {
-        'type': 'vector',
-        'url': 'mapbox://' + phen.coldspots_id
-      },
-      'source-layer': phen.coldspots_name,
-      'minzoom': MIN_ZOOM,
-      'maxzoom': MAX_ZOOM,
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': 'rgba(141,171,247,0.3)'
-      }
-    });
-    map.addLayer({
-      'id': 'hotspots',
-      'type': 'fill',
-      'source': {
-        'type': 'vector',
-        'url': 'mapbox://' + phen.hotspots_id
-      },
-      'source-layer': phen.hotspots_name,
-      'minzoom': MIN_ZOOM,
-      'maxzoom': MAX_ZOOM,
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': 'rgba(228,139,139,0.3)'
-      }
-    });
+        'source-layer': phen.coldspots_name,
+        'minzoom': MIN_ZOOM,
+        'maxzoom': MAX_ZOOM,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': 'rgba(141,171,247,0.3)'
+        }
+      });
+    } else {
+      $('.option[data-val="coldspots"]').remove();
+    }
+    if (phen.hotspots_id && phen.hotspots_name) {
+      map.addLayer({
+        'id': 'hotspots',
+        'type': 'fill',
+        'source': {
+          'type': 'vector',
+          'url': 'mapbox://' + phen.hotspots_id
+        },
+        'source-layer': phen.hotspots_name,
+        'minzoom': MIN_ZOOM,
+        'maxzoom': MAX_ZOOM,
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': 'rgba(228,139,139,0.3)'
+        }
+      });
+    } else {
+      $('.option[data-val="hotspots"]').remove();
+    }
+    if ((!phen.hotspots_id && !phen.hotspots_name) && (!phen.coldspots_id && !phen.coldspots_name)) {
+      $('.fieldset.layers').remove();
+    }
     window.popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false
@@ -728,7 +749,7 @@ $(function() {
     return map.setLayoutProperty('survey-data', 'icon-image', markerProps);
   };
   getMapData = function() {
-    var dataType, i, k, len, mapData, pair, queryStr, queryVar, queryVars, val, varType, vars;
+    var dataType, i, k, len, mapData, pair, queryStr, queryVar, queryVars, results, val, varType, vars;
     mapData = {};
     queryStr = window.location.search.substring(1);
     if (!queryStr) {
@@ -736,6 +757,7 @@ $(function() {
     }
     queryStr = decodeURIComponent(queryStr);
     queryVars = queryStr.split('&');
+    results = [];
     for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
       queryVar = queryVars[i];
       pair = queryVar.split('=');
@@ -748,13 +770,15 @@ $(function() {
           query.map[dataType] = {};
         }
         if (varType) {
-          query.map[dataType][varType] = val;
+          results.push(query.map[dataType][varType] = val);
         } else {
-          query.map[dataType] = parseFloat(val);
+          results.push(query.map[dataType] = parseFloat(val));
         }
+      } else {
+        results.push(void 0);
       }
     }
-    return Object.keys(query.map).length;
+    return results;
   };
   setUrlParams = function() {
     var $sentence, filter, filters, i, j, k, key, l, len, location, m, mapData, prop, queryStr, queryVal, queryVals, ref, ref1, ref2, sentenceVal, url, vals;
@@ -812,13 +836,11 @@ $(function() {
     return $embedder.find('textarea').html(iframe);
   };
   getMapQuery = function() {
-    var queryStr;
-    queryStr = window.location.search.substring(1);
-    if (queryStr && getMapData()) {
+    getMapData();
+    if (query.map && query.map.phenomenon) {
       return createMap();
     } else {
-      $body.addClass('form');
-      return $creation.find('form').on('submit', prepareMap);
+      return $body.addClass('form');
     }
   };
   getFilterQuery = function() {
@@ -990,5 +1012,6 @@ $(function() {
   $('.range-input .inputs').on('mouseleave', unhoverThresholds);
   $('body').on('click', 'aside .close', toggleSide);
   $('body').on('click', 'aside#phenomena ul li', clickSentence);
-  return $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
+  $('body').on('click', 'aside#filters .tab', toggleFilterTabs);
+  return $('body').on('submit', '#creation form', prepareMap);
 });

@@ -370,16 +370,19 @@ aside {
         overflow: hidden; }
         aside#filters .fieldset .options ul {
           padding: 0; }
-          aside#filters .fieldset .options ul li {
+          aside#filters .fieldset .options ul li.option {
             padding: .25em .75em 0 0;
             margin: .25em 0 0 0;
             cursor: pointer;
             font-weight: 200; }
-            aside#filters .fieldset .options ul li:not(.all) {
+            aside#filters .fieldset .options ul li.option:not(.all) {
               background-image: url(./img/x.svg);
               background-position: 200% center;
               background-repeat: no-repeat;
               background-size: .75em; }
+            aside#filters .fieldset .options ul li.option.disabled {
+              opacity: .5;
+              pointer-events: none; }
       aside#filters .fieldset ul li:hover {
         font-weight: 400; }
       aside#filters .fieldset ul li.selected {
