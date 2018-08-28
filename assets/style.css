@@ -186,12 +186,12 @@ aside {
       display: flex;
       flex-direction: column; }
     aside#phenomena .shadow.top {
-      box-shadow: inset 0 3.5em 2.5em -2em #f9f9f9;
+      box-shadow: inset 0 2.5em 1.5em -2em #f9f9f9;
       position: relative;
       margin: 0 0 -60px 30px;
       z-index: 500; }
     aside#phenomena .shadow.bottom {
-      box-shadow: inset 0 -3.5em 2.5em -2em #f9f9f9;
+      box-shadow: inset 0 -2.5em 1.5em -2em #f9f9f9;
       width: calc(100% - 30px);
       margin-left: 30px; }
     aside#phenomena .phenomena {
@@ -228,10 +228,10 @@ aside {
         margin-left: 0; }
         aside#phenomena.closed .shadow.top {
           margin-top: 1em;
-          box-shadow: inset 0 3.5em 2.5em -2em #a8d7ee; }
+          box-shadow: inset 0 2.5em 1.5em -2em #a8d7ee; }
         aside#phenomena.closed .shadow.bottom {
           width: 2em;
-          box-shadow: inset 0 -3.5em 2.5em -2em #a8d7ee; }
+          box-shadow: inset 0 -2.5em 1.5em -2em #a8d7ee; }
       aside#phenomena.closed .phenomena {
         padding: 1.25em 0;
         margin: 0;
@@ -320,11 +320,11 @@ aside {
           aside#filters .inner .form#embedder .fieldset.open .options {
             padding-top: 15px; }
       aside#filters .inner .shadow.top {
-        box-shadow: inset 0 3.5em 2.5em -2em #f2f2ee;
+        box-shadow: inset 0 2.5em 1.5em -2em #f2f2ee;
         margin-bottom: -60px;
         z-index: 500; }
       aside#filters .inner .shadow.bottom {
-        box-shadow: inset 0 -3.5em 2.5em -2em #f2f2ee;
+        box-shadow: inset 0 -2.5em 1.5em -2em #f2f2ee;
         width: 100%; }
     aside#filters .fieldset {
       margin: 0 0 1em 0; }
@@ -387,15 +387,16 @@ aside {
         font-weight: 400; }
       aside#filters .fieldset ul li.selected {
         font-weight: 400;
-        background-position: right center !important; }
+        background-position: right 5px !important; }
       aside#filters .fieldset .option.range-input {
         padding-right: 0; }
         aside#filters .fieldset .option.range-input:hover:not(.selected).no-hover {
           font-weight: 200; }
         aside#filters .fieldset .option.range-input .inputs {
-          font-weight: 200;
           display: inline;
           float: right;
+          margin-right: 2px;
+          font-weight: 200;
           color: #f9f9f9;
           cursor: default; }
           aside#filters .fieldset .option.range-input .inputs input {

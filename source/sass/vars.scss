@@ -37,11 +37,11 @@ $right: 206px;
 }
 
 @mixin bottomShadow($color) {
-	box-shadow: inset 0 -3.5em 2.5em -2em $color;
+	box-shadow: inset 0 -2.5em 1.5em -2em $color;
 }
 
 @mixin topShadow($color) {
-	box-shadow: inset 0 3.5em 2.5em -2em $color;
+	box-shadow: inset 0 2.5em 1.5em -2em $color;
 }
 
 @mixin hideScroll {

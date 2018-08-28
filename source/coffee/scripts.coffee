@@ -74,8 +74,6 @@ $ ->
 			option = $('<option></option>')
 			option.text(phenomenon.title.replace(/(<([^>]+)>)/ig,''))
 			option.val(phenomenon.id)
-			if phenomenon.id == '156'
-				option.attr('selected', 'selected')
 			$('select[name="phenomenon"]').append(option)
 
 	getSentences = () ->
@@ -220,9 +218,10 @@ $ ->
 
 	selectSentence = (val) ->
 		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
-		if !$sentence.length
-			$sentence = $phenomena.find('.option').first()
+		if !$sentence.length && $sentence = $phenomena.find('.sentence').first()
 			val = $sentence.attr('data-val')
+		else
+			updateThresholdColors()
 		$fieldset = $sentence.parents('.fieldset')
 		$side = $fieldset.parents('aside')
 		text = $sentence.find('span').text()

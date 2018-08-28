@@ -92,9 +92,6 @@ $(function() {
       option = $('<option></option>');
       option.text(phenomenon.title.replace(/(<([^>]+)>)/ig, ''));
       option.val(phenomenon.id);
-      if (phenomenon.id === '156') {
-        option.attr('selected', 'selected');
-      }
       results.push($('select[name="phenomenon"]').append(option));
     }
     return results;
@@ -273,9 +270,10 @@ $(function() {
   selectSentence = function(val) {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
     $sentence = $phenomena.find('.option[data-val="' + val + '"]');
-    if (!$sentence.length) {
-      $sentence = $phenomena.find('.option').first();
+    if (!$sentence.length && ($sentence = $phenomena.find('.sentence').first())) {
       val = $sentence.attr('data-val');
+    } else {
+      updateThresholdColors();
     }
     $fieldset = $sentence.parents('.fieldset');
     $side = $fieldset.parents('aside');

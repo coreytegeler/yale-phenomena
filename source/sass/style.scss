@@ -411,15 +411,13 @@ aside {
 					}
 				}
 			}
-			ul {
-				li {
-					&:hover {
-						font-weight: 400;
-					}
-					&.selected {
-						font-weight: 400;
-						background-position: right center !important;
-					}
+			ul li {
+				&:hover {
+					font-weight: 400;
+				}
+				&.selected {
+					font-weight: 400;
+					background-position: right 5px !important;
 				}
 			}
 			.option.range-input {
@@ -430,9 +428,10 @@ aside {
 					}
 				}
 				.inputs {
-					font-weight: 200;
 					display: inline;
 					float: right;
+					margin-right: 2px;
+					font-weight: 200;
 					color: $white;
 					cursor: default;
 					input {
