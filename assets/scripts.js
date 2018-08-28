@@ -183,23 +183,29 @@ $(function() {
   };
   initMap = function() {
     var dataBounds, dataLayer;
-    map.addLayer({
-      'id': 'survey-data',
-      'type': 'symbol',
-      'source': {
-        'type': 'vector',
-        'url': 'mapbox://' + phen.survey_id
-      },
-      'source-layer': phen.survey_name,
-      'layout': {
-        'icon-image': 'marker',
-        'icon-allow-overlap': true,
-        'icon-size': {
-          'base': 0.9,
-          'stops': [[0, 0.2], [16, 1.4]]
+    if (phen.dataset_id && phen.dataset_name) {
+      map.addLayer({
+        'id': 'survey-data',
+        'type': 'symbol',
+        'source': {
+          'type': 'vector',
+          'url': 'mapbox://' + phen.dataset_id
+        },
+        'source-layer': phen.dataset_name,
+        'layout': {
+          'icon-image': 'marker',
+          'icon-allow-overlap': true,
+          'icon-size': {
+            'base': 0.9,
+            'stops': [[0, 0.2], [16, 1.4]]
+          }
         }
-      }
-    }, dataLayer = map.getLayer('survey-data'), dataBounds = map.getBounds(dataLayer).toArray());
+      });
+      dataLayer = map.getLayer('survey-data');
+      dataBounds = map.getBounds(dataLayer).toArray();
+    } else {
+      return;
+    }
     if (phen.coldspots_id && phen.coldspots_name) {
       map.addLayer({
         'id': 'coldspots',
@@ -270,10 +276,13 @@ $(function() {
   selectSentence = function(val) {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, text;
     $sentence = $phenomena.find('.option[data-val="' + val + '"]');
-    if (!$sentence.length && ($sentence = $phenomena.find('.sentence').first())) {
+    if (!$sentence.length) {
+      $sentence = $phenomena.find('.sentence').first();
       val = $sentence.attr('data-val');
-    } else {
+    }
+    if (!$sentence.length) {
       updateThresholdColors();
+      return;
     }
     $fieldset = $sentence.parents('.fieldset');
     $side = $fieldset.parents('aside');
