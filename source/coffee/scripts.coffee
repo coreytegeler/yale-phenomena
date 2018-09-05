@@ -12,6 +12,8 @@ $ ->
 	styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw'
 	env = 'ENVIRONMENT'
 
+	DATA_PATH = './assets/data/'
+
 	DEFAULT_LAT = 39.6
 	DEFAULT_LNG = -99.4
 	DEFAULT_ZOOM = 3.4
@@ -30,7 +32,7 @@ $ ->
 
 	getPhenomena = (id) ->
 		if env == 'dev'
-			ajaxUrl = './assets/phenomena.json'
+			ajaxUrl = DATA_PATH+'phenomena.json'
 		else
 			ajaxUrl = 'https://ygdp.yale.edu/phenomena/json'
 		$.ajax
@@ -45,7 +47,7 @@ $ ->
 
 	getPhenomenon = (id) ->
 		if env == 'dev'
-			ajaxUrl = './assets/phenomena.json'
+			ajaxUrl = DATA_PATH+'phenomena.json'
 		else
 			ajaxUrl = 'https://ygdp.yale.edu/phenomena/json/'+id
 		$.ajax
@@ -78,7 +80,7 @@ $ ->
 
 	getSentences = () ->
 		if env == 'dev'
-			ajaxUrl = './assets/sentences.json'
+			ajaxUrl = DATA_PATH+'sentences.json'
 		else
 			ajaxUrl = 'https://ygdp.yale.edu/sentences/json/'+query.map.phenomenon
 		$.ajax
@@ -142,25 +144,28 @@ $ ->
 		map.on 'load', initMap
 
 	initMap = () ->
-		if phen.dataset_id && phen.dataset_name
-			map.addLayer
-				'id': 'survey-data'
-				'type': 'symbol'
-				'source':
-					'type': 'vector'
-					'url': 'mapbox://'+phen.dataset_id
-				'source-layer': phen.dataset_name
-				'layout':
-					'icon-image': 'marker'
-					'icon-allow-overlap': true
-					'icon-size':
-						'base': 0.9
-						'stops': [[0, 0.2],[16, 1.4]]
-
-			dataLayer = map.getLayer('survey-data')
-			dataBounds = map.getBounds(dataLayer).toArray()
-		else
+		if !phen.geojson
 			return
+		if env == 'dev'
+			str = phen.geojson
+			phen.geojson = DATA_PATH+str.substring(str.lastIndexOf('/') + 1, str.length)
+		stamp =  Math.floor(Date.now() / 1000)
+		map.addSource 'markers',
+			type: 'geojson',
+			data: phen.geojson+'?version='+stamp
+		map.addLayer
+			'id': 'markers'
+			'type': 'symbol'
+			'source': 'markers'
+			'layout':
+				'icon-image': 'marker'
+				'icon-allow-overlap': true
+				'icon-size':
+					'base': 0.9
+					'stops': [[0, 0.2],[16, 1.4]]
+
+		dataLayer = map.getLayer('markers')
+		dataBounds = map.getBounds(dataLayer).toArray()
 
 		if phen.coldspots_id && phen.coldspots_name
 			map.addLayer
@@ -426,13 +431,13 @@ $ ->
 					$slider.attr('data-val', vals.join(','))
 					filter.push(['>=', prop, vals[0]])
 					filter.push(['<=', prop, vals[1]])
-		if map.getLayer('survey-data')
-			map.setFilter('survey-data', filter)
+		if map.getLayer('markers')
+			map.setFilter('markers', filter)
 
 	clearFilter = (prop) ->
 		if !map.length
 			return
-		filter = map.getFilter('survey-data')
+		filter = map.getFilter('markers')
 		if filter
 			arrs = filter.slice(0)
 			arrs.shift()
@@ -614,7 +619,7 @@ $ ->
 			property: prop
 			type: 'categorical'
 			stops: stops
-		map.setLayoutProperty('survey-data', 'icon-image', markerProps)
+		map.setLayoutProperty('markers', 'icon-image', markerProps)
 
 
 
@@ -648,7 +653,7 @@ $ ->
 		if $sentence.length
 			sentenceVal = $sentence.attr('data-val')
 			query['s'] = sentenceVal
-		if $map.is('.mapboxgl-map') && filters = map.getFilter('survey-data')
+		if $map.is('.mapboxgl-map') && filters = map.getFilter('markers')
 			for i in [1..filters.length-1]
 				filter = filters[i]
 				if filter && filter != 'all'
@@ -734,25 +739,26 @@ $ ->
 			'Gender': props['Gender']
 			'Education': props['Education']
 			'Race': props['Race']
-			'Place Raised': props['RaisedPlace']
-			'Current Place': props['CurrentCity']+', '+props['CurrentState']
-			'Father Raised Place': props['DadCity']+', '+props['DadState']
-			'Mother Raised Place': props['MomCity']+', '+props['MomState']
+			'Place Raised': props['City.US.Raised']+', '+props['Raised.State']
+			'Current Place': props['City.US.Curr']+', '+props['Current.State']
+			'Father Raised Place': props['City.US.Fa']+', '+props['Father.State']
+			'Mother Raised Place': props['City.US.Mo']+', '+props['Mother.State']
+
 		ul = '<ul>'
 		prop_keys = Object.keys(props)
 		for prop, i in prop_keys
 			ul += '<li>'+prop+': '+props[prop]+'</li>'
 			if i > prop_keys.length - 1
 				description += '</ul>'
+
 		popup.setLngLat(marker.geometry.coordinates)
 			.setHTML(ul)
 			.addTo(map)
-
 		$content = $(popup._content)
-		$popup = $content.parent()	
+		$popup = $content.parent()
 		$popup
 			.addClass('show')
-			.attr('data-id', marker.id)
+			.attr('data-id', Date.now())
 		$content.css('background', color)
 
 	startListening = () ->
@@ -763,8 +769,8 @@ $ ->
 			query.map.lat = center.lat
 			setUrlParams()
 
-		map.on 'mouseenter', 'survey-data', hoverMarker
-		map.on 'mouseleave', 'survey-data', (e) ->
+		map.on 'mouseenter', 'markers', hoverMarker
+		map.on 'mouseleave', 'markers', (e) ->
 			$popup = $('.mapboxgl-popup')
 			oldId = $popup.attr('data-id')
 			setTimeout () ->

@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, env, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getPhenomenon, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpPhenomenonData, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changeSlider, changeThresholds, clearFilter, clickFilter, clickSentence, createMap, env, getFieldset, getFilterQuery, getMapData, getMapQuery, getOption, getPhenomena, getPhenomenon, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, keyUri, limitThresholds, openMulti, populatePhenomena, populateSentences, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpPhenomenonData, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   keyUri = 'data/key8.csv';
   $body = $('body');
   $map = $('#map');
@@ -12,6 +12,7 @@ $(function() {
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw';
   env = 'dev';
+  DATA_PATH = './assets/data/';
   DEFAULT_LAT = 39.6;
   DEFAULT_LNG = -99.4;
   DEFAULT_ZOOM = 3.4;
@@ -30,7 +31,7 @@ $(function() {
   getPhenomena = function(id) {
     var ajaxUrl;
     if (env === 'dev') {
-      ajaxUrl = './assets/phenomena.json';
+      ajaxUrl = DATA_PATH + 'phenomena.json';
     } else {
       ajaxUrl = 'https://ygdp.yale.edu/phenomena/json';
     }
@@ -50,7 +51,7 @@ $(function() {
   getPhenomenon = function(id) {
     var ajaxUrl;
     if (env === 'dev') {
-      ajaxUrl = './assets/phenomena.json';
+      ajaxUrl = DATA_PATH + 'phenomena.json';
     } else {
       ajaxUrl = 'https://ygdp.yale.edu/phenomena/json/' + id;
     }
@@ -99,7 +100,7 @@ $(function() {
   getSentences = function() {
     var ajaxUrl;
     if (env === 'dev') {
-      ajaxUrl = './assets/sentences.json';
+      ajaxUrl = DATA_PATH + 'sentences.json';
     } else {
       ajaxUrl = 'https://ygdp.yale.edu/sentences/json/' + query.map.phenomenon;
     }
@@ -182,30 +183,34 @@ $(function() {
     return map.on('load', initMap);
   };
   initMap = function() {
-    var dataBounds, dataLayer;
-    if (phen.dataset_id && phen.dataset_name) {
-      map.addLayer({
-        'id': 'survey-data',
-        'type': 'symbol',
-        'source': {
-          'type': 'vector',
-          'url': 'mapbox://' + phen.dataset_id
-        },
-        'source-layer': phen.dataset_name,
-        'layout': {
-          'icon-image': 'marker',
-          'icon-allow-overlap': true,
-          'icon-size': {
-            'base': 0.9,
-            'stops': [[0, 0.2], [16, 1.4]]
-          }
-        }
-      });
-      dataLayer = map.getLayer('survey-data');
-      dataBounds = map.getBounds(dataLayer).toArray();
-    } else {
+    var dataBounds, dataLayer, stamp, str;
+    if (!phen.geojson) {
       return;
     }
+    if (env === 'dev') {
+      str = phen.geojson;
+      phen.geojson = DATA_PATH + str.substring(str.lastIndexOf('/') + 1, str.length);
+    }
+    stamp = Math.floor(Date.now() / 1000);
+    map.addSource('markers', {
+      type: 'geojson',
+      data: phen.geojson + '?version=' + stamp
+    });
+    map.addLayer({
+      'id': 'markers',
+      'type': 'symbol',
+      'source': 'markers',
+      'layout': {
+        'icon-image': 'marker',
+        'icon-allow-overlap': true,
+        'icon-size': {
+          'base': 0.9,
+          'stops': [[0, 0.2], [16, 1.4]]
+        }
+      }
+    });
+    dataLayer = map.getLayer('markers');
+    dataBounds = map.getBounds(dataLayer).toArray();
     if (phen.coldspots_id && phen.coldspots_name) {
       map.addLayer({
         'id': 'coldspots',
@@ -532,8 +537,8 @@ $(function() {
         }
       }
     });
-    if (map.getLayer('survey-data')) {
-      return map.setFilter('survey-data', filter);
+    if (map.getLayer('markers')) {
+      return map.setFilter('markers', filter);
     }
   };
   clearFilter = function(prop) {
@@ -541,7 +546,7 @@ $(function() {
     if (!map.length) {
       return;
     }
-    filter = map.getFilter('survey-data');
+    filter = map.getFilter('markers');
     if (filter) {
       arrs = filter.slice(0);
       arrs.shift();
@@ -753,7 +758,7 @@ $(function() {
       type: 'categorical',
       stops: stops
     };
-    return map.setLayoutProperty('survey-data', 'icon-image', markerProps);
+    return map.setLayoutProperty('markers', 'icon-image', markerProps);
   };
   getMapData = function() {
     var dataType, i, k, len, mapData, pair, queryStr, queryVar, queryVars, results, val, varType, vars;
@@ -802,7 +807,7 @@ $(function() {
       sentenceVal = $sentence.attr('data-val');
       query['s'] = sentenceVal;
     }
-    if ($map.is('.mapboxgl-map') && (filters = map.getFilter('survey-data'))) {
+    if ($map.is('.mapboxgl-map') && (filters = map.getFilter('markers'))) {
       for (i = l = 1, ref1 = filters.length - 1; 1 <= ref1 ? l <= ref1 : l >= ref1; i = 1 <= ref1 ? ++l : --l) {
         filter = filters[i];
         if (filter && filter !== 'all') {
@@ -909,10 +914,10 @@ $(function() {
       'Gender': props['Gender'],
       'Education': props['Education'],
       'Race': props['Race'],
-      'Place Raised': props['RaisedPlace'],
-      'Current Place': props['CurrentCity'] + ', ' + props['CurrentState'],
-      'Father Raised Place': props['DadCity'] + ', ' + props['DadState'],
-      'Mother Raised Place': props['MomCity'] + ', ' + props['MomState']
+      'Place Raised': props['City.US.Raised'] + ', ' + props['Raised.State'],
+      'Current Place': props['City.US.Curr'] + ', ' + props['Current.State'],
+      'Father Raised Place': props['City.US.Fa'] + ', ' + props['Father.State'],
+      'Mother Raised Place': props['City.US.Mo'] + ', ' + props['Mother.State']
     };
     ul = '<ul>';
     prop_keys = Object.keys(props);
@@ -926,7 +931,7 @@ $(function() {
     popup.setLngLat(marker.geometry.coordinates).setHTML(ul).addTo(map);
     $content = $(popup._content);
     $popup = $content.parent();
-    $popup.addClass('show').attr('data-id', marker.id);
+    $popup.addClass('show').attr('data-id', Date.now());
     return $content.css('background', color);
   };
   startListening = function() {
@@ -938,8 +943,8 @@ $(function() {
       query.map.lat = center.lat;
       return setUrlParams();
     });
-    map.on('mouseenter', 'survey-data', hoverMarker);
-    return map.on('mouseleave', 'survey-data', function(e) {
+    map.on('mouseenter', 'markers', hoverMarker);
+    return map.on('mouseleave', 'markers', function(e) {
       var $popup, oldId;
       $popup = $('.mapboxgl-popup');
       oldId = $popup.attr('data-id');
