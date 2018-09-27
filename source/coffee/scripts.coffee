@@ -229,6 +229,13 @@ $ ->
 		selectFilter(prop, val)
 		setUrlParams()
 
+	clickReset = (e) ->
+		$filters.find('.fieldset').each (i, fieldset) ->
+			prop = $(fieldset).data('prop-slug')
+			selectFilter(prop)
+			if $(fieldset).find('.slider')
+				setSlider(prop)
+			$(fieldset).removeClass('open')
 
 	selectFilter = (prop, val) ->
 		val = getValSlug(prop, val)
@@ -265,7 +272,7 @@ $ ->
 		$fieldset = getFieldset(prop)
 		$slider = $fieldset.find('.slider')
 		$fieldset.addClass('open')
-		if vals.length != 2
+		if !vals || vals.length != 2
 			vals = [1,100]
 		$slider.slider('values', vals)
 
@@ -728,11 +735,6 @@ $ ->
 			'Currently Lives': 'Current.CityState'
 			'Mother/Guardian 1 Raised': 'Mother.CityState'
 			'Father/Guardian 2 Raised': 'Father.CityState'
-			'Asian': 'Asian'
-			'Black': 'Black/African American'
-			'Hispanic': 'Hispanic/Latino/Latina'
-			'Amerindian': 'American Indian/Native American'
-			'White': 'White/Caucasian'
 		if key[val]
 			return key[val]
 		else
@@ -804,6 +806,7 @@ $ ->
 	$('body').on 'click', 'aside .label', toggleFieldset
 	$('body').on 'click', 'aside .multi-label', selectMulti
 	$('body').on 'click', 'aside#filters .option', clickFilter
+	$('body').on 'click', 'aside#filters .reset .label', clickReset
 	$('.slider').on 'slidechange', changeSlider
 	$('.range-input input').on 'keyup', limitThresholds
 	$('.range-input input').on 'change', changeThresholds

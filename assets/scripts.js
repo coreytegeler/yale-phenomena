@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, checkKey, clearFilter, clickFilter, clickSentence, createMap, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   $body = $('body');
   $map = $('#map');
   $filters = $('#filters');
@@ -289,6 +289,17 @@ $(function() {
     selectFilter(prop, val);
     return setUrlParams();
   };
+  clickReset = function(e) {
+    return $filters.find('.fieldset').each(function(i, fieldset) {
+      var prop;
+      prop = $(fieldset).data('prop-slug');
+      selectFilter(prop);
+      if ($(fieldset).find('.slider')) {
+        setSlider(prop);
+      }
+      return $(fieldset).removeClass('open');
+    });
+  };
   selectFilter = function(prop, val) {
     var $fieldset, $option, $options, $selected;
     val = getValSlug(prop, val);
@@ -331,7 +342,7 @@ $(function() {
     $fieldset = getFieldset(prop);
     $slider = $fieldset.find('.slider');
     $fieldset.addClass('open');
-    if (vals.length !== 2) {
+    if (!vals || vals.length !== 2) {
       vals = [1, 100];
     }
     return $slider.slider('values', vals);
@@ -904,12 +915,7 @@ $(function() {
       'Place Raised': 'Raised.CityState',
       'Currently Lives': 'Current.CityState',
       'Mother/Guardian 1 Raised': 'Mother.CityState',
-      'Father/Guardian 2 Raised': 'Father.CityState',
-      'Asian': 'Asian',
-      'Black': 'Black/African American',
-      'Hispanic': 'Hispanic/Latino/Latina',
-      'Amerindian': 'American Indian/Native American',
-      'White': 'White/Caucasian'
+      'Father/Guardian 2 Raised': 'Father.CityState'
     };
     if (key[val]) {
       return key[val];
@@ -1000,6 +1006,7 @@ $(function() {
   $('body').on('click', 'aside .label', toggleFieldset);
   $('body').on('click', 'aside .multi-label', selectMulti);
   $('body').on('click', 'aside#filters .option', clickFilter);
+  $('body').on('click', 'aside#filters .reset .label', clickReset);
   $('.slider').on('slidechange', changeSlider);
   $('.range-input input').on('keyup', limitThresholds);
   $('.range-input input').on('change', changeThresholds);

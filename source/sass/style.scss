@@ -578,6 +578,12 @@ aside {
 					}
 				}
 			}
+			&.reset {
+				margin-top: 1.5em;
+				.head {
+					padding-left: 0;
+				}
+			}
 		}
 		&.closed {
 			.close .arrow {

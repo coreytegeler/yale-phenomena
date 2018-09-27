@@ -494,6 +494,10 @@ aside {
           display: block; }
       aside#filters .fieldset.multi.open .head .multi-toggle {
         visibility: visible; }
+      aside#filters .fieldset.reset {
+        margin-top: 1.5em; }
+        aside#filters .fieldset.reset .head {
+          padding-left: 0; }
     aside#filters.closed .close .arrow {
       background-position: left -3.75em; }
 
