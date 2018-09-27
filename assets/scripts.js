@@ -874,7 +874,7 @@ $(function() {
     } else if (uVals.indexOf(val) > -1) {
       color = '#795292';
     }
-    propNames = ['Age', 'Gender', 'Education', 'Race', 'Place Raised', 'Current Place', 'Mother Raised Place', 'Father Raised Place'];
+    propNames = ['Age', 'Gender', 'Education', 'Race', 'Place Raised', 'Currently Lives', 'Mother/Guardian 1 Raised', 'Father/Guardian 2 Raised'];
     ul = '<ul>';
     for (i = k = 0, len = propNames.length; k < len; i = ++k) {
       prop = propNames[i];
@@ -895,12 +895,21 @@ $(function() {
   checkKey = function(val) {
     var key;
     key = {
-      'No_degree': 'No Degree',
-      'HS_diploma': 'High School',
+      'No_HS_diploma': 'Some high school',
+      'HS_diploma': 'High school',
+      'No_degree': 'Some college',
+      'Associates': 'Associate\'s degree',
+      'Bachelors': 'Bachelor\'s degree',
+      'Graduate': 'Graduate degree',
       'Place Raised': 'Raised.CityState',
-      'Current Place': 'Current.CityState',
-      'Mother Raised Place': 'Mother.CityState',
-      'Father Raised Place': 'Father.CityState'
+      'Currently Lives': 'Current.CityState',
+      'Mother/Guardian 1 Raised': 'Mother.CityState',
+      'Father/Guardian 2 Raised': 'Father.CityState',
+      'Asian': 'Asian',
+      'Black': 'Black/African American',
+      'Hispanic': 'Hispanic/Latino/Latina',
+      'Amerindian': 'American Indian/Native American',
+      'White': 'White/Caucasian'
     };
     if (key[val]) {
       return key[val];

@@ -170,8 +170,6 @@ $ ->
 				'icon-size':
 					'base': 0.9
 					'stops': [[0, 0.2],[16, 1.4]]
-		# if (!map.hotspots_id && !map.hotspots_name) && (!map.coldspots_id && !map.coldspots_name)
-		# 	$('.fieldset.layers').remove()
 		window.popup = new mapboxgl.Popup
 			closeButton: false,
 			closeOnClick: false
@@ -219,10 +217,6 @@ $ ->
 		else
 			$headerSentence.text('')
 			$accFieldset.addClass('disabled')
-
-	# getSentence = (val) ->
-	# 	if !val
-	# 		return $phenomena.find('.sentence.selected')
 
 	clickFilter = (e) ->		
 		$option = $(this)
@@ -703,7 +697,7 @@ $ ->
 		else if uVals.indexOf(val) > -1
 			color = '#795292'
 
-		propNames = ['Age','Gender','Education','Race','Place Raised','Current Place','Mother Raised Place','Father Raised Place']
+		propNames = ['Age','Gender','Education','Race','Place Raised','Currently Lives','Mother/Guardian 1 Raised','Father/Guardian 2 Raised']
 		ul = '<ul>'
 		for prop, i in propNames
 			propVal = props[checkKey(prop)]
@@ -724,12 +718,21 @@ $ ->
 
 	checkKey = (val) ->
 		key =
-			'No_degree': 'No Degree'
-			'HS_diploma': 'High School'
+			'No_HS_diploma': 'Some high school'
+			'HS_diploma': 'High school'
+			'No_degree': 'Some college'
+			'Associates': 'Associate\'s degree'
+			'Bachelors': 'Bachelor\'s degree'
+			'Graduate': 'Graduate degree'
 			'Place Raised': 'Raised.CityState'
-			'Current Place': 'Current.CityState'
-			'Mother Raised Place': 'Mother.CityState'
-			'Father Raised Place': 'Father.CityState'
+			'Currently Lives': 'Current.CityState'
+			'Mother/Guardian 1 Raised': 'Mother.CityState'
+			'Father/Guardian 2 Raised': 'Father.CityState'
+			'Asian': 'Asian'
+			'Black': 'Black/African American'
+			'Hispanic': 'Hispanic/Latino/Latina'
+			'Amerindian': 'American Indian/Native American'
+			'White': 'White/Caucasian'
 		if key[val]
 			return key[val]
 		else
