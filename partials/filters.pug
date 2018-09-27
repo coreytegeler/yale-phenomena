@@ -49,10 +49,10 @@ aside#filters.closed
 					.options
 						ul
 							li.option.selected.all(data-val=null) All Education
-							li.option(data-val='Associates degree' data-val-slug='ad') Associates degree
-							li.option(data-val='Bachelors degree' data-val-slug='bd') Bachelors degree
-							li.option(data-val='Graduate degree (masters doctorate etc.)' data-val-slug='gd') Graduate degree (masters doctorate etc.)
-							li.option(data-val='High school graduate' data-val-slug='hsg') High school graduate
+							li.option(data-val='Associates' data-val-slug='ad') Associates degree
+							li.option(data-val='Bachelors' data-val-slug='bd') Bachelors degree
+							li.option(data-val='Graduate' data-val-slug='gd') Graduate degree (masters doctorate etc.)
+							li.option(data-val='HS_diploma' data-val-slug='hsg') High school graduate
 							li.option(data-val='Some high school' data-val-slug='shs') Some high school
 							li.option(data-val='Some college no degree' data-val-slug='scnd') Some college no degree
 							li.option(data-val='Other' data-val-slug='other') Other
@@ -116,15 +116,15 @@ aside#filters.closed
 									span &ndash;
 									input.max(type='number' value='2' min='1' max='4')
 
-				.fieldset.layers(data-prop='layers' data-prop-slug='layers')
-					.head
-						.label
-							.arrow
-							span Advanced
-					.options
-						ul
-							li.option(data-val='hotspots' data-val-slug='hotspots') Hot Spots
-							li.option(data-val='coldspots' data-val-slug='coldspots') Cold Spots
+				//- .fieldset.layers(data-prop='layers' data-prop-slug='layers')
+				//- 	.head
+				//- 		.label
+				//- 			.arrow
+				//- 			span Advanced
+				//- 	.options
+				//- 		ul
+				//- 			li.option(data-val='hotspots' data-val-slug='hotspots') Hot Spots
+				//- 			li.option(data-val='coldspots' data-val-slug='coldspots') Cold Spots
 			#embedder.form
 				.fieldset.embed
 					.head

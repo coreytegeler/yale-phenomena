@@ -10,7 +10,7 @@ $(function() {
   $headerSentence = $('header.fixed .sentence');
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw';
-  env = 'dev';
+  env = 'prod';
   DATA_PATH = './assets/data/';
   DEFAULT_LAT = 39.6;
   DEFAULT_LNG = -99.4;

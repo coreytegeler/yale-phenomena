@@ -1,5 +1,4 @@
 $ ->
-	keyUri = 'data/key8.csv'
 	$body = $('body')
 	$map = $('#map')
 	$filters = $('#filters')
@@ -30,26 +29,26 @@ $ ->
 
 	window.phen = {}
 
-	getPhenomena = (id) ->
+	getMaps = (id) ->
 		if env == 'dev'
-			ajaxUrl = DATA_PATH+'phenomena.json'
+			ajaxUrl = DATA_PATH+'maps.json'
 		else
-			ajaxUrl = 'https://ygdp.yale.edu/phenomena/json'
+			ajaxUrl = 'https://ygdp.yale.edu/maps/json'
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
 			dataType: 'json',
 			url: ajaxUrl,
 			success: (data, textStatus, jqXHR) ->
-				populatePhenomena(data)
+				populateMapOptions(data)
 			error: (error) ->
 				console.log error
 
-	getPhenomenon = (id) ->
+	getMap = (id) ->
 		if env == 'dev'
-			ajaxUrl = DATA_PATH+'phenomena.json'
+			ajaxUrl = DATA_PATH+'maps.json'
 		else
-			ajaxUrl = 'https://ygdp.yale.edu/phenomena/json/'+id
+			ajaxUrl = 'https://ygdp.yale.edu/maps/json/'+id
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
@@ -59,30 +58,38 @@ $ ->
 				if env == 'dev'
 					for datum in data
 						if parseInt(datum.id) == id
-							phenomenon = datum
+							map = datum
 				else
-					phenomenon = data[0]
-				window.phen = phenomenon
-				setUpPhenomenonData()
+					map = data[0]
+				if window.map = map
+					getSentences()
 			error: (error) ->
 				console.log error
 
-	setUpPhenomenonData = () ->
+	changePhenTitle = (phenTitle) ->
 		$('header .phenomenon').each () ->
-			$(this).html(phen.title)
+			pseudo = document.createElement('textarea')
+			pseudo.innerHTML = phenTitle
+			this.innerHTML = pseudo.value
 
-	populatePhenomena = (phenomena) ->
-		for phenomenon in phenomena
+	populateMapOptions = (maps) ->
+		for map in maps
 			option = $('<option></option>')
-			option.text(phenomenon.title.replace(/(<([^>]+)>)/ig,''))
-			option.val(phenomenon.id)
-			$('select[name="phenomenon"]').append(option)
+			option.text(map.title.replace(/(<([^>]+)>)/ig,''))
+			option.val(map.id)
+			$('select[name="id"]').append(option)
 
 	getSentences = () ->
+		if sentences = window.map.sentences
+			sentences = sentences.split(',')
+			for sentence in sentences
+				getSentence(sentence)
+
+	getSentence = (id) ->
 		if env == 'dev'
 			ajaxUrl = DATA_PATH+'sentences.json'
 		else
-			ajaxUrl = 'https://ygdp.yale.edu/sentences/json/'+query.map.phenomenon
+			ajaxUrl = 'https://ygdp.yale.edu/sentences/json/'+id
 		$.ajax
 			type: 'GET',
 			contentType: 'application/json',
@@ -91,25 +98,26 @@ $ ->
 			success: (data, textStatus, jqXHR) ->
 				if env == 'dev'
 					sentences = []
-					for datum in data
-						if parseInt(datum.phenomenon_id) == query.map.phenomenon
-							sentences.push(datum)
+					for sentence in data
+						if sentence.id == id
+							populateSentence(sentence)
 				else
-					sentences = data
-				populateSentences(sentences)
+					populateSentence(data)
+				
 			error: (error) ->
 				console.log error
 
-	populateSentences = (sentences) ->
+	populateSentence = (sentence) ->
 		$options = $phenomena.find('ul')
-		for sentence in sentences
-			$option = $('<li></li>')
-				.addClass('sentence')
-				.attr('data-val', sentence.id)
-				.html('<span>'+sentence.title+'</span>')
-			$options.append($option.addClass('option'))
-			$filters.find('.fieldset.accept ul').append($option.clone())
-			$filters.find('.fieldset.reject ul').append($option.clone())
+		$option = $('<li></li>')
+			.addClass('sentence')
+			.attr('data-val', sentence.sentence_id)
+			.attr('data-phen-title', sentence.phenomenon_title)
+			.attr('data-phen-id', sentence.phenomenon_id)
+			.html('<span>'+sentence.title+'</span>')
+		$options.append($option.addClass('option'))
+		$filters.find('.fieldset.accept ul').append($option.clone())
+		$filters.find('.fieldset.reject ul').append($option.clone())
 
 	prepareMap = (e) ->
 		e.preventDefault()
@@ -130,30 +138,29 @@ $ ->
 
 	createMap = () ->
 		setEmbedder()
-		getSentences()
-		getPhenomenon(query.map.phenomenon)
+		getMap(query.map.id)
 		$body.removeClass('form').addClass('map')
 		mapboxgl.accessToken = accessToken
-		window.map = new mapboxgl.Map
+		window.mapbox = new mapboxgl.Map
 			container: 'map',
 			style: styleUri,
 			zoom: query.map.zoom,
 		if query.map.lng && query.map.lat
 			lngLat = new mapboxgl.LngLat(query.map.lng, query.map.lat)
-			map.setCenter(lngLat)
-		map.on 'load', initMap
+			mapbox.setCenter(lngLat)
+		mapbox.on 'load', initMap
 
 	initMap = () ->
-		if !phen.geojson
+		if !map || !map.geojson
 			return
 		if env == 'dev'
-			str = phen.geojson
-			phen.geojson = DATA_PATH+str.substring(str.lastIndexOf('/') + 1, str.length)
+			str = map.geojson
+			map.geojson = DATA_PATH+str.substring(str.lastIndexOf('/') + 1, str.length)
 		stamp =  Math.floor(Date.now() / 1000)
-		map.addSource 'markers',
+		mapbox.addSource 'markers',
 			type: 'geojson',
-			data: phen.geojson+'?version='+stamp
-		map.addLayer
+			data: map.geojson+'?version='+stamp
+		mapbox.addLayer
 			'id': 'markers'
 			'type': 'symbol'
 			'source': 'markers'
@@ -163,51 +170,11 @@ $ ->
 				'icon-size':
 					'base': 0.9
 					'stops': [[0, 0.2],[16, 1.4]]
-
-		dataLayer = map.getLayer('markers')
-		dataBounds = map.getBounds(dataLayer).toArray()
-
-		if phen.coldspots_id && phen.coldspots_name
-			map.addLayer
-				'id': 'coldspots'
-				'type': 'fill'
-				'source':
-					'type': 'vector'
-					'url': 'mapbox://'+phen.coldspots_id
-				'source-layer': phen.coldspots_name
-				'minzoom': MIN_ZOOM
-				'maxzoom': MAX_ZOOM
-				'layout':
-					'visibility': 'none'
-				'paint':
-					'fill-color': 'rgba(141,171,247,0.3)'
-		else
-			$('.option[data-val="coldspots"]').remove()
-
-		if phen.hotspots_id && phen.hotspots_name
-			map.addLayer
-				'id': 'hotspots'
-				'type': 'fill'
-				'source':
-					'type': 'vector'
-					'url': 'mapbox://'+phen.hotspots_id
-				'source-layer': phen.hotspots_name
-				'minzoom': MIN_ZOOM
-				'maxzoom': MAX_ZOOM
-				'layout':
-					'visibility': 'none'
-				'paint':
-					'fill-color': 'rgba(228,139,139,0.3)'
-		else
-			$('.option[data-val="hotspots"]').remove()
-
-		if (!phen.hotspots_id && !phen.hotspots_name) && (!phen.coldspots_id && !phen.coldspots_name)
-			$('.fieldset.layers').remove()
-
+		# if (!map.hotspots_id && !map.hotspots_name) && (!map.coldspots_id && !map.coldspots_name)
+		# 	$('.fieldset.layers').remove()
 		window.popup = new mapboxgl.Popup
 			closeButton: false,
 			closeOnClick: false
-
 		startListening()
 		getFilterQuery()
 
@@ -221,8 +188,8 @@ $ ->
 	clickSentence = (e) ->
 		$sentence = $(this)
 		val = $sentence.attr('data-val')
-		selectSentence(val)	
-		setUrlParams()	
+		selectSentence(val)
+		setUrlParams()
 
 	selectSentence = (val) ->
 		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
@@ -232,6 +199,9 @@ $ ->
 		if !$sentence.length
 			updateThresholdColors()
 			return
+		phenTitle = $sentence.attr('data-phen-title')
+		phenId = $sentence.attr('data-phen-id')
+		changePhenTitle(phenTitle)
 		$fieldset = $sentence.parents('.fieldset')
 		$side = $fieldset.parents('aside')
 		text = $sentence.find('span').text()
@@ -250,9 +220,9 @@ $ ->
 			$headerSentence.text('')
 			$accFieldset.addClass('disabled')
 
-	getSentence = (val) ->
-		if !val
-			return $phenomena.find('.sentence.selected')
+	# getSentence = (val) ->
+	# 	if !val
+	# 		return $phenomena.find('.sentence.selected')
 
 	clickFilter = (e) ->		
 		$option = $(this)
@@ -431,13 +401,13 @@ $ ->
 					$slider.attr('data-val', vals.join(','))
 					filter.push(['>=', prop, vals[0]])
 					filter.push(['<=', prop, vals[1]])
-		if map.getLayer('markers')
-			map.setFilter('markers', filter)
+		if mapbox.getLayer('markers')
+			mapbox.setFilter('markers', filter)
 
 	clearFilter = (prop) ->
-		if !map.length
+		if !mapbox.length
 			return
-		filter = map.getFilter('markers')
+		filter = mapbox.getFilter('markers')
 		if filter
 			arrs = filter.slice(0)
 			arrs.shift()
@@ -447,12 +417,12 @@ $ ->
 			return filter
 
 	toggleLayer = (layerId) ->
-		if map.getLayer(layerId)
-			visibility = map.getLayoutProperty(layerId, 'visibility')
+		if mapbox.getLayer(layerId)
+			visibility = mapbox.getLayoutProperty(layerId, 'visibility')
 			if visibility == 'visible'
-				map.setLayoutProperty(layerId, 'visibility', 'none')
+				mapbox.setLayoutProperty(layerId, 'visibility', 'none')
 			else
-				map.setLayoutProperty(layerId, 'visibility', 'visible')
+				mapbox.setLayoutProperty(layerId, 'visibility', 'visible')
 
 	setUpSliders = () ->
 		$('.slider').each (i, slider) ->
@@ -619,9 +589,8 @@ $ ->
 			property: prop
 			type: 'categorical'
 			stops: stops
-		map.setLayoutProperty('markers', 'icon-image', markerProps)
-
-
+		if mapbox.getLayer('markers')
+			mapbox.setLayoutProperty('markers', 'icon-image', markerProps)
 
 	getMapData = () ->
 		mapData = {}
@@ -651,9 +620,9 @@ $ ->
 			if ['map','s'].indexOf(key) < 0
 				delete window.query[key]
 		if $sentence.length
-			sentenceVal = $sentence.attr('data-val')
-			query['s'] = sentenceVal
-		if $map.is('.mapboxgl-map') && filters = map.getFilter('markers')
+			sentenceId = $sentence.attr('data-val')
+			query['s'] = sentenceId
+		if $map.is('.mapboxgl-map') && filters = mapbox.getFilter('markers')
 			for i in [1..filters.length-1]
 				filter = filters[i]
 				if filter && filter != 'all'
@@ -687,7 +656,7 @@ $ ->
 
 	getMapQuery = () ->
 		getMapData()
-		if query.map && query.map.phenomenon
+		if query.map && query.map.id
 			createMap()
 		else
 			$body.addClass('form')
@@ -723,7 +692,7 @@ $ ->
 
 	hoverMarker = (e) ->
 		sentence = $phenomena.attr('data-selected')
-		map.getCanvas().style.cursor = 'pointer'
+		mapbox.getCanvas().style.cursor = 'pointer'
 		marker = e.features[0]
 		props = marker.properties
 		val = props[sentence]
@@ -734,26 +703,18 @@ $ ->
 		else if uVals.indexOf(val) > -1
 			color = '#795292'
 
-		props =
-			'Age': props['Age']
-			'Gender': props['Gender']
-			'Education': props['Education']
-			'Race': props['Race']
-			'Place Raised': props['City.US.Raised']+', '+props['Raised.State']
-			'Current Place': props['City.US.Curr']+', '+props['Current.State']
-			'Father Raised Place': props['City.US.Fa']+', '+props['Father.State']
-			'Mother Raised Place': props['City.US.Mo']+', '+props['Mother.State']
-
+		propNames = ['Age','Gender','Education','Race','Place Raised','Current Place','Mother Raised Place','Father Raised Place']
 		ul = '<ul>'
-		prop_keys = Object.keys(props)
-		for prop, i in prop_keys
-			ul += '<li>'+prop+': '+props[prop]+'</li>'
-			if i > prop_keys.length - 1
-				description += '</ul>'
+		for prop, i in propNames
+			propVal = props[checkKey(prop)]
+			if propVal && propVal != 'NA'
+				ul += '<li>'+prop+': '+checkKey(propVal)+'</li>'
+				if i > propNames.length - 1
+					description += '</ul>'
 
 		popup.setLngLat(marker.geometry.coordinates)
 			.setHTML(ul)
-			.addTo(map)
+			.addTo(mapbox)
 		$content = $(popup._content)
 		$popup = $content.parent()
 		$popup
@@ -761,16 +722,29 @@ $ ->
 			.attr('data-id', Date.now())
 		$content.css('background', color)
 
+	checkKey = (val) ->
+		key =
+			'No_degree': 'No Degree'
+			'HS_diploma': 'High School'
+			'Place Raised': 'Raised.CityState'
+			'Current Place': 'Current.CityState'
+			'Mother Raised Place': 'Mother.CityState'
+			'Father Raised Place': 'Father.CityState'
+		if key[val]
+			return key[val]
+		else
+			return val
+
 	startListening = () ->
-		map.on 'moveend', (e) ->
-			center = map.getCenter()
-			query.map.zoom = map.getZoom()
+		mapbox.on 'moveend', (e) ->
+			center = mapbox.getCenter()
+			query.map.zoom = mapbox.getZoom()
 			query.map.lng = center.lng
 			query.map.lat = center.lat
 			setUrlParams()
 
-		map.on 'mouseenter', 'markers', hoverMarker
-		map.on 'mouseleave', 'markers', (e) ->
+		mapbox.on 'mouseenter', 'markers', hoverMarker
+		mapbox.on 'mouseleave', 'markers', (e) ->
 			$popup = $('.mapboxgl-popup')
 			oldId = $popup.attr('data-id')
 			setTimeout () ->
@@ -818,7 +792,7 @@ $ ->
 		return val
 
 
-	getPhenomena()
+	getMaps()
 	getMapQuery()
 	setUpSliders()
 
