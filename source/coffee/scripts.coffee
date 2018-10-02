@@ -68,14 +68,12 @@ $ ->
 
 	changePhenTitle = (phenTitle) ->
 		$('header .phenomenon').each () ->
-			pseudo = document.createElement('textarea')
-			pseudo.innerHTML = phenTitle
-			this.innerHTML = pseudo.value
+			this.innerHTML = decodeHtml(phenTitle)
 
 	populateMapOptions = (maps) ->
 		for map in maps
 			option = $('<option></option>')
-			option.text(map.title.replace(/(<([^>]+)>)/ig,''))
+			option.text(decodeHtml(map.title))
 			option.val(map.id)
 			$('select[name="id"]').append(option)
 
@@ -97,12 +95,11 @@ $ ->
 			url: ajaxUrl,
 			success: (data, textStatus, jqXHR) ->
 				if env == 'dev'
-					sentences = []
 					for sentence in data
 						if sentence.id == id
 							populateSentence(sentence)
 				else
-					populateSentence(data)
+					populateSentence(data[0])
 				
 			error: (error) ->
 				console.log error
@@ -795,6 +792,11 @@ $ ->
 			if valSlug && valSlug.length
 				return valSlug
 		return val
+
+	decodeHtml = (str) ->
+		textarea = document.createElement('textarea')
+		textarea.innerHTML = str
+		return textarea.value
 
 
 	getMaps()

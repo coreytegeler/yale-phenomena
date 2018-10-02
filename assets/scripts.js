@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, decodeHtml, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   $body = $('body');
   $map = $('#map');
   $filters = $('#filters');
@@ -82,10 +82,7 @@ $(function() {
   };
   changePhenTitle = function(phenTitle) {
     return $('header .phenomenon').each(function() {
-      var pseudo;
-      pseudo = document.createElement('textarea');
-      pseudo.innerHTML = phenTitle;
-      return this.innerHTML = pseudo.value;
+      return this.innerHTML = decodeHtml(phenTitle);
     });
   };
   populateMapOptions = function(maps) {
@@ -94,7 +91,7 @@ $(function() {
     for (k = 0, len = maps.length; k < len; k++) {
       map = maps[k];
       option = $('<option></option>');
-      option.text(map.title.replace(/(<([^>]+)>)/ig, ''));
+      option.text(decodeHtml(map.title));
       option.val(map.id);
       results.push($('select[name="id"]').append(option));
     }
@@ -125,9 +122,8 @@ $(function() {
       dataType: 'json',
       url: ajaxUrl,
       success: function(data, textStatus, jqXHR) {
-        var k, len, results, sentence, sentences;
+        var k, len, results, sentence;
         if (env === 'dev') {
-          sentences = [];
           results = [];
           for (k = 0, len = data.length; k < len; k++) {
             sentence = data[k];
@@ -139,7 +135,7 @@ $(function() {
           }
           return results;
         } else {
-          return populateSentence(data);
+          return populateSentence(data[0]);
         }
       },
       error: function(error) {
@@ -998,6 +994,12 @@ $(function() {
       }
     }
     return val;
+  };
+  decodeHtml = function(str) {
+    var textarea;
+    textarea = document.createElement('textarea');
+    textarea.innerHTML = str;
+    return textarea.value;
   };
   getMaps();
   getMapQuery();
