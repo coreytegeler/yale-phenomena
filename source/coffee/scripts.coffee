@@ -11,7 +11,7 @@ $ ->
 	styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw'
 	env = 'ENVIRONMENT'
 
-	DATA_PATH = './assets/data/'
+	DATA_PATH = 'http://localhost:9000/assets/data/'
 
 	DEFAULT_LAT = 39.6
 	DEFAULT_LNG = -99.4
@@ -80,10 +80,10 @@ $ ->
 	getSentences = () ->
 		if sentences = window.map.sentences
 			sentences = sentences.split(',')
-			for sentence in sentences
-				getSentence(sentence)
+			for sentence, i in sentences
+				getSentence(sentence, i)
 
-	getSentence = (id) ->
+	getSentence = (id, i) ->
 		if env == 'dev'
 			ajaxUrl = DATA_PATH+'sentences.json'
 		else
@@ -97,24 +97,32 @@ $ ->
 				if env == 'dev'
 					for sentence in data
 						if sentence.id == id
-							populateSentence(sentence)
+							populateSentence(sentence, i)
 				else
-					populateSentence(data[0])
+					populateSentence(data[0], i)
 				
 			error: (error) ->
 				console.log error
 
-	populateSentence = (sentence) ->
+	populateSentence = (sentence, i) ->
 		$options = $phenomena.find('ul')
 		$option = $('<li></li>')
 			.addClass('sentence')
 			.attr('data-val', sentence.sentence_id)
 			.attr('data-phen-title', sentence.phenomenon_title)
 			.attr('data-phen-id', sentence.phenomenon_id)
+			.attr('data-phen-index', i)
 			.html('<span>'+sentence.title+'</span>')
-		$options.append($option.addClass('option'))
-		$filters.find('.fieldset.accept ul').append($option.clone())
-		$filters.find('.fieldset.reject ul').append($option.clone())
+		$filter = $option.clone()
+		$option.addClass('option')
+		$prevOpt = $options.find('li[data-phen-index="'+(i-1)+'"]')
+		if $prevOpt.length
+			$prevOpt.after($option)
+		else
+			$options.append($option)
+
+		$filters.find('.fieldset.accept ul').append($filter)
+		$filters.find('.fieldset.reject ul').append($filter)
 
 	prepareMap = (e) ->
 		e.preventDefault()
@@ -189,7 +197,7 @@ $ ->
 	selectSentence = (val) ->
 		$sentence = $phenomena.find('.option[data-val="'+val+'"]')
 		if !$sentence.length
-			$sentence = $phenomena.find('.sentence').first()
+			$sentence = $phenomena.find('.sentence[data-phen-index="0"]')
 			val = $sentence.attr('data-val')
 		if !$sentence.length
 			updateThresholdColors()
@@ -445,6 +453,19 @@ $ ->
 				$handles.first().attr('data-val', min)
 				$handles.last().attr('data-val', max)
 
+	changingSlider = (e, ui) ->
+		$slider = $(this)
+		type = $slider.attr('data-type')
+		if type == 'range'
+			vals = ui.values
+			minVal = vals[0]
+			maxVal = vals[1]
+			$slider.attr('data-min', minVal)
+			$slider.attr('data-max', maxVal)
+			$handles = $slider.find('.ui-slider-handle')
+			$handles.first().attr('data-val', minVal)
+			$handles.last().attr('data-val', maxVal)
+
 
 	changeSlider = (e, ui) ->
 		$slider = $(this)
@@ -685,8 +706,8 @@ $ ->
 			else if prop != 's'
 				for val in vals
 					selectFilter(prop, val)
-		if !sentenceSelected
-			selectSentence()
+		# if !sentenceSelected
+		# 	selectSentence()
 
 	hoverMarker = (e) ->
 		sentence = $phenomena.attr('data-selected')
@@ -810,6 +831,7 @@ $ ->
 	$('body').on 'click', 'aside#filters .option', clickFilter
 	$('body').on 'click', 'aside#filters .reset .label', clickReset
 	$('.slider').on 'slidechange', changeSlider
+	$('.slider').on 'slide', changingSlider
 	$('.range-input input').on 'keyup', limitThresholds
 	$('.range-input input').on 'change', changeThresholds
 	$('.range-input .inputs').on 'mouseenter', hoverThresholds

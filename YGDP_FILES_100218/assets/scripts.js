@@ -11,7 +11,7 @@ $(function() {
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw';
   env = 'prod';
-  DATA_PATH = './assets/data/';
+  DATA_PATH = 'http://localhost:9000/assets/data/';
   DEFAULT_LAT = 39.6;
   DEFAULT_LNG = -99.4;
   DEFAULT_ZOOM = 3.4;
@@ -198,6 +198,7 @@ $(function() {
     if (env === 'dev') {
       str = map.geojson;
       map.geojson = DATA_PATH + str.substring(str.lastIndexOf('/') + 1, str.length);
+      console.log(map.geojson);
     }
     stamp = Math.floor(Date.now() / 1000);
     mapbox.addSource('markers', {

@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, decodeHtml, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, changingSlider, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, decodeHtml, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   $body = $('body');
   $map = $('#map');
   $filters = $('#filters');
@@ -11,7 +11,7 @@ $(function() {
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw';
   env = 'prod';
-  DATA_PATH = './assets/data/';
+  DATA_PATH = 'http://localhost:9000/assets/data/';
   DEFAULT_LAT = 39.6;
   DEFAULT_LNG = -99.4;
   DEFAULT_ZOOM = 3.4;
@@ -98,18 +98,18 @@ $(function() {
     return results;
   };
   getSentences = function() {
-    var k, len, results, sentence, sentences;
+    var i, k, len, results, sentence, sentences;
     if (sentences = window.map.sentences) {
       sentences = sentences.split(',');
       results = [];
-      for (k = 0, len = sentences.length; k < len; k++) {
-        sentence = sentences[k];
-        results.push(getSentence(sentence));
+      for (i = k = 0, len = sentences.length; k < len; i = ++k) {
+        sentence = sentences[i];
+        results.push(getSentence(sentence, i));
       }
       return results;
     }
   };
-  getSentence = function(id) {
+  getSentence = function(id, i) {
     var ajaxUrl;
     if (env === 'dev') {
       ajaxUrl = DATA_PATH + 'sentences.json';
@@ -128,14 +128,14 @@ $(function() {
           for (k = 0, len = data.length; k < len; k++) {
             sentence = data[k];
             if (sentence.id === id) {
-              results.push(populateSentence(sentence));
+              results.push(populateSentence(sentence, i));
             } else {
               results.push(void 0);
             }
           }
           return results;
         } else {
-          return populateSentence(data[0]);
+          return populateSentence(data[0], i);
         }
       },
       error: function(error) {
@@ -143,13 +143,20 @@ $(function() {
       }
     });
   };
-  populateSentence = function(sentence) {
-    var $option, $options;
+  populateSentence = function(sentence, i) {
+    var $filter, $option, $options, $prevOpt;
     $options = $phenomena.find('ul');
-    $option = $('<li></li>').addClass('sentence').attr('data-val', sentence.sentence_id).attr('data-phen-title', sentence.phenomenon_title).attr('data-phen-id', sentence.phenomenon_id).html('<span>' + sentence.title + '</span>');
-    $options.append($option.addClass('option'));
-    $filters.find('.fieldset.accept ul').append($option.clone());
-    return $filters.find('.fieldset.reject ul').append($option.clone());
+    $option = $('<li></li>').addClass('sentence').attr('data-val', sentence.sentence_id).attr('data-phen-title', sentence.phenomenon_title).attr('data-phen-id', sentence.phenomenon_id).attr('data-phen-index', i).html('<span>' + sentence.title + '</span>');
+    $filter = $option.clone();
+    $option.addClass('option');
+    $prevOpt = $options.find('li[data-phen-index="' + (i - 1) + '"]');
+    if ($prevOpt.length) {
+      $prevOpt.after($option);
+    } else {
+      $options.append($option);
+    }
+    $filters.find('.fieldset.accept ul').append($filter);
+    return $filters.find('.fieldset.reject ul').append($filter);
   };
   prepareMap = function(e) {
     var mapData, serializedData;
@@ -243,7 +250,7 @@ $(function() {
     var $accFieldset, $accLabel, $fieldset, $sentence, $side, phenId, phenTitle, text;
     $sentence = $phenomena.find('.option[data-val="' + val + '"]');
     if (!$sentence.length) {
-      $sentence = $phenomena.find('.sentence').first();
+      $sentence = $phenomena.find('.sentence[data-phen-index="0"]');
       val = $sentence.attr('data-val');
     }
     if (!$sentence.length) {
@@ -566,6 +573,21 @@ $(function() {
       }
     });
   };
+  changingSlider = function(e, ui) {
+    var $handles, $slider, maxVal, minVal, type, vals;
+    $slider = $(this);
+    type = $slider.attr('data-type');
+    if (type === 'range') {
+      vals = ui.values;
+      minVal = vals[0];
+      maxVal = vals[1];
+      $slider.attr('data-min', minVal);
+      $slider.attr('data-max', maxVal);
+      $handles = $slider.find('.ui-slider-handle');
+      $handles.first().attr('data-val', minVal);
+      return $handles.last().attr('data-val', maxVal);
+    }
+  };
   changeSlider = function(e, ui) {
     var $fieldset, $handles, $slider, maxVal, minVal, prop, type, val, vals;
     $slider = $(this);
@@ -828,7 +850,7 @@ $(function() {
     }
   };
   getFilterQuery = function() {
-    var i, k, l, len, len1, pair, prop, queryStr, queryVar, queryVars, sentenceSelected, val, vals;
+    var i, k, len, pair, prop, queryStr, queryVar, queryVars, results, sentenceSelected, val, vals;
     queryStr = window.location.search.substring(1);
     if (!queryStr) {
       return;
@@ -836,6 +858,7 @@ $(function() {
     queryStr = decodeURIComponent(queryStr);
     queryVars = queryStr.split('&');
     sentenceSelected = false;
+    results = [];
     for (i = k = 0, len = queryVars.length; k < len; i = ++k) {
       queryVar = queryVars[i];
       pair = queryVar.split('=');
@@ -855,17 +878,22 @@ $(function() {
         vals = [getThresholdVal(vals)];
       }
       if (prop === 'age') {
-        setSlider(prop, vals);
+        results.push(setSlider(prop, vals));
       } else if (prop !== 's') {
-        for (l = 0, len1 = vals.length; l < len1; l++) {
-          val = vals[l];
-          selectFilter(prop, val);
-        }
+        results.push((function() {
+          var l, len1, results1;
+          results1 = [];
+          for (l = 0, len1 = vals.length; l < len1; l++) {
+            val = vals[l];
+            results1.push(selectFilter(prop, val));
+          }
+          return results1;
+        })());
+      } else {
+        results.push(void 0);
       }
     }
-    if (!sentenceSelected) {
-      return selectSentence();
-    }
+    return results;
   };
   hoverMarker = function(e) {
     var $content, $popup, aVals, color, i, k, len, marker, prop, propNames, propVal, props, sentence, uVals, ul, val;
@@ -1010,6 +1038,7 @@ $(function() {
   $('body').on('click', 'aside#filters .option', clickFilter);
   $('body').on('click', 'aside#filters .reset .label', clickReset);
   $('.slider').on('slidechange', changeSlider);
+  $('.slider').on('slide', changingSlider);
   $('.range-input input').on('keyup', limitThresholds);
   $('.range-input input').on('change', changeThresholds);
   $('.range-input .inputs').on('mouseenter', hoverThresholds);

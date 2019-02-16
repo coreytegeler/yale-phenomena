@@ -39,7 +39,7 @@ var dest = {
 	}
 }
 
-gulp.task('compile-pug', function() {
+function compilePug()  {
 	return gulp.src('./index.pug')
 		.pipe(plumber())
 		.pipe(pug())
@@ -51,9 +51,9 @@ gulp.task('compile-pug', function() {
 		log('HTML done');
 		if (argv.prod) log('HTML minified');
 	});
-});
+}
 
-gulp.task('compile-sass', function() {
+function compileSass()  {
 	var options = {
 		use: [rupture(), autoprefixer()],
 		outputStyle: argv.prod ? 'compressed' : ''
@@ -67,9 +67,9 @@ gulp.task('compile-sass', function() {
 		log('Sass done');
 		if (argv.prod) log('CSS minified');
 	});
-});
+}
 
-gulp.task('compile-coffee', function() {
+function compileCoffee()  {
 	return gulp.src('./source/coffee/scripts.coffee')
 		.pipe(coffee({bare: true}))
 		.pipe(replace('ENVIRONMENT', env))
@@ -79,27 +79,17 @@ gulp.task('compile-coffee', function() {
 		log('Coffee done');
 		if (argv.prod) log('JS minified');
 	});
-});
+}
 
-gulp.task('watch', function() {
-	gulp.watch(paths.pug, ['compile-pug']);
-	gulp.watch(paths.sass, ['compile-sass']);
-	gulp.watch(paths.coffee, ['compile-coffee']);
-});
+function watchFiles() {
+	gulp.watch(paths.pug, compilePug);
+	gulp.watch(paths.sass, compileSass);
+	gulp.watch(paths.coffee, compileCoffee);
+}
 
 
-gulp.task('default', [
-	'compile-pug',
-	'compile-sass',
-	'compile-coffee',
-	'watch'
-]);
-
-gulp.task('prod', [
-	'compile-pug',
-	'compile-sass',
-	'compile-coffee'
-]);
+gulp.task('default', gulp.parallel(compilePug, compileSass, compileCoffee, watchFiles));
+gulp.task('prod', gulp.parallel(compilePug, compileSass, compileCoffee));
 
 function log(message) {
 	gutil.log(gutil.colors.bold.green(message));
