@@ -98,7 +98,8 @@ header {
     display: inline-block;
     margin: 0;
     padding: 0 0 .125em 0;
-    border-bottom: 0.125em solid #153554; }
+    border-bottom: 0.125em solid #153554;
+    min-height: 20px; }
   header.fixed {
     width: calc(100% - 60px);
     height: calc(100% - 60px);

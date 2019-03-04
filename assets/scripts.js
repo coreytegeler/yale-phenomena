@@ -144,19 +144,17 @@ $(function() {
     });
   };
   populateSentence = function(sentence, i) {
-    var $filter, $option, $options, $prevOpt;
+    var $option, $options, $prevOpt;
     $options = $phenomena.find('ul');
-    $option = $('<li></li>').addClass('sentence').attr('data-val', sentence.sentence_id).attr('data-phen-title', sentence.phenomenon_title).attr('data-phen-id', sentence.phenomenon_id).attr('data-phen-index', i).html('<span>' + sentence.title + '</span>');
-    $filter = $option.clone();
-    $option.addClass('option');
+    $option = $('<li></li>').addClass('sentence option').attr('data-val', sentence.sentence_id).attr('data-phen-title', sentence.phenomenon_title).attr('data-phen-id', sentence.phenomenon_id).attr('data-phen-index', i).html('<span>' + sentence.title + '</span>');
     $prevOpt = $options.find('li[data-phen-index="' + (i - 1) + '"]');
     if ($prevOpt.length) {
       $prevOpt.after($option);
     } else {
       $options.append($option);
     }
-    $filters.find('.fieldset.accept ul').append($filter);
-    return $filters.find('.fieldset.reject ul').append($filter);
+    $filters.find('.fieldset.accept ul').append($option.clone());
+    return $filters.find('.fieldset.reject ul').append($option.clone());
   };
   prepareMap = function(e) {
     var mapData, serializedData;
@@ -247,37 +245,35 @@ $(function() {
     return setUrlParams();
   };
   selectSentence = function(val) {
-    var $accFieldset, $accLabel, $fieldset, $sentence, $side, phenId, phenTitle, text;
+    var $accFieldset, $accLabel, $fieldset, $sentence, $side, phenTitle, text;
     $sentence = $phenomena.find('.option[data-val="' + val + '"]');
-    if (!$sentence.length) {
-      $sentence = $phenomena.find('.sentence[data-phen-index="0"]');
-      val = $sentence.attr('data-val');
-    }
+    $fieldset = $sentence.parents('.fieldset');
+    $side = $fieldset.parents('aside');
+    $accFieldset = $filters.find('.fieldset.accepted');
+    $accLabel = $filters.find('.label.accepted');
     if (!$sentence.length) {
       updateThresholdColors();
       return;
     }
-    phenTitle = $sentence.attr('data-phen-title');
-    phenId = $sentence.attr('data-phen-id');
+    if ($sentence.is('.selected')) {
+      $sentence.removeClass('selected');
+      $accFieldset.addClass('disabled');
+      phenTitle = null;
+      text = null;
+      val = null;
+    } else {
+      $side.find('.selected').removeClass('selected');
+      $sentence.addClass('selected');
+      $accFieldset.removeClass('disabled');
+      phenTitle = $sentence.attr('data-phen-title');
+      text = $sentence.find('span').text();
+    }
     changePhenTitle(phenTitle);
-    $fieldset = $sentence.parents('.fieldset');
-    $side = $fieldset.parents('aside');
-    text = $sentence.find('span').text();
-    $side.find('.selected').removeClass('selected');
-    $sentence.toggleClass('selected');
-    $accFieldset = $filters.find('.fieldset.accepted');
-    $accLabel = $filters.find('.label.accepted');
+    $headerSentence.text(text);
     $accFieldset.attr('data-prop', val);
     $accLabel.attr('data-prop', val);
     $side.attr('data-selected', val);
-    if ($sentence.is('.selected')) {
-      $headerSentence.text(text);
-      updateThresholdColors();
-      return $accFieldset.removeClass('disabled');
-    } else {
-      $headerSentence.text('');
-      return $accFieldset.addClass('disabled');
-    }
+    return updateThresholdColors();
   };
   clickFilter = function(e) {
     var $fieldset, $option, $side, prop, val;
@@ -728,28 +724,29 @@ $(function() {
   updateThresholdColors = function() {
     var aRange, aVal, i, k, markerProps, prop, ref, ref1, stops, uRange, uVal;
     prop = $('.fieldset.phenomena .sentence.selected').attr('data-val');
-    if (!prop) {
-      return;
-    }
-    aVal = $('.option.accept').attr('data-val');
-    aRange = JSON.parse('[' + aVal + ']');
-    uVal = $('.option.reject').attr('data-val');
-    uRange = JSON.parse('[' + uVal + ']');
-    stops = [];
-    for (i = k = ref = MIN_THRESH, ref1 = MAX_THRESH; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
-      if (aRange.indexOf(i) > -1) {
-        stops.push([i, 'marker-accepted']);
-      } else if (uRange.indexOf(i) > -1) {
-        stops.push([i, 'marker-rejected']);
-      } else {
-        stops.push([i, '']);
+    if (prop) {
+      aVal = $('.option.accept').attr('data-val');
+      aRange = JSON.parse('[' + aVal + ']');
+      uVal = $('.option.reject').attr('data-val');
+      uRange = JSON.parse('[' + uVal + ']');
+      stops = [];
+      for (i = k = ref = MIN_THRESH, ref1 = MAX_THRESH; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
+        if (aRange.indexOf(i) > -1) {
+          stops.push([i, 'marker-accepted']);
+        } else if (uRange.indexOf(i) > -1) {
+          stops.push([i, 'marker-rejected']);
+        } else {
+          stops.push([i, '']);
+        }
       }
+      markerProps = {
+        property: prop,
+        type: 'categorical',
+        stops: stops
+      };
+    } else {
+      markerProps = 'marker';
     }
-    markerProps = {
-      property: prop,
-      type: 'categorical',
-      stops: stops
-    };
     if (mapbox.getLayer('markers')) {
       return mapbox.setLayoutProperty('markers', 'icon-image', markerProps);
     }
@@ -793,7 +790,7 @@ $(function() {
     ref = Object.keys(window.query);
     for (k = 0, len = ref.length; k < len; k++) {
       key = ref[k];
-      if (['map', 's'].indexOf(key) < 0) {
+      if (['map'].indexOf(key) < 0) {
         delete window.query[key];
       }
     }
@@ -908,6 +905,8 @@ $(function() {
       color = '#5fa990';
     } else if (uVals.indexOf(val) > -1) {
       color = '#795292';
+    } else {
+      color = '#153554';
     }
     propNames = ['Age', 'Gender', 'Education', 'Race', 'Place Raised', 'Currently Lives', 'Mother/Guardian 1 Raised', 'Father/Guardian 2 Raised'];
     ul = '<ul>';

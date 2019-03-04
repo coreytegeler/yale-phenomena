@@ -58,6 +58,7 @@ header {
 		margin: 0;
 		padding: 0 0 .125em 0;
 		border-bottom: .125em solid $dark;
+		min-height: 20px;
 	}
 	&.fixed {
 		width: calc(100% - #{$lgSpace});
