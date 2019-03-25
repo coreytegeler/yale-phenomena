@@ -9,7 +9,11 @@ $ ->
 	$headerSentence = $('header.fixed .sentence')
 	accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg'
 	styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw'
-	env = 'ENVIRONMENT'
+
+	if window.location.host.indexOf('yale.edu') > -1
+		env = 'prod'
+	else
+		env = 'dev'
 
 	DATA_PATH = './assets/data/'
 

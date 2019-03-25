@@ -79,7 +79,7 @@ function compileSass()  {
 function compileCoffee()  {
 	return gulp.src('./source/coffee/scripts.coffee')
 		.pipe(coffee({bare: true}))
-		.pipe(replace('ENVIRONMENT', env))
+		// .pipe(replace('ENVIRONMENT', env))
 		.pipe(minify({ext:{min: '.min.js'}}))
 		.pipe(gulp.dest(dest[env].js))
 	.on('end', function() {
