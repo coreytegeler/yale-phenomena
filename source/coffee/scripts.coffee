@@ -46,7 +46,7 @@ $ ->
 			success: (data, textStatus, jqXHR) ->
 				populateMapOptions(data)
 			error: (error) ->
-				console.log error
+				console.warn error
 
 	getMap = (id) ->
 		if env == 'dev'
@@ -68,7 +68,7 @@ $ ->
 				if window.map = map
 					getSentences()
 			error: (error) ->
-				console.log error
+				console.warn error
 
 	changePhenTitle = (phenTitle) ->
 		$('header .phenomenon').each () ->
@@ -108,7 +108,7 @@ $ ->
 					populateSentence(data[0], i)
 				
 			error: (error) ->
-				console.log error
+				console.warn error
 
 	populateSentence = (sentence, i) ->
 		$options = $phenomena.find('ul')

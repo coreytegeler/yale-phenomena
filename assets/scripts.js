@@ -47,7 +47,7 @@ $(function() {
         return populateMapOptions(data);
       },
       error: function(error) {
-        return console.log(error);
+        return console.warn(error);
       }
     });
   };
@@ -80,7 +80,7 @@ $(function() {
         }
       },
       error: function(error) {
-        return console.log(error);
+        return console.warn(error);
       }
     });
   };
@@ -144,7 +144,7 @@ $(function() {
         }
       },
       error: function(error) {
-        return console.log(error);
+        return console.warn(error);
       }
     });
   };
