@@ -11,7 +11,7 @@ $ ->
 	styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw'
 	env = 'ENVIRONMENT'
 
-	DATA_PATH = 'http://localhost:9000/assets/data/'
+	DATA_PATH = './assets/data/'
 
 	DEFAULT_LAT = 39.6
 	DEFAULT_LNG = -99.4
@@ -72,6 +72,8 @@ $ ->
 
 	populateMapOptions = (maps) ->
 		for map in maps
+			if !map.show || !parseInt(map.show)
+				return
 			option = $('<option></option>')
 			option.text(decodeHtml(map.title))
 			option.val(map.id)
@@ -728,7 +730,7 @@ $ ->
 		else
 			color = '#153554'
 
-		propNames = ['Age','Gender','Education','Race','Place Raised','Currently Lives','Mother/Guardian 1 Raised','Father/Guardian 2 Raised']
+		propNames = ['Age','Gender','Education','Race','Place Raised','Currently Lives','Mother/Guardian 1 Raised','Father/Guardian 2 Raised','Survey Type','Survey Year']
 		ul = '<ul>'
 		for prop, i in propNames
 			propVal = props[checkKey(prop)]
@@ -759,6 +761,8 @@ $ ->
 			'Currently Lives': 'Current.CityState'
 			'Mother/Guardian 1 Raised': 'Mother.CityState'
 			'Father/Guardian 2 Raised': 'Father.CityState'
+			'Survey Type': 'SurveyType'
+			'Survey Year': 'SurveyYear'
 		if key[val]
 			return key[val]
 		else

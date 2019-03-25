@@ -76,7 +76,7 @@ header {
 			}
 			h1.sentence {
 				margin: 3px 0 0 0;
-				padding: $mdSpace 0 0 0;
+				padding: 25px 0 0 0;
 				pointer-events: all;
 			}
 		}
@@ -174,7 +174,7 @@ aside {
 			}
 		}
 		.phenomena {
-			padding: #{$mdSpace*.75} $smSpace;
+			padding: $smSpace;
 			margin: 0 0 0 $mdSpace;
 			background-color: $white;
 			pointer-events: all;
@@ -227,20 +227,28 @@ aside {
 				}
 				ul {
 					li.option {
-						width: 5px;
-						height: 5px;
+						width: 30px;
+						height: 15px;
 						padding: 0;
-						margin: calc(#{$mdSpace/2} - 2.5px);
-						border-radius: 50%;
-						background: $white;
+						position: relative;
+						&::before {
+							content: '';
+							width: 5px;
+							height: 5px;
+							position: absolute;
+							left: 12.5px;
+							top: 5px;
+							background: $dark;
+							border-radius: 50%;
+							li:hover & {
+								background: $mediumGrey;
+							}
+							li.selected & {
+								background: $dark;
+							}
+						}
 						span {
 							display: none;
-						}
-						&:hover {
-							background: $mediumGrey;
-						}
-						&.selected {
-							background: $dark;
 						}
 					}
 				}
@@ -261,7 +269,7 @@ aside {
 			height: $mdSpace;
 			display: flex;
 			flex-direction: row;
-	    justify-content: space-between;
+			justify-content: space-between;
 			pointer-events: all;
 			.tab {
 				width: calc(50% - 1px);
@@ -345,6 +353,7 @@ aside {
 		}
 		.fieldset {
 			margin: 0 0 1em 0;
+			clear: both;
 			.head {
 				width: 100%;
 				padding-left: 1.25em;
@@ -374,18 +383,18 @@ aside {
 					color: $mediumGrey;
 					@include xsText;
 					position: absolute;
-			    display: inline;
-			    padding-left: 5px;
-			    visibility: hidden;
-			    &.option {
-			    	color: $dark;
-			    	right: 0;
-			    	padding-top: 1px;
-			    	&:hover {
-			    		color: $mediumGrey;
-			    		cursor: pointer;
-			    	}
-			    }
+					display: inline;
+					padding-left: 5px;
+					visibility: hidden;
+					&.option {
+						color: $dark;
+						right: 0;
+						padding-top: 1px;
+						&:hover {
+							color: $mediumGrey;
+							cursor: pointer;
+						}
+					}
 				}
 			}
 			.options {
@@ -676,13 +685,13 @@ footer {
 			background-repeat: no-repeat;
 			background-size: contain;
 			display: flex;
-	    align-items: center;
-	    &.accept {
-	    	background-image: url(./img/accepted-key.svg);
-	    }
-	    &.reject {
-	    	background-image: url(./img/rejected-key.svg);
-	    }
+			align-items: center;
+			&.accept {
+				background-image: url(./img/accepted-key.svg);
+			}
+			&.reject {
+				background-image: url(./img/rejected-key.svg);
+			}
 		}
 	}
 }

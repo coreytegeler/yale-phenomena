@@ -13,6 +13,9 @@ var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 var rupture = require('rupture');
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var cleanCSS = require('gulp-clean-css');
+
 
 if(argv.prod) {
 	var env = 'prod';
@@ -54,14 +57,18 @@ function compilePug()  {
 }
 
 function compileSass()  {
-	var options = {
-		use: [rupture(), autoprefixer()],
-		outputStyle: argv.prod ? 'compressed' : ''
+	var sassOptions = {
+		compress: argv.prod ? true : false
+	};
+	var apOptions = {
+		browsers: ['> 0.5%', 'last 5 versions', 'Firefox ESR']
 	};
 	return gulp.src('./source/sass/style.scss')
+		.pipe(sourcemaps.init())
 		.pipe(plumber())
-		.pipe(sass(options))
-		.pipe(gulpif(argv.prod, rename('style.min.css')))
+		.pipe(sass(sassOptions))
+		.pipe(autoprefixer(apOptions))
+		.pipe(cleanCSS({compatibility: 'ie8'}))
 		.pipe(gulp.dest(dest[env].css))
 	.on('end', function() {
 		log('Sass done');
@@ -73,7 +80,7 @@ function compileCoffee()  {
 	return gulp.src('./source/coffee/scripts.coffee')
 		.pipe(coffee({bare: true}))
 		.pipe(replace('ENVIRONMENT', env))
-		.pipe(gulpif(argv.prod, minify({ext:{min: '.min.js'}})))
+		.pipe(minify({ext:{min: '.min.js'}}))
 		.pipe(gulp.dest(dest[env].js))
 	.on('end', function() {
 		log('Coffee done');

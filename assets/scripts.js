@@ -11,7 +11,7 @@ $(function() {
   accessToken = 'pk.eyJ1IjoieWdkcCIsImEiOiJjamY5bXU1YzgyOHdtMnhwNDljdTkzZjluIn0.YS8NHwrTLvUlZmE8WEEJPg';
   styleUri = 'mapbox://styles/ygdp/cjl7azzlm04592so27jav5xlw';
   env = 'dev';
-  DATA_PATH = 'http://localhost:9000/assets/data/';
+  DATA_PATH = './assets/data/';
   DEFAULT_LAT = 39.6;
   DEFAULT_LNG = -99.4;
   DEFAULT_ZOOM = 3.4;
@@ -86,16 +86,17 @@ $(function() {
     });
   };
   populateMapOptions = function(maps) {
-    var k, len, map, option, results;
-    results = [];
+    var k, len, map, option;
     for (k = 0, len = maps.length; k < len; k++) {
       map = maps[k];
+      if (!map.show || !parseInt(map.show)) {
+        return;
+      }
       option = $('<option></option>');
       option.text(decodeHtml(map.title));
       option.val(map.id);
-      results.push($('select[name="id"]').append(option));
+      $('select[name="id"]').append(option);
     }
-    return results;
   };
   getSentences = function() {
     var i, k, len, results, sentence, sentences;
@@ -908,7 +909,7 @@ $(function() {
     } else {
       color = '#153554';
     }
-    propNames = ['Age', 'Gender', 'Education', 'Race', 'Place Raised', 'Currently Lives', 'Mother/Guardian 1 Raised', 'Father/Guardian 2 Raised'];
+    propNames = ['Age', 'Gender', 'Education', 'Race', 'Place Raised', 'Currently Lives', 'Mother/Guardian 1 Raised', 'Father/Guardian 2 Raised', 'Survey Type', 'Survey Year'];
     ul = '<ul>';
     for (i = k = 0, len = propNames.length; k < len; i = ++k) {
       prop = propNames[i];
@@ -938,7 +939,9 @@ $(function() {
       'Place Raised': 'Raised.CityState',
       'Currently Lives': 'Current.CityState',
       'Mother/Guardian 1 Raised': 'Mother.CityState',
-      'Father/Guardian 2 Raised': 'Father.CityState'
+      'Father/Guardian 2 Raised': 'Father.CityState',
+      'Survey Type': 'SurveyType',
+      'Survey Year': 'SurveyYear'
     };
     if (key[val]) {
       return key[val];
