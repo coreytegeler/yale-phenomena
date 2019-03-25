@@ -1,0 +1,4384 @@
+{
+   "type": "FeatureCollection",
+   "features": [
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -83.5343590,41.6779080 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Toledo, OH",
+    "Mother.CityState":"Louisville, KY",
+    "Father.CityState":"Toledo, OH",
+    "Current.CityState":"Lancaster, OH",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":5,
+    "ST_4000":2,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -88.5288600,30.3663770 ]
+    },
+    "properties": {
+    "Age":33,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Pascagoula, MS",
+    "Mother.CityState":"Greenwood, MS",
+    "Father.CityState":"Moss Point, MS",
+    "Current.CityState":"Ocean Springs, MS",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":4,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.8546122,34.0183105 ]
+    },
+    "properties": {
+    "Age":50,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Walnut, CA",
+    "Mother.CityState":"Los Angeles, CA",
+    "Father.CityState":"Des Moines, IA",
+    "Current.CityState":"Las Vegas, NV",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":5,
+    "ST_3000":1,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":3,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -119.1204599,35.3934816 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Bakersfield, CA",
+    "Mother.CityState":"Bakersfield, CA",
+    "Father.CityState":"Bakersfield, CA",
+    "Current.CityState":"Bakersfield, CA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.9669450,30.4490100 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Hispanic",
+    "Raised.CityState":"Leander, TX",
+    "Mother.CityState":"Santo Domingo, Dominican Republic",
+    "Father.CityState":"Davenport, IA",
+    "Current.CityState":"Arlington, TX",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":3,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":4,
+    "PT_2000":3,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.2712105,37.2526170 ]
+    },
+    "properties": {
+    "Age":59,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Bluefield, VA",
+    "Mother.CityState":"Bluefield, VA",
+    "Father.CityState":"Bluefield, VA",
+    "Current.CityState":"Greensboro, NC",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":5,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":4,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.9167200,42.5511850 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Clinton Township, MI",
+    "Mother.CityState":"Detroit, MI",
+    "Father.CityState":"Detroit, MI",
+    "Current.CityState":"Clinton Township, MI",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -85.4809590,42.9566100 ]
+    },
+    "properties": {
+    "Age":23,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Ada, MI",
+    "Mother.CityState":"Portland, MI",
+    "Father.CityState":"Denver, CO",
+    "Current.CityState":"Ann Arbor, MI",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -74.0767950,40.5972960 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Staten Island, NY",
+    "Mother.CityState":"Brooklyn, NY",
+    "Father.CityState":"Brooklyn, NY",
+    "Current.CityState":"Staten Island, NY",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":4,
+    "ST_3000":5,
+    "ST_4000":2,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":4,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.0873440,38.7589140 ]
+    },
+    "properties": {
+    "Age":44,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Alexandria, VA",
+    "Mother.CityState":"Falls Church, VA",
+    "Father.CityState":"Spokane, WA",
+    "Current.CityState":"Spotsylvania, VA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":5,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":3,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -85.4291150,40.2111340 ]
+    },
+    "properties": {
+    "Age":62,
+    "Age_Bin":"61_up",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Muncie, IN",
+    "Mother.CityState":"Muncie, IN",
+    "Father.CityState":"Anderson, IN",
+    "Current.CityState":"Muncie, IN",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":4,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -111.7321380,40.0448660 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Payson, UT",
+    "Mother.CityState":"Moses Lake, WA",
+    "Father.CityState":"Payson, UT",
+    "Current.CityState":"Santaquin, UT",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":4,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.8857649,35.8650841 ]
+    },
+    "properties": {
+    "Age":32,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Statesville, NC",
+    "Mother.CityState":"Clanton, AL",
+    "Father.CityState":"Columbiana, AL",
+    "Current.CityState":"Wilkesboro, NC",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":4,
+    "ST_3000":4,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":4,
+    "PT_2000":4,
+    "PT_3000":4,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.8328870,39.9727340 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Black",
+    "Raised.CityState":"Columbus, OH",
+    "Mother.CityState":"Columbus, OH",
+    "Father.CityState":"Columbus, OH",
+    "Current.CityState":"Columbus, OH",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.3487620,29.1165920 ]
+    },
+    "properties": {
+    "Age":37,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"De Leon Springs, FL",
+    "Mother.CityState":"Stirling, NJ",
+    "Father.CityState":"NJ",
+    "Current.CityState":"Inverness, FL",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":3,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -90.0959330,30.4876060 ]
+    },
+    "properties": {
+    "Age":55,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Covington, LA",
+    "Mother.CityState":"Covington, LA",
+    "Father.CityState":"Hammond, LA",
+    "Current.CityState":"Baton Rouge, LA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":4,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":3,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.0986130,32.8201130 ]
+    },
+    "properties": {
+    "Age":26,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"San Diego, CA",
+    "Mother.CityState":"South Bend, IN",
+    "Father.CityState":"Seattle, WA",
+    "Current.CityState":"Philadelphia, PA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":3,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":3,
+    "PT_3000":3,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -79.9340480,40.8858610 ]
+    },
+    "properties": {
+    "Age":64,
+    "Age_Bin":"61_up",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Butler, PA",
+    "Mother.CityState":"Columbus, OH",
+    "Father.CityState":"Butler, PA",
+    "Current.CityState":"Pittsburgh, PA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.3692650,38.5538680 ]
+    },
+    "properties": {
+    "Age":22,
+    "Age_Bin":"18-30",
+    "Gender":"Other",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Sacramento, CA",
+    "Mother.CityState":"NY",
+    "Father.CityState":"NY",
+    "Current.CityState":"Sacramento, CA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":3,
+    "ST_3000":1,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -83.9368780,39.6842040 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Xenia, OH",
+    "Mother.CityState":"Beavercreek, OH",
+    "Father.CityState":"Beavercreek, OH",
+    "Current.CityState":"Bellbrook, OH",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":3,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.8297820,33.6829430 ]
+    },
+    "properties": {
+    "Age":55,
+    "Age_Bin":"51-60",
+    "Gender":"Male",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Irvine, CA",
+    "Mother.CityState":"St. Paul, MN",
+    "Father.CityState":"",
+    "Current.CityState":"Mission Viejo, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -78.5392130,35.9815440 ]
+    },
+    "properties": {
+    "Age":44,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Wake Forest, NC",
+    "Mother.CityState":"Wake Forest, NC",
+    "Father.CityState":"Wake Forest, NC",
+    "Current.CityState":"Wake Forest, NC",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":5,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":5,
+    "PT_1000":3,
+    "PT_2000":3,
+    "PT_3000":5,
+    "PT_4000":2,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.5010950,44.2349840 ]
+    },
+    "properties": {
+    "Age":42,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Elkton, SD",
+    "Mother.CityState":"Ward, SD",
+    "Father.CityState":"Ward, SD",
+    "Current.CityState":"Gaylord, MI",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":3,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -93.0390640,44.8288160 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Inver Grove Heights, MN",
+    "Mother.CityState":"St. Paul, MN",
+    "Father.CityState":"St. Paul, MN",
+    "Current.CityState":"Hastings, MN",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -123.0544949,44.1445019 ]
+    },
+    "properties": {
+    "Age":41,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Eugene, OR",
+    "Mother.CityState":"Wichita, KS",
+    "Father.CityState":"Boston, MA",
+    "Current.CityState":"Harrisburg, OR",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":5,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":4,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.1921710,28.9093110 ]
+    },
+    "properties": {
+    "Age":22,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Deltona, FL",
+    "Mother.CityState":"Sullivan, MO",
+    "Father.CityState":"",
+    "Current.CityState":"Deltona, FL",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.1376170,41.1548980 ]
+    },
+    "properties": {
+    "Age":27,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Omaha, NE",
+    "Mother.CityState":"Bangor, ME",
+    "Father.CityState":"Kansas City, KS",
+    "Current.CityState":"Omaha, NE",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.7964060,41.3826000 ]
+    },
+    "properties": {
+    "Age":41,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Cleveland, OH",
+    "Mother.CityState":"Hickory, NC",
+    "Father.CityState":"Cleveland, OH",
+    "Current.CityState":"Cleveland, OH",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":5,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.4438460,38.4797110 ]
+    },
+    "properties": {
+    "Age":26,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Asian",
+    "Raised.CityState":"Sacramento, CA",
+    "Mother.CityState":"Jalandhar, India",
+    "Father.CityState":"Jalandhar, India",
+    "Current.CityState":"Beaverton, OR",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.5477400,30.0815000 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Saint Johns, FL",
+    "Mother.CityState":"Rochester, NY",
+    "Father.CityState":"Chester, PA",
+    "Current.CityState":"Casselberry, FL",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.0293110,39.3673130 ]
+    },
+    "properties": {
+    "Age":40,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Millville, NJ",
+    "Mother.CityState":"Hammonton, NJ",
+    "Father.CityState":"Turnersville, NJ",
+    "Current.CityState":"Deptford, NJ",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":5,
+    "ST_3000":4,
+    "ST_4000":4,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":4,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.8434500,39.1208060 ]
+    },
+    "properties": {
+    "Age":36,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Laurel, MD",
+    "Mother.CityState":"Metairie, LA",
+    "Father.CityState":"Philadelphia, PA",
+    "Current.CityState":"Oak Ridge, TN",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.3731530,41.5899370 ]
+    },
+    "properties": {
+    "Age":55,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Black",
+    "Raised.CityState":"Gary, IN",
+    "Mother.CityState":"Jackson, MS",
+    "Father.CityState":"Jackson, MS",
+    "Current.CityState":"Lafayette, IN",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -92.1832350,35.0718950 ]
+    },
+    "properties": {
+    "Age":38,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Vilonia, AR",
+    "Mother.CityState":"Vilonia, AR",
+    "Father.CityState":"Vilonia, AR",
+    "Current.CityState":"Vilonia, AR",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":4,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.1824730,44.2635340 ]
+    },
+    "properties": {
+    "Age":50,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Manistee, MI",
+    "Mother.CityState":"Chicago, IL",
+    "Father.CityState":"Chicago, IL",
+    "Current.CityState":"Custer, MI",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -116.9852370,32.6512960 ]
+    },
+    "properties": {
+    "Age":27,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Asian",
+    "Raised.CityState":"Chula Vista, CA",
+    "Mother.CityState":"Shenyang, China",
+    "Father.CityState":"Shenyang, China",
+    "Current.CityState":"San Diego, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":5,
+    "ST_3000":1,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":5,
+    "PT_3000":1,
+    "PT_4000":5,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -115.1364630,36.1008360 ]
+    },
+    "properties": {
+    "Age":48,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Las Vegas, NV",
+    "Mother.CityState":"Defiance, OH",
+    "Father.CityState":"South Bend, IN",
+    "Current.CityState":"Benton, AR",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":3,
+    "ST_3000":3,
+    "ST_4000":1,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":3,
+    "PT_3000":5,
+    "PT_4000":2,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.4456600,38.8866800 ]
+    },
+    "properties": {
+    "Age":40,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Chantilly, VA",
+    "Mother.CityState":"Lovell, WY",
+    "Father.CityState":"St. Paul, MN",
+    "Current.CityState":"Wilmington, OH",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":4,
+    "ST_4000":1,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":5,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.2199710,35.3468382 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Pacific",
+    "Raised.CityState":"Tullahoma, TN",
+    "Mother.CityState":"Allentown, PA",
+    "Father.CityState":"",
+    "Current.CityState":"Tullahoma, TN",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":5,
+    "ST_3000":5,
+    "ST_4000":null,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":3,
+    "PT_3000":null,
+    "PT_4000":null,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.3248598,47.4441017 ]
+    },
+    "properties": {
+    "Age":27,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Seattle, WA",
+    "Mother.CityState":"Seattle, WA",
+    "Father.CityState":"Plano, TX",
+    "Current.CityState":"Seattle, WA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":null,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":3,
+    "PT_4000":4,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.4545343,46.5786371 ]
+    },
+    "properties": {
+    "Age":36,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Marquette, MI",
+    "Mother.CityState":"Davison, MI",
+    "Father.CityState":"Bad Axe, MI",
+    "Current.CityState":"Westland, MI",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.2489160,26.0295820 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Hollywood, FL",
+    "Mother.CityState":"New York City, NY",
+    "Father.CityState":"New York City, NY",
+    "Current.CityState":"Hollywood, FL",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.1563240,39.9361750 ]
+    },
+    "properties": {
+    "Age":29,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Philadelphia, PA",
+    "Mother.CityState":"Boston, MA",
+    "Father.CityState":"Athens, Greece",
+    "Current.CityState":"Philadelphia, PA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -85.8220850,38.3089190 ]
+    },
+    "properties": {
+    "Age":44,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"New Albany, IN",
+    "Mother.CityState":"Louisville, KY",
+    "Father.CityState":"New Albany, IN",
+    "Current.CityState":"Borden, IN",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":4,
+    "ST_3000":4,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -115.0668920,36.1730310 ]
+    },
+    "properties": {
+    "Age":37,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Las Vegas, NV",
+    "Mother.CityState":"Alhambra, CA",
+    "Father.CityState":"Sandy, UT",
+    "Current.CityState":"American Fork, UT",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":4,
+    "ST_3000":4,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":5,
+    "PT_3000":5,
+    "PT_4000":3,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -111.4775750,40.5093400 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Midway, UT",
+    "Mother.CityState":"WI",
+    "Father.CityState":"Albuquerque, NM",
+    "Current.CityState":"Albuquerque, NM",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.5136150,28.7119760 ]
+    },
+    "properties": {
+    "Age":26,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"Hispanic",
+    "Raised.CityState":"Apopka, FL",
+    "Mother.CityState":"Caracas, Venezuela",
+    "Father.CityState":"Mexico City, Mexico",
+    "Current.CityState":"Apopka, FL",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":4,
+    "ST_4000":2,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.8191410,28.5697120 ]
+    },
+    "properties": {
+    "Age":32,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Titusville, FL",
+    "Mother.CityState":"Canterbury, CT",
+    "Father.CityState":"Norwich, CT",
+    "Current.CityState":"Port Orange, FL",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":2,
+    "ST_3000":4,
+    "ST_4000":1,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":4,
+    "PT_4000":1,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.8924080,41.2180370 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Croton On Hudson, NY",
+    "Mother.CityState":"Cleveland, OH",
+    "Father.CityState":"Monticello, IL",
+    "Current.CityState":"San Diego, CA",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":2,
+    "ST_3000":4,
+    "ST_4000":3,
+    "ST_M000":4,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -89.3836790,30.2913800 ]
+    },
+    "properties": {
+    "Age":47,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Waveland, MS",
+    "Mother.CityState":"Fort Myers, FL",
+    "Father.CityState":"Lee Town, MS",
+    "Current.CityState":"Diamondhead, MS",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -98.4657960,29.3977180 ]
+    },
+    "properties": {
+    "Age":47,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Hispanic",
+    "Raised.CityState":"San Antonio, TX",
+    "Mother.CityState":"Cotulla, TX",
+    "Father.CityState":"",
+    "Current.CityState":"Webster, TX",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.9939091,33.7524494 ]
+    },
+    "properties": {
+    "Age":32,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Asian",
+    "Raised.CityState":"Westminster, CA",
+    "Mother.CityState":"Viet Nam",
+    "Father.CityState":"Viet Nam",
+    "Current.CityState":"Diamond Bar, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.1563240,39.9361750 ]
+    },
+    "properties": {
+    "Age":29,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Black",
+    "Raised.CityState":"Philadelphia, PA",
+    "Mother.CityState":"Montreal, Canada",
+    "Father.CityState":"",
+    "Current.CityState":"Ridgewood, NY",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.2972200,40.7393330 ]
+    },
+    "properties": {
+    "Age":46,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"New Brighton, PA",
+    "Mother.CityState":"Beaver Falls, PA",
+    "Father.CityState":"Beaver Falls, PA",
+    "Current.CityState":"Aylett, VA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":4,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -102.6827610,32.7210450 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Seminole, TX",
+    "Mother.CityState":"Seminole, TX",
+    "Father.CityState":"Post, TX",
+    "Current.CityState":"Lubbock, TX",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.7143360,38.9272560 ]
+    },
+    "properties": {
+    "Age":36,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Asian",
+    "Raised.CityState":"Overland Park, KS",
+    "Mother.CityState":"Aligarh, India",
+    "Father.CityState":"",
+    "Current.CityState":"Saint Paul, MN",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":3,
+    "ST_4000":1,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.3781000,38.6707000 ]
+    },
+    "properties": {
+    "Age":46,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"North Highlands, CA",
+    "Mother.CityState":"syracuse, NY",
+    "Father.CityState":"Tulsa, OK",
+    "Current.CityState":"Dolan Springs, AZ",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":3,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.7146018,26.2665259 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Naples, FL",
+    "Mother.CityState":"Dayton, OH",
+    "Father.CityState":"Lansing, MI",
+    "Current.CityState":"Odessa, TX",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.7353640,42.6846670 ]
+    },
+    "properties": {
+    "Age":31,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Albany, NY",
+    "Mother.CityState":"Albany, NY",
+    "Father.CityState":"Rochester, NY",
+    "Current.CityState":"New York, NY",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":4,
+    "ST_3000":4,
+    "ST_4000":3,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.7340640,39.3296280 ]
+    },
+    "properties": {
+    "Age":30,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Gwynn Oak, MD",
+    "Mother.CityState":"Glen Burnie, MD",
+    "Father.CityState":"CT",
+    "Current.CityState":"Pasadena, MD",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.3507720,28.7577000 ]
+    },
+    "properties": {
+    "Age":22,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Hispanic",
+    "Raised.CityState":"Lake Mary, FL",
+    "Mother.CityState":"Vega Baja, Puerto Rico",
+    "Father.CityState":"San Lorenzo, Puerto Rico",
+    "Current.CityState":"Lake Mary, FL",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.1563240,39.9361750 ]
+    },
+    "properties": {
+    "Age":43,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Philadelphia, PA",
+    "Mother.CityState":"Athens, Greece",
+    "Father.CityState":"Athens, Greece",
+    "Current.CityState":"Sun Prairie, WI",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":null,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.4605320,41.4922330 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Schererville, IN",
+    "Mother.CityState":"New Lenox, IL",
+    "Father.CityState":"Calumet City, IL",
+    "Current.CityState":"Crown Point, IN",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.3625460,29.7246870 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"Black",
+    "Raised.CityState":"Houston, TX",
+    "Mother.CityState":"Houston, TX",
+    "Father.CityState":"Houston, TX",
+    "Current.CityState":"Missouri City, TX",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -92.3529190,34.6725090 ]
+    },
+    "properties": {
+    "Age":60,
+    "Age_Bin":"51-60",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Little Rock, AR",
+    "Mother.CityState":"Pine Bluff, AR",
+    "Father.CityState":"Danville, AR",
+    "Current.CityState":"Bloomington, IL",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":5,
+    "ST_3000":5,
+    "ST_4000":1,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -83.7640890,31.1792440 ]
+    },
+    "properties": {
+    "Age":59,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Moultrie, GA",
+    "Mother.CityState":"Moultrie, GA",
+    "Father.CityState":"Detroit, MI",
+    "Current.CityState":"Moultrie, GA",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":2,
+    "ST_3000":4,
+    "ST_4000":3,
+    "ST_M000":4,
+    "PT_1000":3,
+    "PT_2000":3,
+    "PT_3000":4,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -123.1587260,42.4888890 ]
+    },
+    "properties": {
+    "Age":58,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Rogue River, OR",
+    "Mother.CityState":"Portland, OR",
+    "Father.CityState":"Rogue River, OR",
+    "Current.CityState":"Rockland, WI",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":3,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -70.9978160,42.2491330 ]
+    },
+    "properties": {
+    "Age":62,
+    "Age_Bin":"61_up",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Quincy, MA",
+    "Mother.CityState":"Braintree, MA",
+    "Father.CityState":"Quincy, MA",
+    "Current.CityState":"South Weymouth, MA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":4,
+    "ST_3000":4,
+    "ST_4000":2,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.4134740,42.9713490 ]
+    },
+    "properties": {
+    "Age":26,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Manchester, NH",
+    "Mother.CityState":"",
+    "Father.CityState":"",
+    "Current.CityState":"Manchester, NH",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":3,
+    "ST_3000":4,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.3781000,38.6707000 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"North Highlands, CA",
+    "Mother.CityState":"Sacramento, CA",
+    "Father.CityState":"Phoenix, AZ",
+    "Current.CityState":"North Highlands, CA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":5,
+    "ST_4000":2,
+    "ST_M000":5,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.6432730,33.6144330 ]
+    },
+    "properties": {
+    "Age":41,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Mission Viejo, CA",
+    "Mother.CityState":"Lyons, IL",
+    "Father.CityState":"Brookfield, IL",
+    "Current.CityState":"Gilbert, AZ",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":3,
+    "PT_2000":4,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -79.8224181,40.4598021 ]
+    },
+    "properties": {
+    "Age":61,
+    "Age_Bin":"61_up",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Pittsburgh, PA",
+    "Mother.CityState":"Greensburg, PA",
+    "Father.CityState":"Philadelphia, PA",
+    "Current.CityState":"Charlottesville, VA",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":3,
+    "ST_3000":3,
+    "ST_4000":3,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.7935960,31.7705630 ]
+    },
+    "properties": {
+    "Age":32,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Cuthbert, GA",
+    "Mother.CityState":"Cuthbert, GA",
+    "Father.CityState":"Cuthbert, GA",
+    "Current.CityState":"Athens, GA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.9591320,28.1761940 ]
+    },
+    "properties": {
+    "Age":29,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Lakeland, FL",
+    "Mother.CityState":"Lakeland, FL",
+    "Father.CityState":"",
+    "Current.CityState":"Lakeland, FL",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":4,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -79.9292860,35.9989930 ]
+    },
+    "properties": {
+    "Age":53,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Jamestown, NC",
+    "Mother.CityState":"Greensboro, NC",
+    "Father.CityState":"Conway, SC",
+    "Current.CityState":"High Point, NC",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":5,
+    "ST_4000":1,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -88.0506667,41.5930130 ]
+    },
+    "properties": {
+    "Age":40,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Lockport, IL",
+    "Mother.CityState":"Chicago, IL",
+    "Father.CityState":"Chicago, IL",
+    "Current.CityState":"Lockport, IL",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.4480270,33.6918580 ]
+    },
+    "properties": {
+    "Age":60,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Atlanta, GA",
+    "Mother.CityState":"Roopville, GA",
+    "Father.CityState":"Greensboro, NC",
+    "Current.CityState":"Roseville, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":3,
+    "ST_3000":1,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -105.9741170,39.5952120 ]
+    },
+    "properties": {
+    "Age":26,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Dillon, CO",
+    "Mother.CityState":"Sac City, IA",
+    "Father.CityState":"Buffalo, NY",
+    "Current.CityState":"Port Orange, FL",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":5,
+    "ST_3000":5,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":5,
+    "PT_2000":5,
+    "PT_3000":4,
+    "PT_4000":1,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.1863730,37.4396160 ]
+    },
+    "properties": {
+    "Age":30,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Asian",
+    "Raised.CityState":"Menlo Park, CA",
+    "Mother.CityState":"Yunlin, China",
+    "Father.CityState":"Myanmar",
+    "Current.CityState":"Burlingame, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.4997630,42.5003150 ]
+    },
+    "properties": {
+    "Age":29,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Cohocton, NY",
+    "Mother.CityState":"North Cohocton, NY",
+    "Father.CityState":"",
+    "Current.CityState":"Hornell, NY",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.6062390,43.1317110 ]
+    },
+    "properties": {
+    "Age":38,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Rochester, NY",
+    "Mother.CityState":"Rochester, NY",
+    "Father.CityState":"Syracuse, NY",
+    "Current.CityState":"Geneva, NY",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":3,
+    "ST_3000":4,
+    "ST_4000":3,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.0110940,41.5019040 ]
+    },
+    "properties": {
+    "Age":38,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Avon Lake, OH",
+    "Mother.CityState":"Cleveland, OH",
+    "Father.CityState":"Pikeville, KY",
+    "Current.CityState":"Elyria, OH",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.9493500,33.9330740 ]
+    },
+    "properties": {
+    "Age":41,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"La Habra, CA",
+    "Mother.CityState":"Boston, MA",
+    "Father.CityState":"Boston, MA",
+    "Current.CityState":"Santa Ana, CA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.8660330,40.2754120 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Coshocton, OH",
+    "Mother.CityState":"Coshocton, OH",
+    "Father.CityState":"Coshocton, OH",
+    "Current.CityState":"Coshocton, OH",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -121.8490000,37.2685000 ]
+    },
+    "properties": {
+    "Age":29,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"San Jose, CA",
+    "Mother.CityState":"Lovell, WY",
+    "Father.CityState":"Centerville, UT",
+    "Current.CityState":"Idaho Falls, ID",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":5,
+    "ST_3000":4,
+    "ST_4000":3,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -118.0013760,34.1439590 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Monrovia, CA",
+    "Mother.CityState":"Monrovia, CA",
+    "Father.CityState":"Arcadia, CA",
+    "Current.CityState":"Monrovia, CA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":3,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -110.9451270,32.1391720 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Tucson, AZ",
+    "Mother.CityState":"Chicago, IL",
+    "Father.CityState":"Bloomington, IL",
+    "Current.CityState":"Rock Hill, SC",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":3,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -110.8190400,32.1809510 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Tucson, AZ",
+    "Mother.CityState":"Salina, KS",
+    "Father.CityState":"Tucson, AZ",
+    "Current.CityState":"Tucson, AZ",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":4,
+    "ST_3000":1,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":4,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -88.8306720,41.1224900 ]
+    },
+    "properties": {
+    "Age":46,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Streator, IL",
+    "Mother.CityState":"Streator, IL",
+    "Father.CityState":"Streator, IL",
+    "Current.CityState":"Mesa, AZ",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":5,
+    "ST_3000":4,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -91.1670640,30.3795230 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Baton Rouge, LA",
+    "Mother.CityState":"Baton Rouge, LA",
+    "Father.CityState":"",
+    "Current.CityState":"Baton Rouge, LA",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.6251930,40.8246740 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Lincoln, NE",
+    "Mother.CityState":"Lincoln, NE",
+    "Father.CityState":"Lincoln, NE",
+    "Current.CityState":"Wichita, KS",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":4,
+    "PT_3000":2,
+    "PT_4000":1,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.8734790,40.3433990 ]
+    },
+    "properties": {
+    "Age":32,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Maryville, MO",
+    "Mother.CityState":"Randolph, IA",
+    "Father.CityState":"Rock Port, MO",
+    "Current.CityState":"Lincoln, NE",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":3,
+    "ST_3000":4,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":3,
+    "PT_2000":3,
+    "PT_3000":4,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -90.2033272,29.8972979 ]
+    },
+    "properties": {
+    "Age":51,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Westwego, LA",
+    "Mother.CityState":"Lafayette, LA",
+    "Father.CityState":"Joplin, MO",
+    "Current.CityState":"Pineville, LA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.8573063,41.0242250 ]
+    },
+    "properties": {
+    "Age":60,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Ellsworth, OH",
+    "Mother.CityState":"Butler, PA",
+    "Father.CityState":"North Jackson, OH",
+    "Current.CityState":"Kent, OH",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -78.0112160,37.7687890 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"Black",
+    "Raised.CityState":"Goochland, VA",
+    "Mother.CityState":"Goochland, VA",
+    "Father.CityState":"Charlottesville, VA",
+    "Current.CityState":"Henrico, VA",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":3,
+    "ST_3000":5,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":5,
+    "PT_4000":2,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.6487180,40.7245200 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Garden City, NY",
+    "Mother.CityState":"Garden City , NY",
+    "Father.CityState":"Merrick, NY",
+    "Current.CityState":"Brooklyn, NY",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":4,
+    "ST_3000":3,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":3,
+    "PT_2000":4,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -74.9863850,39.7353850 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Sicklerville, NJ",
+    "Mother.CityState":"Philadelphia, PA",
+    "Father.CityState":"Collingswood, NJ",
+    "Current.CityState":"Sicklerville, NJ",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":5,
+    "PT_3000":4,
+    "PT_4000":4,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.1965530,34.1102540 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Irmo, SC",
+    "Mother.CityState":"Charleston, SC",
+    "Father.CityState":"Hamburg, NY",
+    "Current.CityState":"Chapin, SC",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":3,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":3,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.4008270,41.3812980 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Bethel, CT",
+    "Mother.CityState":"Danbury, CT",
+    "Father.CityState":"White Plains, NY",
+    "Current.CityState":"Brookfield, CT",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":3,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.4815880,37.9848640 ]
+    },
+    "properties": {
+    "Age":37,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Lexington, KY",
+    "Mother.CityState":"Lexington, KY",
+    "Father.CityState":"Wellesley, MA",
+    "Current.CityState":"Lexington, KY",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -118.5465950,34.2367430 ]
+    },
+    "properties": {
+    "Age":58,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Northridge, CA",
+    "Mother.CityState":"Lubbock, TX",
+    "Father.CityState":"Lubbock, TX",
+    "Current.CityState":"Newhall, CA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.2594000,40.0176800 ]
+    },
+    "properties": {
+    "Age":24,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Narberth, PA",
+    "Mother.CityState":"New London, CT",
+    "Father.CityState":"",
+    "Current.CityState":"Deptford, NJ",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.8819880,33.0032940 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"Black",
+    "Raised.CityState":"Carrollton, TX",
+    "Mother.CityState":"Dallas, TX",
+    "Father.CityState":"San Francisco, CA",
+    "Current.CityState":"Carrollton, TX",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.6078500,41.2403140 ]
+    },
+    "properties": {
+    "Age":27,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Norwalk, OH",
+    "Mother.CityState":"Anderson, OH",
+    "Father.CityState":"Monroeville, OH",
+    "Current.CityState":"Pataskala, OH",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":3,
+    "ST_3000":5,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.2406640,38.9754790 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Buckhannon, WV",
+    "Mother.CityState":"Centerville, NY",
+    "Father.CityState":"Houghton, NY",
+    "Current.CityState":"Norlina, NC",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -79.9463320,37.2326800 ]
+    },
+    "properties": {
+    "Age":24,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Roanoke, VA",
+    "Mother.CityState":"Bedford, VA",
+    "Father.CityState":"Danville, VA",
+    "Current.CityState":"Roanoke, VA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -90.1331400,30.0004760 ]
+    },
+    "properties": {
+    "Age":27,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Amerindian",
+    "Raised.CityState":"Metairie, LA",
+    "Mother.CityState":"New Orleans, WV",
+    "Father.CityState":"New Orleans, AL",
+    "Current.CityState":"Metairie, LA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":3,
+    "ST_3000":3,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.3999814,37.9244799 ]
+    },
+    "properties": {
+    "Age":36,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Iola, KS",
+    "Mother.CityState":"Ottumwa, IA",
+    "Father.CityState":"Shelbyville, MO",
+    "Current.CityState":"Mount Pleasant, IA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -74.3017090,40.1209640 ]
+    },
+    "properties": {
+    "Age":42,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Jackson, NJ",
+    "Mother.CityState":"Howell, NJ",
+    "Father.CityState":"Howell, NJ",
+    "Current.CityState":"Bayville, NJ",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.1403560,35.5883920 ]
+    },
+    "properties": {
+    "Age":61,
+    "Age_Bin":"61_up",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Washington, NC",
+    "Mother.CityState":"Greenville, NC",
+    "Father.CityState":"Washington, NC",
+    "Current.CityState":"Washington, NC",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.2647790,37.7705630 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Alameda, CA",
+    "Mother.CityState":"San Francisco, CA",
+    "Father.CityState":"Palo Alto, CA",
+    "Current.CityState":"Oceanside, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.5774100,38.9713030 ]
+    },
+    "properties": {
+    "Age":58,
+    "Age_Bin":"51-60",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Kansas City, MO",
+    "Mother.CityState":"Kansas City, KS",
+    "Father.CityState":"Kansas City, MO",
+    "Current.CityState":"Portland, OR",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":3,
+    "ST_3000":null,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":3,
+    "PT_2000":4,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.4500180,28.0501870 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Tampa, FL",
+    "Mother.CityState":"Bredebro, Denmark",
+    "Father.CityState":"Tampa, FL",
+    "Current.CityState":"Dover, FL",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -123.1555250,44.0612430 ]
+    },
+    "properties": {
+    "Age":30,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Eugene, OR",
+    "Mother.CityState":"Anchorage, AK",
+    "Father.CityState":"Centerville, IA",
+    "Current.CityState":"Salem, OR",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.9970430,32.0174610 ]
+    },
+    "properties": {
+    "Age":41,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Savannah, GA",
+    "Mother.CityState":"Petersburg, VA",
+    "Father.CityState":"VA",
+    "Current.CityState":"Savannah, GA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.7629850,42.7461600 ]
+    },
+    "properties": {
+    "Age":25,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Latham, NY",
+    "Mother.CityState":"Amsterdam, NY",
+    "Father.CityState":"Albany, NY",
+    "Current.CityState":"Latham, NY",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -90.6234430,38.7377690 ]
+    },
+    "properties": {
+    "Age":26,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Saint Charles, MO",
+    "Mother.CityState":"",
+    "Father.CityState":"Wapakoneta, OH",
+    "Current.CityState":"Troy, MO",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":5,
+    "ST_3000":5,
+    "ST_4000":4,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":3,
+    "PT_4000":1,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.7165890,30.2638170 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"Hispanic",
+    "Raised.CityState":"Austin, TX",
+    "Mother.CityState":"Mexico City, Mexico",
+    "Father.CityState":"Mexico City, Mexico",
+    "Current.CityState":"Austin, TX",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -85.6844680,43.0578130 ]
+    },
+    "properties": {
+    "Age":46,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Comstock Park, MI",
+    "Mother.CityState":"Grand Rapids, MI",
+    "Father.CityState":"Grand Rapids, MI",
+    "Current.CityState":"Ann Arbor, MI",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.4764090,42.7388050 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"East Lansing, MI",
+    "Mother.CityState":"Peoria, IL",
+    "Father.CityState":"Beaver, PA",
+    "Current.CityState":"San Jose, CA",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -74.3972860,40.5170790 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Edison, NJ",
+    "Mother.CityState":"Manhattan, NY",
+    "Father.CityState":"Brooklyn, NY",
+    "Current.CityState":"Las Vegas, NV",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.4667920,39.4776250 ]
+    },
+    "properties": {
+    "Age":56,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Martinsville, IN",
+    "Mother.CityState":"Gosport, IN",
+    "Father.CityState":"Martinsville, IN",
+    "Current.CityState":"Martinsville, IN",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -118.5820316,34.2619121 ]
+    },
+    "properties": {
+    "Age":34,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Asian",
+    "Raised.CityState":"Porter Ranch, CA",
+    "Mother.CityState":"",
+    "Father.CityState":"",
+    "Current.CityState":"Granada Hills, CA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.3980372,37.4637585 ]
+    },
+    "properties": {
+    "Age":28,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Henrico, VA",
+    "Mother.CityState":"Johnstown, PA",
+    "Father.CityState":"Goochland, VA",
+    "Current.CityState":"Henrico, VA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":4,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":4,
+    "PT_1000":4,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.4229532,36.8012260 ]
+    },
+    "properties": {
+    "Age":30,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Chesapeake, VA",
+    "Mother.CityState":"Northport, NY",
+    "Father.CityState":"Suffolk, VA",
+    "Current.CityState":"Greensboro, NC",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -91.4876860,44.7839720 ]
+    },
+    "properties": {
+    "Age":24,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Eau Claire, WI",
+    "Mother.CityState":"Alexandria, MN",
+    "Father.CityState":"Fargo, ND",
+    "Current.CityState":"Eau Claire, WI",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.8666640,42.0719720 ]
+    },
+    "properties": {
+    "Age":43,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Carroll, IA",
+    "Mother.CityState":"Farm, IA",
+    "Father.CityState":"Sioux City, IA",
+    "Current.CityState":"Urbandale, IA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":4,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -90.1695130,29.9871380 ]
+    },
+    "properties": {
+    "Age":33,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Metairie, LA",
+    "Mother.CityState":"Metairie, LA",
+    "Father.CityState":"River Ridge, LA",
+    "Current.CityState":"Pearl River, LA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":5,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -104.5848280,38.2878760 ]
+    },
+    "properties": {
+    "Age":46,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Pueblo, CO",
+    "Mother.CityState":"Pueblo, CO",
+    "Father.CityState":"Pueblo, CO",
+    "Current.CityState":"Norcross, GA",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":2,
+    "ST_3000":4,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":3,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -116.9650700,44.2522200 ]
+    },
+    "properties": {
+    "Age":24,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Weiser, ID",
+    "Mother.CityState":"Weiser, ID",
+    "Father.CityState":"Weiser, ID",
+    "Current.CityState":"Weiser, ID",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.4836470,37.7593260 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"San Francisco, CA",
+    "Mother.CityState":"Evansville, IN",
+    "Father.CityState":"",
+    "Current.CityState":"Seattle, WA",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":4,
+    "ST_3000":4,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":2,
+    "PT_2000":2,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -101.9679840,35.8823150 ]
+    },
+    "properties": {
+    "Age":49,
+    "Age_Bin":"41-50",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Dumas, TX",
+    "Mother.CityState":"Bowling Green, OH",
+    "Father.CityState":"Milwaukee, WI",
+    "Current.CityState":"Atlanta, GA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":3,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":3,
+    "PT_1000":4,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.7735710,43.6012950 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Mount Pleasant, MI",
+    "Mother.CityState":"Warren, MI",
+    "Father.CityState":"Pontiac, MI",
+    "Current.CityState":"Dunedin, FL",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.6695590,39.4428880 ]
+    },
+    "properties": {
+    "Age":64,
+    "Age_Bin":"61_up",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Quincy, IN",
+    "Mother.CityState":"Jacksonville, FL",
+    "Father.CityState":"Quincy, IN",
+    "Current.CityState":"Indianapolis, IN",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -98.6687650,29.5053940 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Graduate",
+    "Race":"Asian",
+    "Raised.CityState":"San Antonio, TX",
+    "Mother.CityState":"Karachi, Pakistan",
+    "Father.CityState":"Evansville , IL",
+    "Current.CityState":"Pittsburg, CA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":3,
+    "ST_4000":2,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":1,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -119.2222323,34.2846130 ]
+    },
+    "properties": {
+    "Age":31,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"White",
+    "Raised.CityState":"Ventura, CA",
+    "Mother.CityState":"Easton, PA",
+    "Father.CityState":"Los Angeles , CA",
+    "Current.CityState":"Oxnard, CA",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":5,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":5,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -93.2990300,37.2116630 ]
+    },
+    "properties": {
+    "Age":36,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Graduate",
+    "Race":"White",
+    "Raised.CityState":"Springfield, MO",
+    "Mother.CityState":"Farmington, NM",
+    "Father.CityState":"Farmington, NM",
+    "Current.CityState":"Springfield, MO",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":5,
+    "ST_3000":5,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":5,
+    "PT_2000":5,
+    "PT_3000":3,
+    "PT_4000":5,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -79.5684540,36.1183040 ]
+    },
+    "properties": {
+    "Age":38,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"Black",
+    "Raised.CityState":"Gibsonville, NC",
+    "Mother.CityState":"Burlington, NC",
+    "Father.CityState":"Gibsonville, NC",
+    "Current.CityState":"Winston Salem, NC",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":4,
+    "ST_3000":3,
+    "ST_4000":2,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":4,
+    "PT_3000":2,
+    "PT_4000":2,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.8477610,41.3734750 ]
+    },
+    "properties": {
+    "Age":39,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"Hispanic",
+    "Raised.CityState":"Pawcatuck, CT",
+    "Mother.CityState":"Springfield, MA",
+    "Father.CityState":"Westerly, RI",
+    "Current.CityState":"Albuquerque, NM",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.1792140,34.1566270 ]
+    },
+    "properties": {
+    "Age":41,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Ardmore, OK",
+    "Mother.CityState":"Ardmore, OK",
+    "Father.CityState":"Durant, OK",
+    "Current.CityState":"Ardmore, OK",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":4,
+    "ST_3000":5,
+    "ST_4000":4,
+    "ST_M000":5,
+    "PT_1000":4,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":4,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -96.3527550,42.4670570 ]
+    },
+    "properties": {
+    "Age":33,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Sioux City, IA",
+    "Mother.CityState":"Sioux City, IA",
+    "Father.CityState":"Sioux City, IA",
+    "Current.CityState":"Omaha, NE",
+    "SurveyType":"10b",
+    "ST_1000":4,
+    "ST_2000":3,
+    "ST_3000":3,
+    "ST_4000":1,
+    "ST_M000":4,
+    "PT_1000":3,
+    "PT_2000":3,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.7848960,39.3331050 ]
+    },
+    "properties": {
+    "Age":36,
+    "Age_Bin":"31-40",
+    "Gender":"Male",
+    "Education":"Bachelors",
+    "Race":"Black",
+    "Raised.CityState":"Windsor Mill, MD",
+    "Mother.CityState":"Upper Marlboro, MD",
+    "Father.CityState":"Clinton, MD",
+    "Current.CityState":"Windsor Mill, MD",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":1,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.4146000,47.7556480 ]
+    },
+    "properties": {
+    "Age":30,
+    "Age_Bin":"18-30",
+    "Gender":"Male",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Spokane, WA",
+    "Mother.CityState":"Spokane, WA",
+    "Father.CityState":"Spokane, WA",
+    "Current.CityState":"Seattle, WA",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":5,
+    "PT_1000":1,
+    "PT_2000":5,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":5
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -73.9445930,41.2495850 ]
+    },
+    "properties": {
+    "Age":53,
+    "Age_Bin":"51-60",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Montrose, NY",
+    "Mother.CityState":"Mamaroneck, NY",
+    "Father.CityState":"Mamaroneck, NY",
+    "Current.CityState":"Ellicott City, MD",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.8613620,39.2726320 ]
+    },
+    "properties": {
+    "Age":44,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"Bachelors",
+    "Race":"White",
+    "Raised.CityState":"Ellicott City, MD",
+    "Mother.CityState":"Florence, AL",
+    "Father.CityState":"",
+    "Current.CityState":"Corrales, NM",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":1,
+    "ST_M000":3,
+    "PT_1000":1,
+    "PT_2000":1,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -119.8286170,36.7862850 ]
+    },
+    "properties": {
+    "Age":42,
+    "Age_Bin":"41-50",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Fresno, CA",
+    "Mother.CityState":"Fresno, CA",
+    "Father.CityState":"Fresno, CA",
+    "Current.CityState":"Fresno, CA",
+    "SurveyType":"10b",
+    "ST_1000":5,
+    "ST_2000":3,
+    "ST_3000":3,
+    "ST_4000":5,
+    "ST_M000":5,
+    "PT_1000":3,
+    "PT_2000":2,
+    "PT_3000":3,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -120.9966000,37.6236000 ]
+    },
+    "properties": {
+    "Age":66,
+    "Age_Bin":"61_up",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Modesto, CA",
+    "Mother.CityState":"New Bedford, MA",
+    "Father.CityState":"Modesto, CA",
+    "Current.CityState":"Modesto, CA",
+    "SurveyType":"10b",
+    "ST_1000":1,
+    "ST_2000":1,
+    "ST_3000":1,
+    "ST_4000":2,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":2,
+    "PT_M000":2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -118.3022110,34.0665350 ]
+    },
+    "properties": {
+    "Age":30,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"Asian",
+    "Raised.CityState":"Los Angeles, CA",
+    "Mother.CityState":"Manila, Philippines",
+    "Father.CityState":"Manila, Philippines",
+    "Current.CityState":"La Puente, CA",
+    "SurveyType":"10b",
+    "ST_1000":null,
+    "ST_2000":null,
+    "ST_3000":3,
+    "ST_4000":null,
+    "ST_M000":3,
+    "PT_1000":null,
+    "PT_2000":null,
+    "PT_3000":null,
+    "PT_4000":1,
+    "PT_M000":1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.7175900,42.0484870 ]
+    },
+    "properties": {
+    "Age":29,
+    "Age_Bin":"18-30",
+    "Gender":"Female",
+    "Education":"HS_diploma",
+    "Race":"White",
+    "Raised.CityState":"Evanston, IL",
+    "Mother.CityState":"Evanston, IL",
+    "Father.CityState":"Evanston, IL",
+    "Current.CityState":"Waukegan, IL",
+    "SurveyType":"10b",
+    "ST_1000":null,
+    "ST_2000":4,
+    "ST_3000":2,
+    "ST_4000":4,
+    "ST_M000":4,
+    "PT_1000":null,
+    "PT_2000":4,
+    "PT_3000":null,
+    "PT_4000":null,
+    "PT_M000":4
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -76.0237230,36.8281870 ]
+    },
+    "properties": {
+    "Age":35,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"Associates",
+    "Race":"Black",
+    "Raised.CityState":"Virginia Beach, VA",
+    "Mother.CityState":"Chesapeake, VA",
+    "Father.CityState":"Chesapeake, VA",
+    "Current.CityState":"Norfolk, VA",
+    "SurveyType":"10b",
+    "ST_1000":3,
+    "ST_2000":3,
+    "ST_3000":3,
+    "ST_4000":3,
+    "ST_M000":3,
+    "PT_1000":2,
+    "PT_2000":3,
+    "PT_3000":2,
+    "PT_4000":3,
+    "PT_M000":3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.7991080,36.0996640 ]
+    },
+    "properties": {
+    "Age":32,
+    "Age_Bin":"31-40",
+    "Gender":"Female",
+    "Education":"No_degree",
+    "Race":"White",
+    "Raised.CityState":"Waverly, TN",
+    "Mother.CityState":"Anniston, AL",
+    "Father.CityState":"",
+    "Current.CityState":"Waverly, TN",
+    "SurveyType":"10b",
+    "ST_1000":2,
+    "ST_2000":2,
+    "ST_3000":2,
+    "ST_4000":1,
+    "ST_M000":2,
+    "PT_1000":1,
+    "PT_2000":2,
+    "PT_3000":1,
+    "PT_4000":1,
+    "PT_M000":2
+    }
+  }
+]
+}

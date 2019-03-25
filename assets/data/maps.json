@@ -1,2 +1,58 @@
-
-[      {"title":"Relative that&#039;s SGPL","id":"726","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/relthatssgpl_formap_0.geojson","sentences":"716,717,718,719,720,721,722,723,724,725","show":"1"}  ,    {"title":"Relative that&#039;s","id":"713","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/relthats_subob.geojson","sentences":"705,706,707,708,709,710,711,712,714,715","show":"1"}  ,    {"title":"Dative presentatives","id":"703","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/s9-_dative_presentatives.geojson","sentences":"674,675,676,677,678,679,680,681,682","show":"1"}  ,    {"title":"Needs washed","id":"701","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/s6b_needs_washed.geojson","sentences":"521,663,664","show":"1"}  ,    {"title":"Verbal rather","id":"700","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/s5b-_verbal_rather.geojson","sentences":"516,511","show":"1"}  ,    {"title":"Split Subjects","id":"699","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/s5b-_split_subjects.geojson","sentences":"683,684,685,686,687,688,689,690","show":"1"}  ,    {"title":"Personal Datives","id":"668","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/s6b-_personal_datives.geojson","sentences":"666,667,669,670,671,672","show":"1"}  ,    {"title":"Home Page","id":"665","geojson":"https:\/\/ygdp.yale.edu\/system\/files\/geojson\/sentence_overview.geojson","sentences":"661,521,691,692,693,674,694,695,571,696,697,666,673,690,698,511","show":"0"}]
+[
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/relthatssgpl_formap_0.geojson",
+    "id": "726",
+    "sentences": "716,717,718,719,720,721,722,723,724,725",
+    "show": "1",
+    "title": "Relative that&#039;s SGPL"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/relthats_subob.geojson",
+    "id": "713",
+    "sentences": "705,706,707,708,709,710,711,712,714,715",
+    "show": "1",
+    "title": "Relative that&#039;s"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/s9_dative_presentatives.geojson",
+    "id": "703",
+    "sentences": "674,675,676,677,678,679,680,681,682",
+    "show": "1",
+    "title": "Dative presentatives"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/s6b_needs_washed.geojson",
+    "id": "701",
+    "sentences": "521,663,664",
+    "show": "1",
+    "title": "Needs washed"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/s5b_verbal_rather.geojson",
+    "id": "700",
+    "sentences": "516,511",
+    "show": "1",
+    "title": "Verbal rather"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/s5b_split_subjects.geojson",
+    "id": "699",
+    "sentences": "683,684,685,686,687,688,689,690",
+    "show": "1",
+    "title": "Split Subjects"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/s6b_personal_datives.geojson",
+    "id": "668",
+    "sentences": "666,667,669,670,671,672",
+    "show": "1",
+    "title": "Personal Datives"
+  },
+  {
+    "geojson": "https://ygdp.yale.edu/system/files/geojson/sentence_overview.geojson",
+    "id": "665",
+    "sentences": "661,521,691,692,693,674,694,695,571,696,697,666,673,690,698,511",
+    "show": "0",
+    "title": "Home Page"
+  }
+]
