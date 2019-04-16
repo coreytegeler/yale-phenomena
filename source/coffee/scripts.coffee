@@ -32,6 +32,7 @@ $ ->
 			zoom: DEFAULT_ZOOM
 
 	window.phen = {}
+	window.sentencesLoaded = []
 
 	getMaps = (id) ->
 		if env == 'dev'
@@ -87,7 +88,8 @@ $ ->
 		if sentences = window.map.sentences
 			sentences = sentences.split(',')
 			for sentence, i in sentences
-				getSentence(sentence, i)
+				index = i
+				getSentence(sentence, index)
 
 	getSentence = (id, i) ->
 		if env == 'dev'
@@ -106,29 +108,37 @@ $ ->
 							populateSentence(sentence, i)
 				else
 					populateSentence(data[0], i)
-				
 			error: (error) ->
 				console.warn error
 
 	populateSentence = (sentence, i) ->
+		sentenceArray = window.map.sentences.split(',')
+		sentencesLoaded.push(sentence.id)
 		$options = $phenomena.find('ul')
+		$acceptFilter = $filters.find('.fieldset.accept ul')
+		$rejectFilter = $filters.find('.fieldset.reject ul')
+
 		$option = $('<li></li>')
 			.addClass('sentence option')
 			.attr('data-val', sentence.sentence_id)
 			.attr('data-phen-title', sentence.phenomenon_title)
 			.attr('data-phen-id', sentence.phenomenon_id)
-			.attr('data-phen-index', i)
+			.attr('data-index', i)
 			.html('<span>'+sentence.title+'</span>')
-		# $filter = $option.clone()
-		# $option.addClass('option')
-		$prevOpt = $options.find('li[data-phen-index="'+(i-1)+'"]')
-		if $prevOpt.length
-			$prevOpt.after($option)
-		else
-			$options.append($option)
 
-		$filters.find('.fieldset.accept ul').append($option.clone())
-		$filters.find('.fieldset.reject ul').append($option.clone())
+		$options.append($option)
+		$acceptFilter.append($option.clone())
+		$rejectFilter.append($option.clone())
+
+		sortList($options)
+		sortList($acceptFilter)
+		sortList($rejectFilter)
+
+	sortList = ($list) ->
+		$list.find('li').sort (a,b) ->
+			return parseInt($(a).attr('data-index')) - parseInt($(b).attr('data-index'))
+		.appendTo($list)
+
 
 	prepareMap = (e) ->
 		e.preventDefault()

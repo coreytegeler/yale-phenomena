@@ -1,5 +1,5 @@
 $(function() {
-  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, changingSlider, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, decodeHtml, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
+  var $body, $creation, $embedder, $filters, $fixedHeader, $headerSentence, $map, $phenomena, DATA_PATH, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM, MAX_THRESH, MAX_ZOOM, MIN_THRESH, MIN_ZOOM, accessToken, changePhenTitle, changeSlider, changeThresholds, changingSlider, checkKey, clearFilter, clickFilter, clickReset, clickSentence, createMap, decodeHtml, env, getFieldset, getFilterQuery, getMap, getMapData, getMapQuery, getMaps, getOption, getProp, getPropSlug, getSentence, getSentences, getThresholdVal, getVal, getValSlug, hoverMarker, hoverThresholds, initMap, limitThresholds, openMulti, populateMapOptions, populateSentence, prepareMap, selectFilter, selectMulti, selectSentence, setEmbedder, setFilter, setSlider, setThresholdVal, setUpSliders, setUrlParams, sortList, startListening, styleUri, toggleFieldset, toggleFilterTabs, toggleLayer, toggleSide, unhoverThresholds, updateThresholdColors;
   $body = $('body');
   $map = $('#map');
   $filters = $('#filters');
@@ -31,6 +31,7 @@ $(function() {
     }
   };
   window.phen = {};
+  window.sentencesLoaded = [];
   getMaps = function(id) {
     var ajaxUrl;
     if (env === 'dev') {
@@ -103,13 +104,14 @@ $(function() {
     }
   };
   getSentences = function() {
-    var i, k, len, results, sentence, sentences;
+    var i, index, k, len, results, sentence, sentences;
     if (sentences = window.map.sentences) {
       sentences = sentences.split(',');
       results = [];
       for (i = k = 0, len = sentences.length; k < len; i = ++k) {
         sentence = sentences[i];
-        results.push(getSentence(sentence, i));
+        index = i;
+        results.push(getSentence(sentence, index));
       }
       return results;
     }
@@ -149,17 +151,24 @@ $(function() {
     });
   };
   populateSentence = function(sentence, i) {
-    var $option, $options, $prevOpt;
+    var $acceptFilter, $option, $options, $rejectFilter, sentenceArray;
+    sentenceArray = window.map.sentences.split(',');
+    sentencesLoaded.push(sentence.id);
     $options = $phenomena.find('ul');
-    $option = $('<li></li>').addClass('sentence option').attr('data-val', sentence.sentence_id).attr('data-phen-title', sentence.phenomenon_title).attr('data-phen-id', sentence.phenomenon_id).attr('data-phen-index', i).html('<span>' + sentence.title + '</span>');
-    $prevOpt = $options.find('li[data-phen-index="' + (i - 1) + '"]');
-    if ($prevOpt.length) {
-      $prevOpt.after($option);
-    } else {
-      $options.append($option);
-    }
-    $filters.find('.fieldset.accept ul').append($option.clone());
-    return $filters.find('.fieldset.reject ul').append($option.clone());
+    $acceptFilter = $filters.find('.fieldset.accept ul');
+    $rejectFilter = $filters.find('.fieldset.reject ul');
+    $option = $('<li></li>').addClass('sentence option').attr('data-val', sentence.sentence_id).attr('data-phen-title', sentence.phenomenon_title).attr('data-phen-id', sentence.phenomenon_id).attr('data-index', i).html('<span>' + sentence.title + '</span>');
+    $options.append($option);
+    $acceptFilter.append($option.clone());
+    $rejectFilter.append($option.clone());
+    sortList($options);
+    sortList($acceptFilter);
+    return sortList($rejectFilter);
+  };
+  sortList = function($list) {
+    return $list.find('li').sort(function(a, b) {
+      return parseInt($(a).attr('data-index')) - parseInt($(b).attr('data-index'));
+    }).appendTo($list);
   };
   prepareMap = function(e) {
     var mapData, serializedData;
